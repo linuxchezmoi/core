@@ -1,0 +1,48 @@
+# Depends on: libgcrypt zlib cmake cmocka doxygen openssl zlib
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Library for accessing ssh client services through C libraries"
+url="https://www.libssh.org/"
+
+
+name=libssh
+version=0.8.7
+
+
+source=(https://www.libssh.org/files/${version%.*}/$name-$version.tar.xz)
+
+prepare() {
+
+  sed 's/cmocka_unit_test(torture_path_expand_tilde_unix),//' -i libssh-${version}/tests/unittests/torture_misc.c
+  mkdir -pv build
+
+}
+
+build() {
+
+cd build
+
+cmake ../$name-$version \
+-DCMAKE_INSTALL_PREFIX=/usr \
+-DCMAKE_BUILD_TYPE=Release \
+-DWITH_GSSAPI=OFF \
+-DWITH_GCRYPT=ON \
+-DWITH_TESTING=ON
+
+make
+
+}
+
+
+package() {
+
+  cd $name-$version/build
+  make DESTDIR="$PKG" install
+  rm $PKG/usr/lib/$name.la
+
+}
