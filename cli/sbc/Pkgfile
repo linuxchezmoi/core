@@ -1,0 +1,31 @@
+# Depends on: libsndfile
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Bluetooth Subband Codec (SBC) library"
+url="http://www.bluez.org/"
+
+
+name=sbc
+version=1.4
+release=1
+
+
+source=(http://www.kernel.org/pub/linux/bluetooth/$name-$version.tar.xz)
+
+
+build(){
+  cd $name-$version
+  ./configure --prefix=/usr --disable-static --disable-tester
+  make
+}
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+  rm $PKG/usr/lib/libsbc.la
+}
