@@ -1,0 +1,31 @@
+# Depends on: systemd
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Library that provides generic access to USB devices"
+url="http://libusb.info/"
+
+
+name=libusb
+version=1.0.22
+release=1
+
+
+source=(https://github.com//libusb/libusb/releases/download/v$version/libusb-$version.tar.bz2)
+
+
+build(){
+  cd $name-$version
+  ./configure --prefix=/usr
+  make -j1
+}
+
+
+package () {
+  make -C $name-$version DESTDIR="$PKG" install
+  rm $PKG/usr/lib/libusb-1.0.la
+}
