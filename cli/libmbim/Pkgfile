@@ -1,0 +1,40 @@
+# Depends on: libgudev gtk-doc glib2 python help2man gtk-doc systemd
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="MBIM modem protocol helper library"
+url="https://www.freedesktop.org/wiki/Software/libmbim/"
+
+
+name=libmbim
+version=1.18.0
+release=1
+
+
+source=(http://www.freedesktop.org/software/$name/$name-$version.tar.xz)
+
+build() {
+
+  cd $name-$version
+  ./configure --prefix=/usr    \
+              --sysconfdir=/etc/libmbim \
+              --localstatedir=/var \
+              --enable-gtk-doc \
+              --disable-static
+  make
+
+}
+
+
+package() {
+
+  cd $name-$version
+  make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libmbim-glib.la
+
+}
