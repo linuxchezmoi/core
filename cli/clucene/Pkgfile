@@ -1,0 +1,63 @@
+# Depends on: cmake boost
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="C++ port of the high-performance text search engine Lucene"
+url="http://clucene.sourceforge.net/"
+
+
+name=clucene
+version=2.3.3.4
+release=1
+
+
+source=(http://downloads.sourceforge.net/clucene/$name-core-$version.tar.gz
+		clucene-core-2.3.3.4-pkg-config.patch
+		clucene-core-2.3.3.4-install_contribs_lib.patch
+		fix_zlib_detections.diff clucene-warnings.patch
+		clucene-gcc-atomics.patch
+		clucene-debug.patch
+		clucene-narrowing-conversions.patch	
+		clucene-multimap-put.patch)
+
+
+build(){
+  cd $SRC/$name-core-$version
+
+  patch -Np1 -i ${SRC}/clucene-core-2.3.3.4-install_contribs_lib.patch
+  patch -Np1 -i ${SRC}/clucene-core-2.3.3.4-pkg-config.patch
+  patch -Np1 -i ${SRC}/fix_zlib_detections.diff
+  patch -Np0 -i ${SRC}/clucene-warnings.patch
+  patch -Np0 -i ${SRC}/clucene-gcc-atomics.patch
+  patch -Np0 -i ${SRC}/clucene-debug.patch
+  patch -Np0 -i ${SRC}/clucene-narrowing-conversions.patch
+  patch -Np0 -i ${SRC}/clucene-multimap-put.patch
+
+  mkdir build
+  pushd build
+  cmake .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DENABLE_ASCII_MODE=OFF \
+    -DENABLE_PACKAGING=OFF \
+    -DBUILD_CONTRIBS_LIB:BOOL=ON \
+    -DLIB_DESTINATION:PATH=/usr/lib \
+    -DLUCENE_SYS_INCLUDES:PATH=/usr/lib \
+    -DDISABLE_MULTITHREADING=OFF
+  popd
+  make -C build
+}
+
+
+package() {
+  cd $SRC/$name-core-$version
+  make DESTDIR="$PKG" install -C build
+  rm -rfv $PKG/usr/lib/CLuceneConfig.cmake
+  
+  cd $PKG/usr/include//CLucene
+  ln -s /usr/lib/CLucene/clucene-config.h .
+}
