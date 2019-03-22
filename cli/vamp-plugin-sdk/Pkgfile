@@ -1,0 +1,38 @@
+# Depends on: libsndfile 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="The Vamp audio analysis plug-in system"
+url="https://www.vamp-plugins.org/"
+
+
+name=vamp-plugin-sdk
+version=2.8.0
+release=1
+
+
+source=(https://code.soundsoftware.ac.uk/attachments/download/2450/$name-$version.tar.gz)
+
+
+build(){
+  cd "${name}-${version}"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${name}-${version}"
+  make DESTDIR="$PKG" install
+  # license
+  install -vDm 644 COPYING \
+    -t "${PKG}/usr/share/licenses/${name}/"
+  # docs
+  install -t "${PKG}/usr/share/doc/${name}" \
+    -vDm644 {CHANGELOG,README}
+# Obsolets libs
+rm $PKG/usr/lib/libvamp-{,host}sdk.la
+}
