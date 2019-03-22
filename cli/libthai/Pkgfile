@@ -1,0 +1,31 @@
+# Depends on: libdatrie doxygen
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Thai language support routines"
+url="https://linux.thai.net/projects/libthai"
+
+
+name=libthai
+version=0.1.28
+release=1
+
+
+source=(https://linux.thai.net/pub/thailinux/software/${name}/${name}-${version}.tar.xz)
+
+
+build(){
+  cd ${name}-${version}
+  ./configure --prefix=/usr --disable-static
+  make
+}
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+  rm $PKG/usr/lib/$name.la
+}
