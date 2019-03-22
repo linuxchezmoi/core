@@ -1,0 +1,38 @@
+# Depends on: libcdio
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="CD paranoia libraries from libcdio"
+url="https://www.gnu.org/software/libcdio/"
+
+
+name=libcdio-paranoia
+version=10.2+2.0.0
+release=1
+
+
+source=(https://ftp.gnu.org/gnu/libcdio/$name-$version.tar.bz2)
+
+
+build(){
+
+  cd "${name}-${version}"
+  ./configure --prefix=/usr --enable-cpp-progs --disable-static --disable-example-progs
+  make
+
+}
+
+package() {
+
+  cd "${name}-${version}"
+  make -j1 DESTDIR="${PKG}" install
+
+# Obsolets libs
+rm $PKG/usr/lib/libcdio_{cdda,paranoia}.la
+
+}
+
