@@ -1,0 +1,34 @@
+# Depends on: libogg 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A free codec for free speech"
+url="https://speex.org/"
+
+
+name=speex
+version=1.2.0
+release=1
+
+
+source=(http://downloads.us.xiph.org/releases/$name/$name-$version.tar.gz)
+
+
+build(){
+  cd $name-$version
+  ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --disable-static \
+    --enable-binaries # Must be given or configure won't use pkg-config correctly
+  make
+}
+
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+  install -Dm644 COPYING "$PKG/usr/share/licenses/$name/LICENSE"
+  rm $PKG/usr/lib/libspeex.la
+}
