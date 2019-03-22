@@ -1,0 +1,44 @@
+# Depends on: python2 libxml2 docbook-xml git docbook-xsl
+
+
+packager="sipo"
+contributors="Pierre B., Tnut"
+maintainer="sipo"
+
+
+description="XML to PO and back again"
+url="http://itstool.org/"
+
+
+name=itstool
+version=2.0.5-git
+release=2
+
+
+source=()
+
+
+prepare(){
+
+  git clone https://github.com/itstool/itstool
+  cd $name
+  sed -i 's/| python/&2/' configure.ac
+  autoreconf -fvi
+
+}
+
+build() {
+
+  cd $name
+  ./configure --prefix=/usr PYTHON=/usr/bin/python2
+  make
+
+}
+
+
+package() {
+
+  cd $name
+  make DESTDIR="$PKG" install
+
+}
