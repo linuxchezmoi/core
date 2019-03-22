@@ -1,0 +1,62 @@
+# Depends on: readline zlib python2 zip autoconf2-13
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="JavaScript interpreter and libraries - Version 60"
+url="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey"
+
+
+name=js60
+version=60.5.2
+release=1
+
+#Merci Gentoo
+source=(https://dev.gentoo.org/~axs/distfiles/mozjs-$version.tar.bz2)
+
+
+prepare(){
+
+  cd mozjs-$version/js
+  mkdir obj
+
+}
+
+build() {
+  local configure_args=(
+    --prefix=/usr
+    --disable-debug
+    --disable-debug-symbols
+    --disable-jemalloc
+    --disable-strip
+    --enable-hardening
+    --enable-linker=gold
+    --enable-optimize
+    --enable-posix-nspr-emulation
+    --enable-readline
+    --enable-release
+    --enable-shared-js
+    --enable-tests
+    --with-intl-api
+    --with-system-zlib
+    --without-system-icu
+  )
+
+  cd mozjs-$version/js/obj
+
+  export PYTHON=/usr/bin/python2
+
+  sh $SRC/mozjs-$version/js/src/configure "${configure_args[@]}"
+  make
+}
+
+
+package() {
+  cd mozjs-60.5.2/js/obj
+  make DESTDIR="$PKG" install
+  rm "$PKG"/usr/lib/*.ajs
+}
+
