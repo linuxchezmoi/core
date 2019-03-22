@@ -1,0 +1,36 @@
+# Depends on: libjpeg-turbo libtiff
+
+
+packager="sipo"
+contributors="Pierre B, Tnut"
+maintainer="sipo"
+
+
+description="Small-footprint color management engine, version 2"
+url="http://www.littlecms.com/"
+
+
+name=lcms2
+version=2.9
+release=2
+
+
+source=(https://downloads.sourceforge.net/sourceforge/lcms/lcms2-2.9.tar.gz)
+
+
+build(){
+  cd ${name}-${version}
+
+  ./configure \
+    --prefix=/usr
+  make
+}
+
+
+package() {
+  cd ${name}-${version}
+
+  make DESTDIR="${PKG}" install
+  install -D -m0644 COPYING "${PKG}/usr/share/licenses/${name}/LICENSE"
+  rm $PKG/usr/lib/liblcms2.la
+}
