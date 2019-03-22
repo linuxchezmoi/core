@@ -1,0 +1,58 @@
+# Depends on: glib2 ninja gobject-introspection gtk-doc
+
+
+packager="sipo"
+contributors="Tnut"
+maintainer="sipo"
+
+
+description="The Kerberos network authentication system"
+url="http://web.mit.edu/kerberos/"
+
+
+name=krb5
+version=1.16.1
+_pkgvermajor=1.16
+yaolinux_version=1.0-RC1
+release=2
+
+
+source=(http://download.yaolinux.org/yaolinux/files/yaolinux-${yaolinux_version}.tar.xz
+        https://web.mit.edu/kerberos/dist/krb5/${_pkgvermajor}/${name}-${version}.tar.gz)
+
+
+build()  {
+
+    cd krb5-$version/src
+
+    ./configure --prefix=/usr            \
+                --sysconfdir=/etc        \
+                --localstatedir=/var/lib \
+                --with-system-et         \
+                --with-system-ss         \
+                --with-system-verto=no   \
+                --enable-dns-for-realm
+make
+
+}
+
+
+package()  {
+
+    cd krb5-$version/src
+    make DESTDIR=$PKG install
+
+        for LIBRARY in gssapi_krb5 gssrpc k5crypto kadm5clnt_mit kadm5srv_mit kdb5 krb5 krb5support verto; do
+	        chmod -v 755 $PKG/usr/lib/lib$LIBRARY.so.*.*
+        done
+
+    unset LIBRARY
+
+    install -v -dm755 $PKG/usr/share/doc/krb5-$version
+    cp -vfr ../doc/*  $PKG/usr/share/doc/krb5-$version
+
+# Service
+    cd $SRC/yaolinux-${yaolinux_version}
+    make DESTDIR=$PKG install-krb5
+
+}
