@@ -1,0 +1,32 @@
+# Depends on: flac alsa-lib libogg libvorbis 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A C library for reading and writing files containing sampled sound"
+url="http://www.mega-nerd.com/libsndfile"
+
+
+name=libsndfile
+version=1.0.28
+release=1
+
+
+source=(http://www.mega-nerd.com/libsndfile/files/$name-$version.tar.gz)
+
+
+build(){
+  cd $name-$version
+  ./configure --prefix=/usr --disable-sqlite
+  make
+}
+
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+  rm $PKG/usr/lib/$name.la
+}
