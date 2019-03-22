@@ -1,0 +1,43 @@
+# Depends on: yasm l-smash git
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Open Source H264/AVC video encoder"
+url="https://www.videolan.org/developers/x264.html"
+
+
+name=x264
+version=155.r0a84d986-git
+release=1
+
+
+source=()
+
+
+prepare(){
+  git clone https://git.videolan.org/git/x264.git
+  if [[ -d build ]]; then
+    rm -rf build
+  fi
+  mkdir build
+}
+
+build() {
+  cd build
+
+  ../x264/configure \
+    --prefix='/usr' \
+    --enable-shared \
+    --enable-pic \
+    --enable-lto
+  make
+}
+
+package() {
+  make -C build DESTDIR="${PKG}" install-cli install-lib-shared
+}
+
