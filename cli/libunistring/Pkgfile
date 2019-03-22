@@ -1,0 +1,31 @@
+# Depends on:
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Library for manipulating Unicode strings and C strings"
+url="http://www.gnu.org/software/libunistring/"
+
+
+name=libunistring
+version=0.9.10
+release=1
+
+
+source=(ftp://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
+
+
+build(){
+  cd $name-$version
+  ./configure --prefix=/usr
+  make
+}
+
+
+package() {
+  make -C $name-$version DESTDIR="$PKG" install
+  rm $PKG/usr/lib/libunistring.la
+}
