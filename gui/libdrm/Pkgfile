@@ -1,0 +1,39 @@
+# Depends on: libpciaccess libxslt meson ninja
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Userspace interface to kernel DRM services"
+url="https://dri.freedesktop.org/"
+
+
+name=libdrm
+version=2.4.97
+release=1
+
+
+source=(https://dri.freedesktop.org/libdrm/libdrm-2.4.97.tar.bz2 
+		no-drmdevice-test.diff)
+
+
+prepare(){
+  cd $name-$version
+  patch -Np1 -i ../no-drmdevice-test.diff
+  mkdir build
+}
+
+build() {
+  cd $name-$version/build
+  meson --prefix=/usr \
+         -Dudev=true 
+  ninja
+}
+
+
+package() {
+  cd $name-$version
+  DESTDIR="$PKG" meson install -C build
+}
