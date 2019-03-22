@@ -1,0 +1,32 @@
+# Depends on:
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A low-level cryptographic library"
+url="https://www.lysator.liu.se/~nisse/nettle"
+
+
+name=nettle
+version=3.4.1
+release=1
+
+
+source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
+
+
+build(){
+  cd $name-$version
+  ./configure --prefix=/usr \
+    --disable-static
+  make
+}
+
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG/" install
+}
