@@ -1,0 +1,35 @@
+# Depends on: libtirpc 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Public client interface library for NIS(YP) and NIS+"
+url="https://github.com/thkukuk/libnsl"
+
+
+name=libnsl
+version=1.2.0
+release=1
+
+
+source=(https://github.com/thkukuk/libnsl/archive/v$version.tar.gz)
+
+
+prepare(){
+  cd $name-$version
+  ./autogen.sh
+}
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr --disable-static
+  make
+}
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+}
