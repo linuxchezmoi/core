@@ -1,0 +1,43 @@
+# Depends on:
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Netscape Portable Runtime"
+url="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSPR"
+
+
+name=nspr
+version=4.21
+release=1
+
+
+source=(http://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v$version/src/$name-$version.tar.gz)
+
+
+prepare(){
+  cd nspr-$version/nspr
+}
+
+build() {
+  cd nspr-$version/nspr
+  ./configure \
+      --prefix=/usr \
+      --libdir=/usr/lib \
+      --includedir=/usr/include/nspr \
+      --enable-optimize \
+      --disable-debug \
+      $([ $(uname -m) = x86_64 ] && echo --enable-64bit)
+  make
+}
+
+package() {
+  cd nspr-$version/nspr
+  make DESTDIR="$PKG" install
+  ln -s nspr.pc "$PKG/usr/lib/pkgconfig/mozilla-nspr.pc"
+  rm -r "$PKG"/usr/bin/{compile-et.pl,prerr.properties} \
+  "$PKG"/usr/include/nspr/md
+}
