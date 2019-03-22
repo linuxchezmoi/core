@@ -1,0 +1,31 @@
+# Depends on:
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Just-in-time compiler and drop-in replacement for Lua 5.1"
+url="http://luajit.org/"
+
+
+name=luajit
+version=2.0.5
+release=1
+
+
+source=(http://luajit.org/download/LuaJIT-$version.tar.gz)
+
+
+build(){
+  cd "LuaJIT-$version"
+  make amalg PREFIX=/usr
+}
+
+package() {
+  cd "LuaJIT-$version"
+
+  make install DESTDIR="$PKG" PREFIX=/usr
+  install -Dm644 COPYRIGHT "$PKG/usr/share/licenses/$name/COPYRIGHT"
+}
