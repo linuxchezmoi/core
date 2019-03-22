@@ -1,0 +1,44 @@
+# Depends on: glib2 gobject-introspection libbytesize lvm2 volume_key parted gptfdisk gtk-doc libyaml systemd python-yaml python autoconf-archive 
+
+
+packager="sipo"
+contributors="Tnut"
+maintainer="sipo"
+
+
+description="A library for manipulating block devices"
+url="https://github.com/rhinstaller/libblockdev"
+
+
+run=(gptfdisk)
+
+
+name=libblockdev
+version=2.21
+release=1
+
+
+source=(https://github.com/storaged-project/$name/archive/$version-1.tar.gz)
+
+
+build(){
+
+  cd "$SRC"/$name-$version-1
+  ./autogen.sh
+  ./configure --prefix=/usr \
+              --with-python3 \
+              --without-dm   \
+              --without-nvdimm \
+              --sysconfdir=/etc
+  make
+
+}
+
+
+package() {
+
+  cd "$SRC"/$name-$version-1
+  make DESTDIR="$PKG" install
+  rm $PKG/usr/lib/*.la
+
+}
