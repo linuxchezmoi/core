@@ -1,0 +1,34 @@
+# Depends on: libsndfile flac
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Secret Rabbit Code - aka Sample Rate Converter for audio"
+url="http://www.mega-nerd.com/SRC/index.html"
+
+
+name=libsamplerate
+version=0.1.9
+release=1
+
+
+source=(http://www.mega-nerd.com/SRC/$name-$version.tar.gz)
+
+
+build(){
+  cd ${name}-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+  install -Dm644 COPYING "$PKG"/usr/share/licenses/$name/LICENSE
+  rm $PKG/usr/lib/$name.la
+}
