@@ -1,0 +1,33 @@
+# Depends on:
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Multi-platform support library with a focus on asynchronous I/O"
+url="https://github.com/libuv/libuv"
+
+
+name=libuv
+version=1.27.0
+release=1
+
+
+source=(https://github.com/libuv/libuv/archive/v$version.tar.gz)
+
+
+build(){
+	cd $name-$version
+	./autogen.sh
+	./configure --prefix=/usr
+	make
+}
+
+
+package() {
+	cd $name-$version
+	make DESTDIR="$PKG" install
+	rm $PKG/usr/lib/libuv.la
+}
