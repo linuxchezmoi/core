@@ -1,0 +1,25 @@
+# Depends on: python python-beaker python-markupsafe
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Implements hyperfast and lightweight templating for the Python platform."
+url="https://pypi.org/project/Mako/"
+
+
+name=python-mako
+version=1.0.7
+release=3
+
+
+source=(https://files.pythonhosted.org/packages/source/M/Mako/Mako-$version.tar.gz)
+
+
+build() {
+cd Mako-$version
+python3 setup.py build
+python3 setup.py install --root=$PKG --optimize=1
+}
