@@ -1,0 +1,25 @@
+# Depends on: python2
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Python2 compatibility utilities."
+url="http://pypi.python.org/pypi/six/"
+
+
+name=python2-six
+version=1.12.0
+release=1
+
+
+source=(https://github.com/benjaminp/six/archive/$version.tar.gz)
+
+
+build() {
+    cd six-$version
+    python2 setup.py check
+    python2 setup.py install --prefix=/usr --root=$PKG --optimize=1
+}
