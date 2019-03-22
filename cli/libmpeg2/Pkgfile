@@ -1,0 +1,44 @@
+# Depends on:
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Library for decoding MPEG-1 and MPEG-2 video streams."
+url="http://libmpeg2.sourceforge.net/"
+
+
+name=libmpeg2
+version=0.5.1
+release=1
+
+
+source=(http://libmpeg2.sourceforge.net/files/$name-$version.tar.gz 
+		libmpeg2-0.5.1-gcc4.6.patch)
+
+
+prepare(){
+  cd "${SRC}/${name}-${version}"
+  patch -Np1 -i "${SRC}/libmpeg2-0.5.1-gcc4.6.patch"
+
+  sed '/AC_PATH_XTRA/d' -i configure.ac
+  autoreconf --force --install
+}
+
+build() {
+  cd "${SRC}/${name}-${version}"
+  ./configure --prefix=/usr --enable-shared --disable-static
+  make	OPT_CFLAGS="${CFLAGS}" \
+	MPEG2DEC_CFLAGS="${CFLAGS}" \
+	LIBMPEG2_CFLAGS=""
+}
+
+package() {
+  cd "${SRC}/${name}-${version}"
+  make DESTDIR="${PKG}" install
+
+# Obsolet lib
+rm $PKG/usr/lib/libmpeg2{,convert}.la
+}
