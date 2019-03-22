@@ -1,0 +1,58 @@
+# Depends on: python2 python2-setuptools libnl openssl pciutils
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A suite of applications used to implement SNMP v1, SNMP v2c and SNMP v3 using both IPv4 and IPv6"
+url="http://www.net-snmp.org/"
+
+
+name=net-snmp
+version=5.8
+release=1
+
+
+source=(http://downloads.sourceforge.net/net-snmp/net-snmp-5.8.tar.gz 
+		snmpd.service 
+		snmptrapd.service)
+
+
+prepare(){
+  cd ${name}-${version}
+  autoreconf -i
+}
+
+build() {
+  cd ${name}-${version}
+  PYTHONPROG=/usr/bin/python2 ./configure --prefix=/usr \
+    --sysconfdir=/etc --sbindir=/usr/bin \
+    --mandir=/usr/share/man \
+    --enable-ucd-snmp-compatibility \
+    --enable-ipv6 \
+    --with-python-modules \
+    --with-default-snmp-version="3" \
+    --with-sys-contact="root@localhost" \
+    --with-sys-location="Unknown" \
+    --with-logfile="/var/log/snmpd.log" \
+    --with-mib-modules="host misc/ipfwacc ucd-snmp/diskio tunnel ucd-snmp/dlmod" \
+    --with-persistent-directory="/var/net-snmp"
+  make NETSNMP_DONT_CHECK_VERSION=1
+}
+
+package() {
+  cd ${name}-${version}
+  sed -i -e "s:install --basedir=\$\$dir:install --basedir=\$\$dir --root=${PKG}:" Makefile
+  make DESTDIR="${PKG}" INSTALL_PREFIX="${PKG}" INSTALLDIRS=vendor install
+  install -D -m644 "${SRC}/snmpd.service" "${PKG}/usr/lib/systemd/system/snmpd.service"
+  install -D -m644 "${SRC}/snmptrapd.service" "${PKG}/usr/lib/systemd/system/snmptrapd.service"
+  install -D -m644 COPYING "${PKG}/usr/share/licenses/${name}/LICENSE"
+  rm $PKG/usr/lib/libnetsnmp.la
+  rm $PKG/usr/lib/libnetsnmpagent.la
+  rm $PKG/usr/lib/libnetsnmphelpers.la
+  rm $PKG/usr/lib/libnetsnmpmibs.la
+  rm $PKG/usr/lib/libnetsnmptrapd.la
+  rm $PKG/usr/lib/libsnmp.la
+}
