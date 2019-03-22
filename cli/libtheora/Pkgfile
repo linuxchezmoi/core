@@ -1,0 +1,40 @@
+# Depends on: libogg libvorbis
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="An open video codec developed by the Xiph.org"
+url="https://www.theora.org/"
+
+
+name=libtheora
+version=1.1.1
+release=1
+
+
+source=(http://downloads.xiph.org/releases/theora/$name-$version.tar.xz 
+		libtheora-1.1.1-libpng16.patch)
+
+
+prepare(){
+  cd ${name}-${version}
+  patch -Np0 -i ../libtheora-1.1.1-libpng16.patch
+}
+
+build() {
+  cd ${name}-${version}
+  ./configure --prefix=/usr --enable-shared --disable-static
+  make
+}
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  install -m644 LICENSE COPYING "${PKG}/usr/share/licenses/${name}/"
+  rm $PKG/usr/lib/${name}{,dec,enc}.la
+}
