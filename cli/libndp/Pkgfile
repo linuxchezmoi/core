@@ -1,0 +1,40 @@
+# Depends on:
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Library for Neighbor Discovery Protocol"
+url="http://libndp.org/"
+
+
+name=libndp
+version=1.7
+release=1
+
+
+source=(http://libndp.org/files/$name-$version.tar.gz)
+
+
+prepare(){
+  cd $name
+  ./autogen.sh
+}
+
+build() {
+  cd $name
+  ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
+    --disable-static --libexecdir=/usr/lib
+  make
+}
+
+
+package() {
+  cd $name
+  make DESTDIR=$PKG install
+
+# Obsolet libs
+  rm $PKG/usr/lib/libndp.la
+}
