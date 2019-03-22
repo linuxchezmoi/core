@@ -1,0 +1,62 @@
+# Depends on: python2 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A scalable distributed SCM tool"
+url="https://www.mercurial-scm.org/"
+
+
+name=mercurial
+version=4.9
+release=1
+
+
+source=(https://www.mercurial-scm.org/release/$name-$version.tar.gz
+		mercurial.profile)
+
+
+prepare(){
+  cd $name-$version
+  sed -i -e 's#env python#env python2#' mercurial/lsprof.py contrib/hg-ssh
+}
+
+build() {
+  cd $name-$version/contrib/chg
+  make
+}
+
+package() {
+  cd $name-$version
+  python2 setup.py install --root="$PKG" --optimize=1
+
+  install -d "$PKG/usr/share/man/"{man1,man5}
+  install -m644 doc/hg.1 "$PKG/usr/share/man/man1"
+  install -m644 doc/{hgrc.5,hgignore.5} "$PKG/usr/share/man/man5"
+  install -m644 -D contrib/zsh_completion "$PKG/usr/share/zsh/site-functions/_hg"
+  install -m644 -D contrib/bash_completion "$PKG/usr/share/bash-completion/completions/hg"
+
+  make -C contrib/chg DESTDIR="$PKG" PREFIX=/usr install
+  install -m755 contrib/hg-ssh "$PKG/usr/bin"
+  install -m755 contrib/hgk "$PKG/usr/bin"
+
+  install -d "$PKG/usr/share/emacs/site-lisp"
+  install -m644 contrib/{mq.el,mercurial.el} "$PKG/usr/share/emacs/site-lisp"
+
+  install -Dm644 contrib/vim/HGAnnotate.vim \
+    "$PKG/usr/share/vim/vimfiles/syntax/HGAnnotate.vim"
+
+  # set some variables
+  install -m755 -d "$PKG/etc/profile.d"
+  install -m755 "$SRC/mercurial.profile" "$PKG/etc/profile.d/mercurial.sh"
+
+  # FS#38825 - Add certs config to package
+  install -m755 -d "$PKG/etc/mercurial"
+  cat <<-EOF > "$PKG/etc/mercurial/hgrc"
+	[web]
+	cacerts = /etc/ssl/certs/ca-certificates.crt
+	EOF
+}
