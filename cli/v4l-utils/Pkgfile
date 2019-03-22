@@ -1,0 +1,34 @@
+# Depends on: libjpeg-turbo alsa-lib doxygen systemd
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Userspace tools and conversion library for Video 4 Linux"
+url="https://linuxtv.org/"
+
+
+name=v4l-utils
+version=1.16.3
+release=1
+
+
+source=(http://linuxtv.org/downloads/v4l-utils/$name-$version.tar.bz2)
+
+
+build(){
+  cd "${SRC}/${name}-${version}"
+
+  ./configure --prefix=/usr --sysconfdir=/etc --sbindir=/usr/bin
+  make
+}
+
+package() {
+  cd "${SRC}/${name}-${version}"
+  MAKEFLAGS="-j1" make install DESTDIR="${PKG}/"
+  rm "${PKG}/usr/bin/ivtv-ctl"
+# Remove la files
+  find $PKG -name '*.la' | xargs rm -v
+}
