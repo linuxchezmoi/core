@@ -1,0 +1,31 @@
+# Depends on: glibc python2
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="An alternative implementation of Linux sound support"
+url="http://www.alsa-project.org"
+
+
+name=alsa-lib
+version=1.1.8
+release=3
+
+
+source=(ftp://ftp.alsa-project.org/pub/lib/$name-$version.tar.bz2)
+
+
+build(){
+  cd "$SRC/$name-$version"
+  ./configure --without-debug --prefix=/usr --with-pythonlibs="-lpthread -lm -ldl -lpython2.7" --with-pythonincludes=-I/usr/include/python2.7
+  make
+}
+
+package() {
+  cd "$SRC/$name-$version"
+  make DESTDIR="$PKG" install
+  rm $PKG/usr/lib/libasound.la
+}
