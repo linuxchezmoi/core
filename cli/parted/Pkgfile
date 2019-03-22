@@ -1,0 +1,46 @@
+# Depends on: lvm2
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A program for creating, destroying, resizing, checking and copying partitions"
+url="https://www.gnu.org/software/parted/parted.html"
+
+
+name=parted
+version=3.2
+release=1
+
+
+source=(https://ftp.gnu.org/gnu/parted/parted-3.2.tar.xz
+		0001-fat16.patch 
+		0002-include.patch)
+
+
+prepare(){
+  cd "${SRC}/${name}-${version}"
+
+  patch -Np1 -i "${SRC}/0001-fat16.patch"
+  patch -Np1 -i "${SRC}/0002-include.patch"
+}
+
+build() {
+  cd "${SRC}/${name}-${version}"
+
+  ./configure --prefix=/usr \
+              --sbindir=/usr/bin \
+              --disable-debug \
+              --disable-rpath
+  make
+}
+
+package() {
+  cd "${SRC}/${name}-${version}"
+
+  make DESTDIR="${PKG}" install
+# Obsolets libs
+rm $PKG/usr/lib/libparted{,-fs-resize}.la
+}
