@@ -1,0 +1,46 @@
+# Depends on: libffi pcre python elfutils meson ninja libxslt docbook-xsl
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="The GLib package contains a low-level libraries useful for providing data structure handling"
+url="http://www.gtk.org/"
+
+
+PKGMK_GROUPS=(man devel doc)
+
+
+name=glib2
+_name=glib
+version=2.60.0
+release=1
+
+
+source=(https://ftp.gnome.org/pub/gnome/sources/glib/2.60/glib-$version.tar.xz)
+
+
+prepare() {
+	cd $_name-$version
+	mkdir build-glib
+}
+
+build() {
+	cd $_name-$version/build-glib
+	meson --prefix=/usr -Dman=true -Dselinux=disabled ..
+	ninja
+}
+
+package() {
+	cd $_name-$version/build-glib
+	DESTDIR=$PKG ninja install
+}
+
+
+
+
+
+
+
