@@ -1,0 +1,35 @@
+# Depends on: libogg doxygen
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Vorbis codec library"
+url="https://www.xiph.org/vorbis/"
+
+
+name=libvorbis
+version=1.3.6
+release=1
+
+
+source=(http://downloads.xiph.org/releases/vorbis/$name-$version.tar.gz)
+
+
+build(){
+  cd libvorbis-${version}
+  ./configure \
+    --prefix='/usr' \
+    --disable-static
+  make
+}
+
+
+package() {
+  cd libvorbis-${version}
+  make DESTDIR="${PKG}" install
+  install -Dm 644 COPYING -t "${PKG}"/usr/share/licenses/libvorbis
+  rm $PKG/usr/lib/${name}{,file,enc}.la
+}
