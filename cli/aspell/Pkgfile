@@ -1,0 +1,38 @@
+# Depends on: ncurses 
+
+
+packager="sipo"
+contributors="Tnut"
+maintainer="sipo"
+
+
+description="A spell checker designed to eventually replace Ispell"
+url="http://aspell.net/"
+
+
+name=aspell
+version=0.60.7-rc1
+_version=0.60.7
+_pkgmajorver=0.60
+release=2
+
+
+source=(https://github.com/GNUAspell/aspell/archive/rel-${_version}-rc1.tar.gz)
+
+
+build(){
+
+  cd $name-rel-$version
+  PERL_USE_UNSAFE_INC=1 ./autogen
+  ./configure --prefix=/usr --sysconfdir=/etc
+  make
+
+}
+
+package() {
+
+  cd $name-rel-$version
+  make DESTDIR="$PKG" install
+  ln -s $name-$_pkgmajorver "$PKG"/usr/lib/$name
+
+}
