@@ -1,0 +1,34 @@
+# Depends on:
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Open source search engine library."
+url="http://www.xapian.org/"
+
+
+name=xapian-core
+version=1.4.11
+release=1
+
+
+source=(http://oligarchy.co.uk/xapian/$version/$name-$version.tar.xz)
+
+
+build(){
+
+  cd ${name}-${version}
+  ./configure \
+    --prefix=/usr
+  make
+}
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+  rm $PKG/usr/lib/libxapian.la
+}
+
