@@ -1,0 +1,30 @@
+# Depends on: glibc cmake
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Parses so-called cue sheets and handles the parsed data"
+url="https://github.com/lipnitsk/libcue/"
+
+
+name=libcue
+version=2.2.1
+release=1
+
+
+source=(https://github.com/lipnitsk/libcue/archive/v$version.tar.gz)
+
+
+build(){
+	cd ${name}-${version}
+	cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=lib -DBUILD_SHARED_LIBS=ON .
+	make
+}
+
+package() {
+	cd ${name}-${version}
+	make DESTDIR="${PKG}" install
+}
