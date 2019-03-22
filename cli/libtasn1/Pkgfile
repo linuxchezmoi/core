@@ -1,0 +1,35 @@
+# Depends on: 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="The ASN.1 library used in GNUTLS"
+url="https://www.gnu.org/software/libtasn1/"
+
+
+name=libtasn1
+version=4.13
+release=1
+
+
+source=(https://ftp.gnu.org/gnu/libtasn1/libtasn1-$version.tar.gz)
+
+
+build(){
+  cd ${name}-${version}
+  ./configure --prefix=/usr \
+      --with-packager=Yaolinux \
+      --with-packager-bug-reports="http://bugs.yaolinux.org/" \
+      --with-packager-version=${version}-${release}
+  make
+}
+
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+  make -C doc/reference DESTDIR="${PKG}" install-data-local
+}
