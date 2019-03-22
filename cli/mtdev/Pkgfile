@@ -1,0 +1,37 @@
+# Depends on:
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A stand-alone library which transforms all variants of kernel MT events to the slotted type B protocol"
+url="https://bitmath.org/code/mtdev/"
+
+
+name=mtdev
+version=1.1.5
+release=1
+
+
+source=(http://bitmath.org/code/mtdev/mtdev-$version.tar.bz2)
+
+
+build(){
+  cd "$SRC/$name-$version"
+  ./configure --prefix=/usr --disable-static
+  make
+}
+
+
+
+package() {
+  cd "$SRC/$name-$version"
+  make DESTDIR="$PKG/" install
+
+  # license
+  install -Dm644 COPYING \
+  "$PKG/usr/share/licenses/$name/LICENSE"
+  rm $PKG/usr/lib/libmtdev.la
+}
