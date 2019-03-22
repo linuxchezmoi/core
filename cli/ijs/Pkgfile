@@ -1,0 +1,36 @@
+# Depends on:
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="a library which implements a protocol for transmission of raster page images"
+url="https://www.openprinting.org/download/ijs/"
+
+
+name=ijs
+version=0.35
+release=1
+
+
+source=(https://www.openprinting.org/download/ijs/download/$name-$version.tar.bz2)
+
+
+build(){
+	cd "$name-$version"
+	./configure --prefix=/usr \
+				--enable-shared --disable-static \
+				--infodir=/usr/share/info --mandir=/usr/share/man
+	make
+}
+
+package() {
+	cd "$name-$version"
+	make DESTDIR="$PKG/" install
+        # install doc
+        install -Dm644 ijs_spec.pdf ${PKG}/usr/share/doc/$name/ijs_spec.pdf
+# Obsolet lib
+	rm $PKG/usr/lib/libijs.la
+}
