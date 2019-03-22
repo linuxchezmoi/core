@@ -40,12 +40,17 @@ build() {
 package() {
   cd $name
   make DESTDIR="$PKG" install
+  rm $PKG/usr/lib/libpolkit-{agent,gobject}-1.la
+  mkdir -p $PKG/etc/pam.d
+  cat > $PKG/etc/pam.d/polkit-1 << "EOF"
+  # Begin /etc/pam.d/polkit-1
 
-  install -d -o root -g 102 -m 750 "$PKG"/{etc,usr/share}/polkit-1/rules.d
+  auth     include        system-auth
+  account  include        system-account
+  password include        system-password
+  session  include        system-session
 
-  install -Dm644 /dev/stdin "$PKG/usr/lib/sysusers.d/$pkgname.conf" <<END
-u polkitd 102 "PolicyKit daemon"
-m polkitd proc
-END
+  # End /etc/pam.d/polkit-1
+EOF
 }
 
