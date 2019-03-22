@@ -1,0 +1,32 @@
+# Depends on: readline libtool 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="ODBC is an open specification for providing application."
+url="http://www.unixodbc.org/"
+
+
+name=unixodbc
+version=2.3.7
+release=1
+
+
+source=(ftp://ftp.unixodbc.org/pub/unixODBC/unixODBC-$version.tar.gz)
+
+
+build(){
+    cd unixODBC-${version}
+    ./configure --prefix=/usr --sysconfdir=/etc
+    make
+}
+
+
+package() {
+    cd unixODBC-${version}
+    make DESTDIR=${PKG} install
+    touch "$PKG"/etc/{odbc,odbcinst}.ini
+}
