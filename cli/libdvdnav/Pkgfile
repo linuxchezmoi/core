@@ -1,0 +1,36 @@
+# Depends on: libdvdread
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="The library for xine-dvdnav plugin."
+url="https://www.videolan.org/developers/libdvdnav.html"
+
+
+name=libdvdnav
+version=6.0.0
+release=1
+
+
+source=(http://download.videolan.org/videolan/$name/$version/$name-$version.tar.bz2)
+
+
+prepare(){
+cd $name-$version
+  autoreconf -fi
+}
+
+build() {
+cd $name-$version
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+cd $name-$version
+  make DESTDIR="${PKG}" install
+rm $PKG/usr/lib/$name.la
+}
