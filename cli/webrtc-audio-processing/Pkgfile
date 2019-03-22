@@ -1,0 +1,40 @@
+# Depends on: git
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="AudioProcessing library based on Google's implementation of WebRTC"
+url="https://freedesktop.org/software/pulseaudio/webrtc-audio-processing/"
+
+
+name=webrtc-audio-processing
+version=0.3.1-git
+release=1
+
+
+source=()
+
+
+prepare(){
+  git clone https://anongit.freedesktop.org/git/pulseaudio/webrtc-audio-processing
+  cd $name
+  NOCONFIGURE=1 ./autogen.sh
+}
+
+build() {
+  cd $name
+  ./configure --prefix=/usr --disable-static
+  make
+}
+
+package() {
+  cd $name
+  make DESTDIR="$PKG" install
+
+  install -Dm644 COPYING "$PKG/usr/share/licenses/$name/COPYING"
+# Obsolet lib
+  rm $PKG/usr/lib/libwebrtc_audio_processing.la
+}
