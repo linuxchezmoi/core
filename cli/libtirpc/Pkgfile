@@ -1,0 +1,31 @@
+# Depends on: krb5 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Transport Independent RPC library (SunRPC replacement)"
+url="http://libtirpc.sourceforge.net/"
+
+
+name=libtirpc
+version=1.1.4
+release=1
+
+
+source=(http://downloads.sourceforge.net/sourceforge/libtirpc/$name-$version.tar.bz2)
+
+
+build(){
+  cd ${name}-${version}
+  ./configure --prefix=/usr --sysconf=/etc
+  make
+}
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+  install -D -m644 COPYING "${PKG}"/usr/share/licenses/${name}/LICENSE
+}
