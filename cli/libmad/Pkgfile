@@ -1,0 +1,46 @@
+# Depends on: glibc 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A high-quality MPEG audio decoder"
+url="http://www.underbit.com/products/mad/"
+
+
+name=libmad
+version=0.15.1b
+release=1
+
+
+source=(http://downloads.sourceforge.net/sourceforge/mad/libmad-0.15.1b.tar.gz 
+		libmad.patch 
+		amd64-64bit.diff 
+		frame_length.diff 
+		optimize.diff)
+
+
+prepare(){
+  cd ${name}-${version}
+  patch -p1 -i "${SRC}/libmad.patch"
+  patch -p1 -i "${SRC}/amd64-64bit.diff"
+  patch -p1 -i "${SRC}/frame_length.diff"
+  patch -p1 -i "${SRC}/optimize.diff"
+}
+
+build() {
+  cd ${name}-${version}
+  CFLAGS="$CFLAGS -ftree-vectorize -ftree-vectorizer-verbose=1"
+  autoconf
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+# Obsolet lib
+  rm $PKG/usr/lib/libmad.la
+}
