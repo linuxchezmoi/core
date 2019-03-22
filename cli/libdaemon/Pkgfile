@@ -1,0 +1,33 @@
+# Depends on: git
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Lightweight C library that eases the writing of UNIX daemons"
+url="http://0pointer.de/lennart/projects/libdaemon/"
+
+
+name=libdaemon
+version=0.14-git
+release=1
+
+
+source=()
+
+
+build(){
+	git clone git://git.0pointer.net/libdaemon.git
+	cd "${SRC}/${name}"
+	./bootstrap.sh
+	./configure --prefix=/usr --localstatedir=/var --disable-lynx
+	make
+}
+
+package() {
+	cd "${SRC}/${name}"
+	make DESTDIR="${PKG}" install
+}
+
