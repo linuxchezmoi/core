@@ -1,0 +1,32 @@
+# Depends on: 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Change or delete the rpath or runpath in ELF files"
+url="http://directory.fsf.org/project/chrpath/"
+
+
+name=chrpath
+version=0.16
+release=1
+
+
+source=(http://cdn-fastly.deb.debian.org/debian/pool/main/c/chrpath/chrpath_0.16.orig.tar.gz)
+
+
+
+build() {
+  cd "${SRC}"/$name-$version
+  ./configure --prefix=/usr --mandir=/usr/share/man
+  make
+}
+
+
+package() {
+  cd "${SRC}"/$name-$version
+  make DESTDIR="${PKG}" docdir=/usr/share/doc/chrpath install
+}
