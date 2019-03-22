@@ -1,0 +1,33 @@
+# Depends on: openssl 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="An event notification library"
+url="http://libevent.org/"
+
+
+name=libevent
+version=2.1.8
+release=1
+
+
+source=(https://github.com/libevent/libevent/releases/download/release-$version-stable/$name-$version-stable.tar.gz)
+
+
+build(){
+  cd ${name}-${version}-stable
+  ./autogen.sh
+  ./configure --prefix=/usr --sysconfdir=/etc --disable-libevent-regress
+  make
+}
+
+
+package() {
+  cd ${name}-${version}-stable
+  make DESTDIR="${PKG}" install
+  install -Dm 644 LICENSE "${PKG}"/usr/share/licenses/libevent/LICENSE
+}
