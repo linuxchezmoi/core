@@ -1,0 +1,39 @@
+# Depends on: libjpeg-turbo ninja
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Library for manipulation of TIFF images"
+url="http://www.simplesystems.org/libtiff/"
+
+
+name=libtiff
+version=4.0.10
+release=1
+
+
+source=(http://download.osgeo.org/libtiff/tiff-$version.tar.gz)
+
+
+build(){
+  cd tiff-${version}
+  ./configure \
+    --prefix=/usr \
+	  --sysconfdir=/etc \
+	  --mandir=/usr/share/man \
+    --with-docdir=/usr/share/doc/${name}
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make
+}
+
+
+
+package() {
+  cd tiff-${version}
+  make DESTDIR="${PKG}" install
+  install -Dm 644 COPYRIGHT -t "${PKG}/usr/share/licenses/${name}"
+}
+
