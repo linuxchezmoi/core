@@ -1,0 +1,45 @@
+# Depends on: freetype git
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A library for configuring and customizing font access"
+url="https://www.freedesktop.org/wiki/Software/fontconfig/"
+
+
+name=fontconfig
+version=2.13.1-git
+release=2
+
+
+source=()
+
+
+prepare(){
+  git clone https://gitlab.freedesktop.org/fontconfig/fontconfig.git
+  cd $name
+  NOCONFIGURE=1 ./autogen.sh
+}
+
+build() {
+  cd $name
+  ./configure --prefix=/usr        \
+              --sysconfdir=/etc    \
+              --localstatedir=/var \
+    		  --with-default-fonts=/usr/share/fonts \
+    		  --with-add-fonts=/usr/local/share/fonts \
+              --disable-docs       \
+              --docdir=/usr/share/doc/$name-$version
+  make
+}
+
+
+
+package() {
+  cd $name
+  make DESTDIR="$PKG" install
+  install -Dm644 COPYING "$PKG/usr/share/licenses/$name/COPYING"
+}
