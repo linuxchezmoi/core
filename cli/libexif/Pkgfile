@@ -1,0 +1,30 @@
+# Depends on: glibc 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A library to parse an EXIF file and read the data from those tags"
+url="https://sourceforge.net/projects/libexif"
+
+
+name=libexif
+version=0.6.21
+release=1
+
+
+source=(https://downloads.sourceforge.net/sourceforge/libexif/$name-$version.tar.bz2)
+
+
+build(){
+  cd "${SRC}/${name}-${version}"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${SRC}/${name}-${version}"
+  make DESTDIR="${PKG}" install
+}
