@@ -1,0 +1,47 @@
+# Depends on:
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A library that implements Perl 5-style regular expressions. 2nd version"
+url="https://www.pcre.org/"
+
+
+name=pcre2
+version=10.32
+release=1
+
+
+source=(https://ftp.pcre.org/pub/pcre/$name-$version.tar.bz2)
+
+
+build(){
+  cd $name-$version
+  ./configure \
+    --prefix=/usr \
+    --enable-pcre2-16 \
+    --enable-pcre2-32 \
+    --enable-jit \
+    --enable-pcre2grep-libz \
+    --enable-pcre2grep-libbz2 \
+    --enable-pcre2test-libreadline
+  make
+}
+
+
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+
+  install -Dm644 LICENCE "$PKG/usr/share/licenses/$name/LICENSE"
+# Obsolets libs
+rm $PKG/usr/lib/libpcre2-16.la
+rm $PKG/usr/lib/libpcre2-32.la
+rm $PKG/usr/lib/libpcre2-8.la
+rm $PKG/usr/lib/libpcre2-posix.la
+}
+
