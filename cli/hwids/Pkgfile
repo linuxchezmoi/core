@@ -1,0 +1,32 @@
+# Depends on: git
+
+
+packager="sipo"
+contributors="Tnut"
+maintainer="sipo"
+
+
+description="hardware identification databases"
+url="https://github.com/gentoo/hwids"
+
+
+name=hwids
+version=20190316-git
+release=1
+
+
+prepare() {
+
+git clone git://github.com/gentoo/$name.git
+
+}
+
+build() {
+
+  cd $name
+
+  for ids in pci.ids usb.ids; do
+    install -Dm644 "$ids" "${PKG}/usr/share/hwdata/${ids}"
+  done
+
+}
