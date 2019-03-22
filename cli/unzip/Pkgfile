@@ -1,0 +1,60 @@
+# Depends on: bzip2 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="For extracting and viewing files in .zip archives"
+url="https://www.info-zip.org/UnZip.html"
+
+
+name=unzip
+version=6.0
+release=1
+
+
+source=(https://downloads.sourceforge.net/infozip/unzip60.tar.gz
+		overflow-fsize.patch 
+		cve20149636.patch 
+		test_compr_eb.patch 
+		getZip64Data.patch 
+		crc32.patch 
+		empty-input.patch 
+		csiz-underflow.patch 
+		nextbyte-overflow.patch)
+
+
+prepare(){
+	cd "${SRC}/${name}${_version}"
+	sed -i "/MANDIR =/s#)/#)/share/#" unix/Makefile
+	patch -p1 -i ../overflow-fsize.patch #FS#44171
+	patch -p1 -i ../cve20149636.patch #FS#44171
+	patch -i ../test_compr_eb.patch # FS#43391
+	patch -i ../getZip64Data.patch # FS#43300
+	patch -i ../crc32.patch # FS#43300
+	patch -p1 -i ../empty-input.patch # FS#46955
+	patch -p1 -i ../csiz-underflow.patch # FS#46955
+	patch -p1 -i ../nextbyte-overflow.patch # FS#46955
+}
+
+build() {
+	cd "${SRC}/${name}${_version}"
+
+	# DEFINES, make, and install args from Debian
+	DEFINES='-DACORN_FTYPE_NFS -DWILD_STOP_AT_DIR -DLARGE_FILE_SUPPORT \
+		-DUNICODE_SUPPORT -DUNICODE_WCHAR -DUTF8_MAYBE_NATIVE -DNO_LCHMOD \
+		-DDATE_FORMAT=DF_YMD -DUSE_BZIP2 -DNOMEMCPY -DNO_WORKING_ISPRINT'
+
+	make -f unix/Makefile prefix=/usr \
+		D_USE_BZ2=-DUSE_BZIP2 L_BZ2=-lbz2 \
+		LF2="$LDFLAGS" CF="$CFLAGS $CPPFLAGS -I. $DEFINES" \
+		unzips
+}
+
+package() {
+	cd "${SRC}/${name}${_version}"
+	make -f unix/Makefile prefix="${PKG}"/usr install
+	install -Dm644 LICENSE "${PKG}/usr/share/licenses/${name}/LICENSE"
+}
