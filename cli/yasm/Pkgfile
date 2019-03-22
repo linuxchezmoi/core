@@ -1,0 +1,37 @@
+# Depends on: 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A rewrite of NASM to allow for multiple syntax supported (NASM, TASM, GAS, etc.)"
+url="http://www.tortall.net/projects/yasm/"
+
+
+name=yasm
+version=1.3.0
+release=1
+
+
+source=(http://www.tortall.net/projects/$name/releases/$name-$version.tar.gz)
+
+
+build(){
+  cd ${name}-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+check() {
+  cd ${name}-${version}
+  make check
+}
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+  install -Dm644 COPYING "${PKG}/usr/share/licenses/${name}/LICENSE"
+  install -Dm644 BSD.txt "${PKG}/usr/share/licenses/${name}/BSD.txt"
+}
