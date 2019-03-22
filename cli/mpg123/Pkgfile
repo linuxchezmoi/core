@@ -1,0 +1,34 @@
+# Depends on: alsa-lib
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A console based real time MPEG Audio Player for Layer 1, 2 and 3"
+url="http://sourceforge.net/projects/mpg123"
+
+
+name=mpg123
+version=1.25.10
+release=1
+
+
+source=(http://downloads.sourceforge.net/$name/$name-$version.tar.bz2)
+
+
+build(){
+  cd ${name}-${version}
+  ./configure --prefix=/usr --with-module-suffix=.so
+  make
+}
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+  install -m755 scripts/conplay "${PKG}/usr/bin/conplay"
+# Obsolets
+  rm $PKG/usr/lib/libout123.la
+  rm $PKG/usr/lib/libmpg123.la
+}
