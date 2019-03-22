@@ -1,0 +1,33 @@
+# Depends on:
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A MOD playing library"
+url="http://modplug-xmms.sourceforge.net/"
+
+
+name=libmodplug
+version=0.8.9.0
+release=1
+
+
+source=(https://sourceforge.net/projects/modplug-xmms/files/libmodplug/0.8.9.0/$name-$version.tar.gz)
+
+
+build(){
+  cd ${name}-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+  install -D -m644 COPYING "${PKG}/usr/share/licenses/${name}/LICENSE"
+# Obsolet lib
+  rm $PKG/usr/lib/libmodplug.la
+}
