@@ -1,0 +1,40 @@
+# Depends on: python2 docbook-xsl libxslt
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Hierarchical pool based memory allocator with destructors"
+url="http://talloc.samba.org/"
+
+
+name=talloc
+version=2.1.16
+release=1
+
+
+source=(https://www.samba.org/ftp/$name/$name-$version.tar.gz)
+
+
+prepare(){
+   cd "${SRC}/${name}-${version}"
+}
+
+build() {
+   cd "${SRC}/${name}-${version}"
+   ./configure --prefix=/usr \
+     --sysconfdir=/etc/samba \
+     --localstatedir=/var \
+     --bundled-libraries=NONE \
+     --builtin-libraries=replace \
+     --enable-talloc-compat1
+   make
+}
+
+
+package() {
+   cd "${SRC}/${name}-${version}"
+   make DESTDIR="${PKG}" install
+}
