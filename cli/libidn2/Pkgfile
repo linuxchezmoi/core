@@ -1,0 +1,36 @@
+# Depends on: libunistring
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Free software implementation of IDNA2008, Punycode and TR46"
+url="https://www.gnu.org/software/libidn/#libidn2"
+
+
+name=libidn2
+version=2.1.1
+release=1
+
+
+source=(https://ftp.gnu.org/gnu/libidn/$name-$version.tar.gz)
+
+
+build() {
+  cd $name-$version
+
+  ./configure \
+    --prefix=/usr \
+    --disable-static
+  make
+}
+
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+  rm $PKG/usr/lib/$name.la
+}
+
