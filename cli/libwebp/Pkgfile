@@ -1,0 +1,42 @@
+# Depends on: libpng libjpeg-turbo libtiff
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="WebP library and conversion tools"
+url="https://developers.google.com/speed/webp/"
+
+
+name=libwebp
+version=1.0.2
+release=1
+
+
+source=(http://downloads.webmproject.org/releases/webp/$name-$version.tar.gz)
+
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr \
+              --enable-libwebpmux \
+              --enable-libwebpdemux \
+              --enable-libwebpdecoder \
+              --enable-libwebpextras  \
+              --enable-swap-16bit-csp \
+            --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make
+}
+
+
+
+package() {
+  cd $name
+  make DESTDIR="$PKG" install
+  install -Dm644 COPYING "$PKG/usr/share/licenses/$name/COPYING"
+# Obsolets libs
+  rm $PKG/usr/lib/libwebp{,decoder,demux,mux}.la
+}
