@@ -1,0 +1,41 @@
+# Depends on: cryptsetup nss gpgme python swig glib2
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A library for manipulating storage volume encryption keys..."
+url="https://pagure.io/volume_key"
+
+
+name=volume_key
+version=0.3.11
+release=1
+
+
+source=(https://github.com/felixonmars/$name/archive/$name-$version.tar.gz)
+
+
+prepare(){
+  cd "$SRC"/volume_key-volume_key-$version
+  
+  autoreconf -i
+
+  find . -name ".pyc" -delete
+}
+
+build() {
+  cd "$SRC"/volume_key-volume_key-$version
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "$SRC"/volume_key-volume_key-$version
+  make DESTDIR="$PKG" install
+  sed -i '/#include <config.h>/d' "$PKG"/usr/include/volume_key/libvolume_key.h
+  # Obsolet lib
+  rm $PKG/usr/lib/libvolume_key.la
+}
