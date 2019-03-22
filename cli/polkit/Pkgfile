@@ -1,0 +1,51 @@
+# Depends on: glib2 js60 gobject-introspection intltool perl-xml-parser libxslt docbook-xsl systemd git gtk-doc 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Application development toolkit for controlling system-wide privileges"
+url="https://www.freedesktop.org/wiki/Software/polkit/"
+
+
+name=polkit
+version=0.115-git
+release=1
+
+
+source=()
+
+prepare() {
+  git clone https://gitlab.freedesktop.org/polkit/polkit.git
+  cd $name
+  NOCONFIGURE=1 ./autogen.sh
+}
+
+build() {
+  cd $name
+
+  ./configure --prefix=/usr --sysconfdir=/etc \
+      --localstatedir=/var --libexecdir=/usr/lib \
+      --enable-libsystemd-login=yes --disable-static \
+      --enable-gtk-doc 
+
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+
+  make
+}
+
+
+package() {
+  cd $name
+  make DESTDIR="$PKG" install
+
+  install -d -o root -g 102 -m 750 "$PKG"/{etc,usr/share}/polkit-1/rules.d
+
+  install -Dm644 /dev/stdin "$PKG/usr/lib/sysusers.d/$pkgname.conf" <<END
+u polkitd 102 "PolicyKit daemon"
+m polkitd proc
+END
+}
+
