@@ -1,0 +1,33 @@
+# Depends on: openssl zlib 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A library implementing the SSH2 protocol as defined by Internet Drafts"
+url="https://www.libssh2.org/"
+
+
+name=libssh2
+version=1.8.1
+release=1
+
+
+source=(https://www.libssh2.org/download/$name-$version.tar.gz)
+
+
+build(){
+  cd "$name-$version"
+
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "$name-$version"
+
+  make DESTDIR="$PKG" install
+  install -Dm644 COPYING "$PKG/usr/share/licenses/$name/LICENSE"
+}
