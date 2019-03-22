@@ -1,0 +1,6 @@
+post_install() {
+  # Enable socket by default
+  systemctl --global enable p11-kit-server.socket
+}
+
+post_install

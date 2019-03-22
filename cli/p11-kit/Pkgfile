@@ -1,0 +1,54 @@
+# Depends on: libtasn1 libffi gtk-doc libxslt systemd
+
+description="Provides a way to load and enumerate PKCS 11 modules."
+url="http://p11-glue.freedesktop.org/p11-kit.html"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=p11-kit
+version=0.23.15
+
+source=( https://github.com/p11-glue/p11-kit/releases/download/$version/$name-$version.tar.gz)
+
+
+prepare() {
+
+cd $name-$version
+
+	sed '20,$ d' -i trust/trust-extract-compat.in
+	cat >> trust/trust-extract-compat.in << "EOF"
+	/usr/lib/make-ca/copy-trust-modifications
+	/usr/sbin/make-ca -f -g
+	EOF
+
+}
+
+build() {
+
+cd $name-$version
+	./configure \
+		--prefix=/usr \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--with-module-path=/usr/lib/pkcs11 \
+		--with-trust-paths=/etc/pki/anchors
+
+	make
+	
+}
+
+	
+package() {
+cd $name-$version
+
+	make DESTDIR=$PKG install
+
+	ln -s ../lib/p11-kit/trust-extract-compat \
+		$PKG/usr/bin/update-ca-trust
+
+# Obsolets libs
+rm $PKG/usr/lib/libp11-kit.la
+rm $PKG/usr/lib/pkcs11/p11-kit-{client,trust}.la
+
+}
