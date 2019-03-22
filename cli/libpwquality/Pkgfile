@@ -1,0 +1,44 @@
+# Depends on: python2 cracklib
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Library for password quality checking and generating random passwords"
+url="https://github.com/libpwquality/libpwquality"
+
+
+name=libpwquality
+version=1.4.0
+release=1
+
+
+source=(https://github.com/$name/$name/releases/download/$name-$version/$name-$version.tar.bz2)
+
+
+prepare(){
+  cd $name-$version
+  sed '/mr_IN/d' -i po/LINGUAS
+}
+
+build() {
+	cd $name-$version
+	PYTHON=python2 
+	./configure --prefix=/usr \
+	        	--sysconfdir=/etc \
+  		      	--localstatedir=/var \
+            	--with-python-rev=2.7
+    sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+    make
+}
+
+package() {
+	cd $name-$version
+    make DESTDIR="$PKG" install
+    install -m755 -d "$PKG"/etc/security/pwquality.conf.d
+# Obsolets libs
+    rm $PKG/usr/lib/libpwquality.la
+    rm $PKG/usr/lib/security/pam_pwquality.la
+}
