@@ -1,0 +1,39 @@
+# Depends on: libxml2 glib2 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A CSS parsing library"
+
+
+description="The libcroco package contains a standalone CSS2 parsing and manipulation library."
+url="https://launchpad.net/libcroco"
+
+
+name=libcroco
+version=0.6.12
+release=2
+
+
+source=(http://ftp.gnome.org/pub/gnome/sources/libcroco/0.6/$name-$version.tar.xz)
+
+
+build() {
+
+cd $name-$version
+./configure --prefix=/usr \
+	--disable-static
+make
+
+}
+
+package() {
+
+  cd $name
+  make DESTDIR="$PKG" install
+  rm $PKG/usr/lib/$name-0.6.la
+
+}
