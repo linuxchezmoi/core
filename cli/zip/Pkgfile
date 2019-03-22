@@ -1,0 +1,40 @@
+# Depends on: bzip2 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Compressor/archiver for creating and modifying zipfiles"
+url="http://www.info-zip.org/Zip.html"
+
+
+name=zip
+version=3.0
+release=1
+
+
+source=(https://downloads.sourceforge.net/infozip/zip30.tar.gz 
+		zipnote.patch)
+
+
+prepare(){
+	cd "${SRC}/${name}${_version}"
+	sed -e "/^CFLAGS_NOOPT =/s/\$/ $CPPFLAGS $CFLAGS/" -i unix/Makefile
+	sed -e "s/^LFLAGS1=''/LFLAGS1=$LDFLAGS/" -i unix/configure
+	patch -p1 -i ../zipnote.patch
+}
+
+build() {
+	cd "${SRC}/${name}${_version}"
+	make -f unix/Makefile prefix=/usr generic_gcc
+}
+
+package() {
+	cd "${SRC}/${name}${_version}"
+	make -f unix/Makefile prefix="${PKG}"/usr \
+		MANDIR=${PKG}/usr/share/man/man1 \
+		install
+	install -Dm644 LICENSE "${PKG}/usr/share/licenses/${name}/LICENSE"
+}
