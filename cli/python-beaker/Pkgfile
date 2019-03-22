@@ -1,0 +1,22 @@
+# Depends on: python
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Caching & sessions WSGI middleware for use with web apps and stand-alone Python scripts and applications"
+
+
+name=python-beaker
+version=1.10.1
+release=1
+
+
+source=(https://files.pythonhosted.org/packages/source/B/Beaker/Beaker-$version.tar.gz)
+
+build() {
+cd Beaker-$version
+python3 setup.py install --root=$PKG --optimize=1
+}
