@@ -1,0 +1,61 @@
+# Depends on: readline 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Powerful lightweight programming language designed for extending applications"
+url="http://www.lua.org/"
+
+
+name=lua
+version=5.3.5
+_majorver=${version%.*}
+release=1
+
+
+source=(https://www.lua.org/ftp/lua-5.3.5.tar.gz
+		liblua.so.patch
+		lua.pc
+		LICENSE)
+
+
+prepare(){
+
+  cd lua-$version
+  patch -p1 -i ../liblua.so.patch
+  sed "s/%VER%/$_majorver/g;s/%REL%/$version/g" ../lua.pc > lua.pc
+  sed "s/^R= \$V.4/R= \$V.5/" -i Makefile
+
+}
+
+build() {
+
+  cd lua-$version
+  make MYCFLAGS="$CFLAGS -fPIC -DLUA_COMPAT_5_2 -DLUA_COMPAT_5_1" MYLDFLAGS="$LDFLAGS" linux
+
+}
+
+package() {
+
+  cd lua-$version
+  make \
+    TO_LIB="liblua.a liblua.so liblua.so.$_majorver liblua.so.$version" \
+    INSTALL_DATA='cp -d' \
+    INSTALL_TOP="$PKG"/usr \
+    INSTALL_MAN="$PKG"/usr/share/man/man1 \
+    install
+  ln -sf /usr/bin/lua "$PKG"/usr/bin/lua$_majorver
+  ln -sf /usr/bin/luac "$PKG"/usr/bin/luac$_majorver
+  ln -sf /usr/lib/liblua.so.$version "$PKG"/usr/lib/liblua$_majorver.so
+
+  install -Dm644 lua.pc "$PKG"/usr/lib/pkgconfig/${name}53.pc
+  ln -sf /usr/lib/pkgconfig/${name}53.pc "$PKG"/usr/lib/pkgconfig/$name.pc
+
+  install -d "$PKG"/usr/share/doc/$name
+  install -m644 doc/*.{gif,png,css,html} "$PKG"/usr/share/doc/$name
+  install -Dm644 ../LICENSE "$PKG"/usr/share/licenses/$name/LICENSE
+
+}
