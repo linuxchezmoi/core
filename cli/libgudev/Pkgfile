@@ -1,0 +1,41 @@
+# Depends on: glib2 gobject-introspection gtk-doc systemd
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="GObject bindings for libudev"
+url="https://wiki.gnome.org/Projects/libgudev"
+
+
+name=libgudev
+version=232
+release=1
+
+
+source=(http://ftp.gnome.org/pub/gnome/sources/libgudev/$version/libgudev-$version.tar.xz)
+
+
+
+build() {
+
+cd ${name}-$version
+./configure --prefix=/usr \
+--disable-umockdev
+sed -i 's/ -shared / -Wl,-O1,--as-needed\0/g' -i libtool
+make
+
+}
+
+
+package() {
+
+cd ${name}-$version
+make DESTDIR="$PKG" install
+# Obsolet lib
+rm $PKG/usr/lib/libgudev-1.0.la
+
+}
+
