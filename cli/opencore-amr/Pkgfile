@@ -1,0 +1,32 @@
+# Depends on:
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Open source implementation of the Adaptive Multi Rate (AMR) speech codec"
+url="http://opencore-amr.sourceforge.net/"
+
+
+name=opencore-amr
+version=0.1.5
+release=1
+
+
+source=(http://downloads.sourceforge.net/sourceforge/$name/$name-$version.tar.gz)
+
+
+build(){
+  cd "$SRC/$name-$version"
+  ./configure --prefix=/usr --disable-static
+  make
+}
+
+package() {
+  cd "$SRC/$name-$version"
+  make DESTDIR="$PKG" install
+  rm $PKG/usr/lib/libopencore-amr{n,w}b.la
+}
+
