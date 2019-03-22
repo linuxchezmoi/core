@@ -1,0 +1,51 @@
+# Depends on: libcddb
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="GNU Compact Disc Input and Control Library"
+url="https://www.gnu.org/software/libcdio/"
+
+
+name=libcdio
+version=2.0.0
+release=1
+
+
+source=(https://ftp.gnu.org/gnu/libcdio/$name-$version.tar.bz2)
+
+
+prepare(){
+
+  cd $name-$version
+  autoreconf -fi
+
+}
+
+build() {
+
+  cd $name-$version
+  ./configure --prefix=/usr --disable-vcd-info --enable-cpp-progs --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make
+
+}
+
+
+package() {
+
+  cd $name-$version
+  make DESTDIR="$PKG" install
+
+  sed -e "/define CDIO_LIBCDIO_SOURCE_PATH/s|.*|/* #undef CDIO_LIBCDIO_SOURCE_PATH */|" \
+      -i "$PKG/usr/include/cdio/cdio_config.h"
+rm $PKG/usr/lib/libcdio{,++}.la
+rm $PKG/usr/lib/libiso9660{,++}.la
+rm $PKG/usr/lib/libudf.la
+
+}
+
+
