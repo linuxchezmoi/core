@@ -1,0 +1,35 @@
+# Depends on: pcre
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Generate scripting interfaces to C/C++ code"
+url="http://www.swig.org/"
+
+
+name=swig
+version=3.0.12
+release=1
+
+
+source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
+
+
+build(){
+  cd ${name}-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+  install -D -m644 LICENSE "${PKG}"/usr/share/licenses/${name}/LICENSE
+  install -D -m644 LICENSE-UNIVERSITIES "${PKG}"/usr/share/licenses/${name}/LICENSE-UNIVERSITIES
+
+}
