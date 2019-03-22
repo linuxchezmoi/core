@@ -1,0 +1,33 @@
+# Depends on: python2 glib2 libgudev libmbim
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="QMI modem protocol helper library"
+url="https://www.freedesktop.org/wiki/Software/libqmi/"
+
+
+name=libqmi
+version=1.22.2
+release=1
+
+
+source=(http://www.freedesktop.org/software/libqmi/libqmi-$version.tar.xz)
+
+
+
+build() {
+cd libqmi-$version
+./configure --prefix=/usr --disable-static
+make
+}
+
+
+package() {
+cd libqmi-$version
+make DESTDIR=$PKG install
+rm $PKG/usr/lib/libqmi-glib.la
+}
