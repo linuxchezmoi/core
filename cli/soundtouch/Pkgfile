@@ -1,0 +1,40 @@
+# Depends on: git
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="An audio processing library"
+url="https://www.surina.net/soundtouch/"
+
+
+name=soundtouch
+version=2.1.2-git
+release=1
+
+
+source=()
+
+
+prepare(){
+  git clone https://gitlab.com/soundtouch/soundtouch.git
+  cd $name
+  ./bootstrap
+}
+
+build() {
+  cd $name
+
+  ./configure \
+    --prefix='/usr' \
+    --enable-shared
+  make
+}
+
+package() {
+
+  make DESTDIR="${PKG}" pkgdocdir='/usr/share/doc/soundtouch' -C soundtouch install
+}
+
