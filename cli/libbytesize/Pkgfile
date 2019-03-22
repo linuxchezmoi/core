@@ -1,0 +1,40 @@
+# Depends on: glib2 pcre python python2 gtk-doc
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A tiny library providing a C "class" for working with arbitrary big sizes in bytes"
+url="https://github.com/rhinstaller/libbytesize"
+
+
+name=libbytesize
+version=1.4
+release=1
+
+
+source=(https://github.com/rhinstaller/libbytesize/archive/$version.tar.gz)
+
+
+build(){
+
+  cd "$SRC"/$name-$version
+  ./autogen.sh
+  ./configure --prefix=/usr
+  make
+
+}
+
+package() {
+
+  cd "$SRC"/$name-$version
+  make DESTDIR="$PKG" install
+
+# Obsolet lib
+
+rm $PKG/usr/lib/libbytesize.la
+
+}
+
