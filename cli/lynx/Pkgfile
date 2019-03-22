@@ -1,0 +1,42 @@
+# Depends on: openssl libidn 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A text browser for the World Wide Web"
+url="https://lynx.browser.org/"
+
+
+name=lynx
+version=2.8.9
+_relver=2.8.9rel.1
+release=1
+
+
+source=(https://invisible-mirror.net/archives/lynx/tarballs/lynx2.8.9rel.1.tar.bz2)
+
+
+build(){
+  cd ${SRC}/${name}${_relver}
+  ./configure --prefix=/usr \
+    --sysconfdir=/etc \
+    --with-ssl=/usr \
+    --enable-nls \
+    --enable-ipv6 \
+    --mandir=/usr/share/man
+  make
+}
+
+package() {
+  cd ${SRC}/${name}${_relver}
+  make DESTDIR=${PKG} install
+
+  # FS#20404 - points to local help
+  sed -i -e "s|^HELPFILE.*$|HELPFILE:file:///usr/share/doc/lynx/lynx_help/lynx_help_main.html|" ${PKG}/etc/lynx.cfg
+
+  install -d ${PKG}/usr/share/doc/lynx
+  cp -rf lynx_help ${PKG}/usr/share/doc/lynx
+}
