@@ -1,0 +1,55 @@
+# Depends on:
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A library that implements Perl 5-style regular expressions"
+url="http://www.pcre.org/"
+
+
+name=pcre
+version=8.43
+release=1
+
+
+source=(https://ftp.pcre.org/pub/pcre/$name-$version.tar.bz2)
+
+
+prepare(){
+  cd $name-$version
+  local filename
+  for filename in "${source[@]}"; do
+    if [[ "$filename" =~ \.patch$ ]]; then
+      patch -p1 -N -i "$SRC/${filename##*/}"
+    fi
+  done
+  :
+}
+
+build() {
+  cd $name-$version
+  ./configure \
+    --prefix=/usr \
+    --enable-unicode-properties \
+    --enable-pcre16 \
+    --enable-pcre32 \
+    --enable-jit \
+    --enable-pcregrep-libz \
+    --enable-pcregrep-libbz2 \
+    --enable-pcretest-libreadline
+  make
+}
+
+
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+
+  install -Dm644 LICENCE "$PKG/usr/share/licenses/$name/LICENSE"
+  rm $PKG/usr/lib/libpcre{,16,32}.la
+  rm $PKG/usr/lib/libpcre{posix,cpp}.la
+}
