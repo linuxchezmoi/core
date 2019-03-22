@@ -1,0 +1,85 @@
+# Depends on: python2 cmake ninja
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Google Test - C++ testing utility"
+url="https://github.com/google/googletest"
+
+
+name=gmock
+version=1.8.1
+_srcname=googletest-release-${version}
+release=1
+
+
+source=(https://github.com/google/googletest/archive/release-1.8.1.tar.gz
+        gtest-1.8.1-libversion.patch
+        gtest-1.8.1-null-pointer.patch)
+
+
+prepare(){
+  cd ${_srcname}
+  cp ../gtest-1.8.1-libversion.patch gtest-1.8.1-libversion.patch
+  sed "s|__GOOGLETEST_VERSION__|${version}|g" -i gtest-1.8.1-libversion.patch
+  # https://src.fedoraproject.org/rpms/gtest/tree/master
+  patch -Np1 -i gtest-1.8.1-libversion.patch
+  patch -Np1 -i ../gtest-1.8.1-null-pointer.patch
+
+  find . -name '*.py' -exec sed -i '1s|python$|&2|g' {} +
+
+  # fixup version as they are never correct
+  sed -E "s|(GOOGLETEST_VERSION) [0-9\\.]+|\\1 ${version}|" -i CMakeLists.txt
+  sed -E "s|^( +)\\[[0-9\\.]+\\],$|\\1[${version}],|" -i {googletest,googlemock,.}/configure.ac
+  sed -E "s|(GTEST_MIN_VERSION)=\"1.8.0\"|\\1=\"${version}\"|" -i googlemock/configure.ac
+}
+
+build() {
+  mkdir build build-ac
+  cd build
+
+  cmake -G Ninja ../${_srcname} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_SHARED_LIBS=ON \
+    -DPython_ADDITIONAL_VERSIONS=2.7 \
+    -Dgtest_build_tests=ON
+  cmake --build .
+
+  # Only for g{test,mock}-config
+  cd ../${_srcname}/googletest
+  autoreconf -fvi
+  ./configure --prefix=/usr
+  cd ../googlemock
+  autoreconf -fvi
+  ./configure --prefix=/usr
+}
+
+
+
+package() {
+
+  DESTDIR="${PKG}" cmake --build build --target install
+
+  # Shouldn't be present
+  find "${PKG}" -name '*.pump' -printf 'Removing %P\n' -delete
+
+  # Split gmock
+  mkdir -p gmock/{include,lib/pkgconfig}
+  mv "${PKG}"/usr/include/gmock gmock/include/
+  mv "${PKG}"/usr/lib/libgmock* gmock/lib/
+  mv "${PKG}"/usr/lib/pkgconfig/gmock* gmock/lib/pkgconfig/
+
+  cd ${_srcname}/googletest
+  install -Dm 644 LICENSE -t "${PKG}/usr/share/licenses/${name}"
+  install -Dm 644 README.md CHANGES CONTRIBUTORS -t "${PKG}/usr/share/doc/${name}"
+  install -Dm 755 scripts/gtest-config -t "${PKG}/usr/bin"
+  install -Dm 644 m4/gtest.m4 -t "${PKG}/usr/share/aclocal"
+  install -Dm 644 cmake/* -t "${PKG}/usr/src/gtest/cmake"
+  install -Dm 644 src/* -t "${PKG}/usr/src/gtest/src"
+  install -Dm 644 CMakeLists.txt -t "${PKG}/usr/src/gtest"
+}
+
