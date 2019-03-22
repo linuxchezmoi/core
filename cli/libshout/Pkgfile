@@ -1,0 +1,36 @@
+# Depends on: libvorbis libtheora speex openssl 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Library for accessing a shoutcast/icecast server"
+url="https://www.icecast.org/"
+
+
+name=libshout
+version=2.4.1
+release=1
+
+
+source=(https://downloads.xiph.org/releases/libshout/libshout-$version.tar.gz)
+
+
+prepare(){
+  cd ${name}-${version}
+  sed -e 's/SSLeay_add_all_algorithms/OpenSSL_add_all_algorithms/g' -i src/tls.c
+}
+
+build() {
+  cd ${name}-${version}
+  ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+  make
+}
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+  rm $PKG/usr/lib/$name.la
+}
