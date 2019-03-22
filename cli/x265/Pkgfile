@@ -1,0 +1,36 @@
+# Depends on: yasm cmake
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Open Source H265/HEVC video encoder"
+url="https://bitbucket.org/multicoreware/x265"
+
+
+name=x265
+version=3.0
+release=1
+
+
+source=(https://bitbucket.org/multicoreware/x265/downloads/${name}_${version}.tar.gz)
+
+
+
+build() {
+  cd ${name}_${version}/build
+
+   cmake  -DCMAKE_INSTALL_PREFIX=/usr \
+   -DENABLE_STATIC=OFF  \
+   ../source
+  make
+}
+
+package() {
+   cd ${name}_${version}/build
+   make DESTDIR=$PKG install
+#  rm $PKG/usr/lib/libx265.a
+}
+
