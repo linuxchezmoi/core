@@ -1,0 +1,32 @@
+# Depends on: libxml2 glib2 intltool pkg-config
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Freedesktop.org Shared MIME Info"
+url="https://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec/"
+
+
+name=shared-mime-info
+version=1.12
+release=1
+
+
+source=(https://gitlab.freedesktop.org/xdg/shared-mime-info/uploads/80c7f1afbcad2769f38aeb9ba6317a51/shared-mime-info-$version.tar.xz)
+
+
+build(){
+  cd ${name}-${version}
+  export ac_cv_func_fdatasync=no
+  ./configure --prefix=/usr --disable-update-mimedb
+  make -j1
+}
+
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+}
