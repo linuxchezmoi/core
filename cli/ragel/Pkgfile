@@ -1,0 +1,33 @@
+# Depends on:
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Compiles finite state machines from regular languages."
+url="http://www.complang.org/ragel/"
+
+
+name=ragel
+version=6.10
+release=1
+
+
+source=(https://www.colm.net/files/ragel/ragel-$version.tar.gz)
+
+
+build(){
+  cd "$SRC/$name-$version"
+
+  ./configure --prefix=/usr CXXFLAGS="$CXXFLAGS -std=gnu++98" 
+  make
+}
+
+package() {
+  cd "$SRC/$name-$version"
+
+  make DESTDIR="$PKG/" install
+  install -m0644 -D ragel.vim "$PKG"/usr/share/vim/vimfiles/syntax/ragel.vim
+}
