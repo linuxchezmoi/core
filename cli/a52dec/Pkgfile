@@ -1,0 +1,40 @@
+# Depends on: glibc 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A free library for decoding ATSC A/52 streams"
+url="http://liba52.sourceforge.net/"
+
+
+name=a52dec
+version=0.7.4
+release=1
+
+
+source=(http://liba52.sourceforge.net/files/a52dec-0.7.4.tar.gz a52dec-0.7.4-build.patch stderr.patch)
+
+
+prepare(){
+  cd "${name}-${version}"
+  patch -Np1 -i ../a52dec-0.7.4-build.patch
+  patch -Np1 -i ../stderr.patch
+  sed -i 's/AM_CONFIG_HEADER/AC_CONFIG_HEADERS/' configure.in
+  mv configure.in configure.ac
+  ./bootstrap
+}
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr --enable-shared
+  make
+}
+
+package() {
+  cd "${SRC}/${name}-${version}"
+  make DESTDIR="${PKG}" install
+  install -m644 liba52/a52_internal.h "${PKG}/usr/include/a52dec/"
+}
