@@ -1,0 +1,38 @@
+# Depends on: libatomic_ops 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A garbage collector for C and C++"
+url="http://www.hboehm.info/gc/"
+
+
+name=gc
+version=7.6.8
+release=1
+
+
+source=(https://github.com/ivmai/bdwgc/releases/download/v$version/gc-$version.tar.gz)
+
+
+prepare(){
+  cd ${name}-${version}
+}
+
+build() {
+  cd ${name}-${version}
+  ./configure --prefix=/usr --enable-cplusplus --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make
+}
+
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+  sed 's|GC_MALLOC 1L|gc 3|g' doc/gc.man |
+  install -Dm644 /dev/stdin "${PKG}/usr/share/man/man3/gc.3"
+}
