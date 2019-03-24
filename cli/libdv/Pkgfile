@@ -1,0 +1,30 @@
+# Depends on: popt 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="The Quasar DV codec (libdv) is a software codec for DV video"
+url="http://libdv.sourceforge.net/"
+
+
+name=libdv
+version=1.0.0
+release=1
+
+
+source=(https://downloads.sourceforge.net/libdv/libdv-$version.tar.gz)
+
+
+build(){
+  cd "$SRC/$name-$version"
+  ./configure --prefix=/usr --disable-gtk
+  make
+}
+
+package() {
+  cd "$SRC/$name-$version"
+  make DESTDIR="$PKG" install
+}
