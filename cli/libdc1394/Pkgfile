@@ -1,0 +1,30 @@
+# Depends on: libraw1394 libusb 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="High level programming interface to control IEEE 1394 based cameras"
+url="https://sourceforge.net/projects/libdc1394/"
+
+
+name=libdc1394
+version=2.2.5
+release=1
+
+
+source=(https://downloads.sourceforge.net/libdc1394/libdc1394-$version.tar.gz)
+
+
+build(){
+  cd $name-$version
+  ./configure --prefix=/usr --disable-static
+  make
+}
+
+package() {
+  cd $name-$version
+  make DESTDIR="${PKG}" install
+}
