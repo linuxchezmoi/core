@@ -1,0 +1,39 @@
+# Depends on: openssl git
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Library for SRTP (Secure Realtime Transport Protocol)"
+url="https://github.com/cisco/libsrtp"
+
+
+name=libsrtp
+version=2.2.0
+release=1
+
+
+source=()
+
+
+prepare(){
+  git clone https://github.com/cisco/libsrtp
+  cd $name
+  git tag | grep -Pv '^v\d+.\d+.\d+$' | xargs git tag -d
+  autoreconf -fvi
+}
+
+build() {
+  cd $name
+  ./configure --prefix=/usr --enable-openssl
+  make all
+  make shared_library
+}
+
+
+package() {
+  cd $name
+  make DESTDIR="$PKG" install
+}
