@@ -1,0 +1,32 @@
+# Depends on: cmake
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Video game music file emulation/playback library"
+url="https://bitbucket.org/mpyne/game-music-emu"
+
+
+name=libgme
+version=0.6.2
+release=1
+
+
+source=(https://bitbucket.org/mpyne/game-music-emu/downloads/game-music-emu-$version.tar.xz)
+
+
+build(){
+  cd game-music-emu-${version}
+  mkdir build
+  cd build
+  cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+  make
+}
+
+package() {
+  cd game-music-emu-${version}/build
+  make DESTDIR="${PKG}" install
+}
