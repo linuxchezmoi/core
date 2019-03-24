@@ -1,0 +1,26 @@
+# Depends on:  
+
+packager="sipo"
+contributors="Dania"
+maintainer="sipo"
+
+description="Tool to manipulate Intel® IA-32/X86-64 microcode bundles"
+url="https://gitlab.com/iucode-tool/iucode-tool/wikis/home"
+
+name=iucode-tool
+version=2.3.1
+
+source=(https://gitlab.com/$name/releases/raw/master/${name}_${version}.tar.xz)
+
+build(){
+	cd "${name}-$version"
+	./configure \
+		--prefix=/usr \
+		--sbindir=/usr/bin
+	make
+}
+
+package() {
+	cd "${name}-$version"
+	make DESTDIR="$PKG/" install
+}
