@@ -1,0 +1,1 @@
+depmod -a 4.14.90-NuTyX-lts
