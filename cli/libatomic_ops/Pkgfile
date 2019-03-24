@@ -1,0 +1,31 @@
+# Depends on: 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Provides semi-portable access to hardware provided atomic memory operations"
+url="https://github.com/ivmai/libatomic_ops"
+
+
+name=libatomic_ops
+version=7.6.10
+release=1
+
+
+source=(https://github.com/ivmai/libatomic_ops/releases/download/v$version/libatomic_ops-$version.tar.gz)
+
+
+build(){
+  cd $name-$version
+  ./configure --prefix=/usr --disable-static --enable-shared
+  make
+}
+
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+}
