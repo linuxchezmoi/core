@@ -1,0 +1,35 @@
+# Depends on: 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Free library for decoding DTS Coherent Acoustics streams"
+url="https://www.videolan.org/developers/libdca.html"
+
+
+name=libdca
+version=0.0.6
+release=1
+
+
+source=(https://download.videolan.org/pub/videolan/libdca/$version/libdca-$version.tar.bz2)
+
+
+build(){
+  cd $name-$version
+  ./configure --prefix=/usr --mandir=/usr/share/man --disable-static
+  make
+}
+
+package() {
+  cd $name-$version
+  make DESTDIR="${PKG}" install
+
+  rm -f "${PKG}/usr/share/man/man1"/{extract_dts,dtsdec}.1
+  ln -s dcadec.1.gz "${PKG}/usr/share/man/man1/dtsdec.1.gz"
+  ln -s extract_dca.1.gz "${PKG}/usr/share/man/man1/extract_dts.1.gz"
+  rm -f "${PKG}/usr/lib/libdts.a"
+}
