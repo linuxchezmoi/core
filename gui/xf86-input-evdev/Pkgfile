@@ -1,0 +1,32 @@
+# Depends on: systemd mtdev libevdev xorg-server
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X.org evdev input driver"
+url="https://xorg.freedesktop.org/"
+
+
+name=xf86-input-evdev
+version=2.10.6
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/driver/xf86-input-evdev-$version.tar.bz2)
+
+
+build(){
+  cd ${name}-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+}
