@@ -1,0 +1,33 @@
+# Depends on: libxfixes xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X11 Composite extension library"
+url="https://xorg.freedesktop.org/"
+
+
+name=libxcomposite
+version=0.4.5
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/lib/libXcomposite-$version.tar.bz2)
+
+
+build(){
+  cd libXcomposite-${version}
+  ./configure --prefix=/usr --sysconfdir=/etc --disable-static
+  make
+}
+
+package() {
+  cd libXcomposite-${version}
+  make DESTDIR="${PKG}" install
+
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+}
