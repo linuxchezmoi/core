@@ -1,0 +1,34 @@
+# Depends on: libxaw libxt libx11 xorg-util-macros xorgproto
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=(doc man)
+
+
+description="XKB utility demos"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-xkbutils
+version=1.0.4
+release=1
+
+
+source=(https://xorg.freedesktop.org/archive/individual/app/xkbutils-$version.tar.bz2)
+
+
+build(){
+  cd "${SRC}/xkbutils-${version}"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${SRC}/xkbutils-${version}"
+  make DESTDIR="${PKG}" install
+  install -Dm644 COPYING "${PKG}/usr/share/licenses/${name}/COPYING"
+}
