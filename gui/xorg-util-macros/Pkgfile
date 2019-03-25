@@ -1,0 +1,39 @@
+# Depends on:  
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=()
+
+
+description="X.Org Autotools macros"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-util-macros
+another_name=xorg-util-macros
+version=1.19.2
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/util/util-macros-$version.tar.bz2)
+
+
+build(){
+  cd util-macros-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd util-macros-${version}
+  make DESTDIR="${PKG}" install
+
+  install -m755 -d "${PKG}/usr/lib"
+  mv "${PKG}/usr/share/pkgconfig" "${PKG}/usr/lib/"
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+}
