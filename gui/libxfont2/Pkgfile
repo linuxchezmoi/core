@@ -1,0 +1,32 @@
+# Depends on: xorgproto xorg-util-macros xtrans freetype libfontenc
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X11 font rasterisation library"
+url="https://xorg.freedesktop.org/"
+
+
+name=libxfont2
+version=2.0.3
+release=1
+
+
+source=(https://xorg.freedesktop.org//archive/individual/lib/libXfont2-$version.tar.bz2)
+
+
+build(){
+  cd "${SRC}/libXfont2-${version}"
+  ./configure --prefix=/usr --sysconfdir=/etc --disable-static
+  make
+}
+
+package() {
+  cd "${SRC}/libXfont2-${version}"
+  make DESTDIR="${PKG}" install
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+}
