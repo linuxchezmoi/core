@@ -14,7 +14,6 @@ url="https://xorg.freedesktop.org/"
 
 
 name=xorg-util-macros
-another_name=xorg-util-macros
 version=1.19.2
 release=1
 
