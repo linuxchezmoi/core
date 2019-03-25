@@ -1,0 +1,32 @@
+# Depends on:  pkg-config xorg-xcursorgen xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X.org Cursor themes"
+url="https://xorg.freedesktop.org/"
+
+
+name=xcursor-themes
+version=1.0.6
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/data/xcursor-themes-$version.tar.bz2)
+
+
+build(){
+  cd ${name}-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+}
