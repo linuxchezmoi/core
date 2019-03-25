@@ -1,0 +1,62 @@
+# Depends on: xorg-fonts-encodings xorg-fonts-alias fontconfig xorg-bdftopcf xorg-mkfontscale xorg-font-util 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X.org misc fonts"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-fonts-misc
+version=1.0.3
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/font/font-arabic-misc-1.0.3.tar.bz2
+		https://xorg.freedesktop.org//releases/individual/font/font-cursor-misc-1.0.3.tar.bz2
+		https://xorg.freedesktop.org//releases/individual/font/font-daewoo-misc-1.0.3.tar.bz2
+		https://xorg.freedesktop.org//releases/individual/font/font-dec-misc-1.0.3.tar.bz2
+		https://xorg.freedesktop.org//releases/individual/font/font-isas-misc-1.0.3.tar.bz2
+		https://xorg.freedesktop.org//releases/individual/font/font-jis-misc-1.0.3.tar.bz2
+		https://xorg.freedesktop.org//releases/individual/font/font-micro-misc-1.0.3.tar.bz2
+		https://xorg.freedesktop.org//releases/individual/font/font-misc-ethiopic-1.0.3.tar.bz2
+		https://xorg.freedesktop.org//releases/individual/font/font-misc-meltho-1.0.3.tar.bz2
+		https://xorg.freedesktop.org//releases/individual/font/font-misc-misc-1.1.2.tar.bz2
+		https://xorg.freedesktop.org//releases/individual/font/font-mutt-misc-1.0.3.tar.bz2
+		https://xorg.freedesktop.org//releases/individual/font/font-schumacher-misc-1.1.2.tar.bz2
+		https://xorg.freedesktop.org//releases/individual/font/font-sony-misc-1.0.3.tar.bz2
+		https://xorg.freedesktop.org//releases/individual/font/font-sun-misc-1.0.3.tar.bz2)
+
+
+build(){
+  cd "${SRC}"
+  for dir in *; do
+    if [ -d "${dir}" ]; then
+      pushd "${dir}"
+      ./configure --prefix=/usr \
+          --with-fontdir=/usr/share/fonts/misc
+      make
+      popd
+    fi
+  done
+}
+
+package() {
+  cd "${SRC}"
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  for dir in *; do
+    if [ -d "${dir}" ]; then
+      pushd "${dir}"
+      make DESTDIR="${PKG}" install
+      install -m644 COPYING ${PKG}/usr/share/licenses/${name}/LICENSE.${dir%-*}
+      popd
+    fi
+  done
+  rm -f ${PKG}/usr/share/fonts/*/fonts.*
+  
+  # move .otf files to proper directory - FS#44250
+  mv ${PKG}/usr/share/fonts/misc/*.otf ${PKG}/usr/share/fonts/OTF/
+}
