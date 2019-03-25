@@ -1,4 +1,4 @@
-# Depends on:
+# Depends on: git
 
 
 packager="sipo"
@@ -15,16 +15,17 @@ version=1.7
 release=1
 
 
-source=(http://libndp.org/files/$name-$version.tar.gz)
+source=()
 
 
 prepare(){
-  cd $name
+  git clone https://github.com/jpirko/libndp
+  $name
   ./autogen.sh
 }
 
 build() {
-  cd $name
+  $name
   ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
     --disable-static --libexecdir=/usr/lib
   make
@@ -34,7 +35,5 @@ build() {
 package() {
   cd $name
   make DESTDIR=$PKG install
-
-# Obsolet libs
   rm $PKG/usr/lib/libndp.la
 }
