@@ -1,0 +1,32 @@
+# Depends on:  xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X11 PCI access library"
+url="https://xorg.freedesktop.org/"
+
+
+name=libpciaccess
+version=0.14
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/lib/libpciaccess-$version.tar.bz2)
+
+
+build(){
+  cd ${name}-${version}
+  ./configure --prefix=/usr --sysconfdir=/etc
+  make
+}
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+}
