@@ -1,0 +1,34 @@
+# Depends on: libxaw xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=(doc man)
+
+
+description="Display a message or query in a window"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-xmessage
+version=1.0.5
+release=1
+
+
+source=(https://xorg.freedesktop.org/archive/individual/app/xmessage-$version.tar.bz2)
+
+
+build(){
+  cd xmessage-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd xmessage-${version}
+  make DESTDIR="${PKG}" install
+  install -Dm644 COPYING "${PKG}/usr/share/licenses/${name}/COPYING"
+}
