@@ -1,0 +1,33 @@
+# Depends on: xorgproto
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X11 authorisation library"
+url="https://xorg.freedesktop.org/"
+
+
+name=libxau
+version=1.0.9
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/lib/libXau-1.0.9.tar.bz2)
+
+
+build(){
+  cd libXau-${version}
+  ./configure --prefix=/usr --sysconfdir=/etc
+  make
+}
+
+package() {
+  cd libXau-${version}
+  make DESTDIR="${PKG}" install
+
+  install -Dm644 COPYING "${PKG}/usr/share/licenses/${name}/COPYING"
+}
+
