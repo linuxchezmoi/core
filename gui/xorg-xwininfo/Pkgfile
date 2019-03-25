@@ -1,0 +1,35 @@
+# Depends on: libxcb xorg-util-macros libx11
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=(doc man)
+
+
+description="Command-line utility to print information about windows on an X server"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-xwininfo
+version=1.1.4
+release=1
+
+
+source=(https://xorg.freedesktop.org/archive/individual/app/xwininfo-$version.tar.bz2)
+
+
+build(){
+  cd xwininfo-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd xwininfo-${version}
+  make DESTDIR="${PKG}" install
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+}
