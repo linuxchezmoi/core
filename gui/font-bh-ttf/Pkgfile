@@ -1,0 +1,32 @@
+# Depends on: xorg-fonts-encodings xorg-fonts-alias xorg-bdftopcf xorg-mkfontscale fontconfig 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X.org Luxi Truetype fonts"
+url="https://xorg.freedesktop.org/"
+
+
+name=font-bh-ttf
+version=1.0.3
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/font/font-bh-ttf-$version.tar.bz2)
+
+
+build(){
+	cd "${SRC}/${name}-${version}"
+	./configure --prefix=/usr --with-fontdir=/usr/share/fonts/TTF
+	make
+}
+
+package() {
+	cd "${SRC}/${name}-${version}"
+	make DESTDIR="${PKG}" install
+	rm "${PKG}/usr/share/fonts/"*/fonts.*
+	install -Dm644 COPYING "${PKG}/usr/share/licenses/${name}/COPYING"
+}
