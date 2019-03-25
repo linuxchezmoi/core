@@ -1,0 +1,38 @@
+# Depends on:
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Graph visualization software"
+url="https://www.graphviz.org/"
+
+
+name=graphviz
+version=2.40.1
+release=1
+
+
+source=(https://graphviz.gitlab.io/pub/graphviz/stable/SOURCES/graphviz.tar.gz
+		ghostscript918.patch)
+
+
+prepare(){
+	cd "${SRC}/${name}-${version}"
+	patch -p1 -i ../ghostscript918.patch
+}
+
+build() {
+	cd "${SRC}/${name}-${version}"
+    sed -i '/LIBPOSTFIX="64"/s/64//' configure.ac
+    autoreconf                
+    ./configure --prefix=/usr
+    make
+}
+
+package() {
+	cd "${SRC}/${name}-${version}"
+	make DESTDIR="${PKG}" install
+}
