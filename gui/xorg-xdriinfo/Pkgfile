@@ -1,0 +1,35 @@
+# Depends on: libx11 xorg-util-macros mesa
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=(doc man)
+
+
+description="Query configuration information of DRI drivers"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-xdriinfo
+version=1.0.6
+release=1
+
+
+source=(https://xorg.freedesktop.org/archive/individual/app/xdriinfo-$version.tar.bz2)
+
+
+build(){
+  cd xdriinfo-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd xdriinfo-${version}
+  make DESTDIR="${PKG}" install
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+}
