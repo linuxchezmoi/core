@@ -1,0 +1,33 @@
+# Depends on: libxext libxrender xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X11 RandR extension library"
+url="https://xorg.freedesktop.org/"
+
+
+name=libxrandr
+version=1.5.2
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/lib/libXrandr-$version.tar.bz2)
+
+
+build(){
+  cd libXrandr-${version}
+  ./configure --prefix=/usr --sysconfdir=/etc
+  make
+}
+
+package() {
+  cd libXrandr-${version}
+  make DESTDIR="${PKG}" install
+
+  install -d -m755 "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+}
