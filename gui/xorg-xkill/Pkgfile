@@ -1,0 +1,34 @@
+# Depends on: libx11 libxmu xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=(doc man)
+
+
+description="Kill a client by its X resource"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-xkill
+version=1.0.5
+release=1
+
+
+source=(https://xorg.freedesktop.org/archive/individual/app/xkill-$version.tar.bz2)
+
+
+build(){
+  cd xkill-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd xkill-${version}
+  make DESTDIR="${PKG}" install
+  install -Dm644 COPYING "${PKG}/usr/share/licenses/${name}/COPYING"
+}
