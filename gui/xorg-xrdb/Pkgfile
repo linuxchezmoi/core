@@ -1,0 +1,34 @@
+# Depends on: libx11 libxmu xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=(doc man)
+
+
+description="X server resource database utility"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-xrdb
+version=1.2.0
+release=1
+
+
+source=(https://xorg.freedesktop.org/archive/individual/app/xrdb-$version.tar.bz2)
+
+
+build(){
+  cd xrdb-${version}
+  ./configure --prefix=/usr --with-cpp=/usr/bin/cpp,/usr/bin/mcpp
+  make
+}
+
+package() {
+  cd xrdb-${version}
+  make DESTDIR="${PKG}" install
+  install -Dm644 COPYING "${PKG}/usr/share/licenses/${name}/COPYING"
+}
