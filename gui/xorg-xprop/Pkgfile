@@ -1,0 +1,35 @@
+# Depends on: libx11 xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=(doc man)
+
+
+description="Property displayer for X"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-xprop
+version=1.2.4
+release=1
+
+
+source=(https://xorg.freedesktop.org/archive/individual/app/xprop-$version.tar.bz2)
+
+
+build(){
+  cd xprop-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd xprop-${version}
+  make DESTDIR="${PKG}" install
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+}
