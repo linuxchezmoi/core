@@ -1,0 +1,35 @@
+# Depends on: libx11 xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=(doc man)
+
+
+description="Device Color Characterization utility for X Color Management System"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-xcmsdb
+version=1.0.5
+release=1
+
+
+source=(https://xorg.freedesktop.org/archive/individual/app/xcmsdb-$version.tar.bz2)
+
+
+build(){
+  cd xcmsdb-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd xcmsdb-${version}
+  make DESTDIR="${PKG}" install
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+}
