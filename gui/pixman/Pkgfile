@@ -1,0 +1,38 @@
+# Depends on: meson ninja
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="The pixel-manipulation library for X and cairo"
+url="https://cgit.freedesktop.org/pixman/"
+
+
+name=pixman
+version=0.38.0
+release=1
+
+
+source=(https://xorg.freedesktop.org/releases/individual/lib/pixman-$version.tar.bz2)
+
+
+build(){
+  meson $name-$version build \
+    -D loongson-mmi=disabled \
+    -D vmx=disabled \
+    -D arm-simd=disabled \
+    -D neon=disabled \
+    -D iwmmxt=disabled \
+    -D mips-dspr2=disabled \
+    -D gtk=disabled
+  ninja -C build
+}
+
+
+package() {
+  DESTDIR="$PKG" meson install -C build
+  install -Dt "$PKG/usr/share/licenses/$name" -m644 $name-$version/COPYING
+}
+
