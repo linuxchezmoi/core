@@ -1,0 +1,41 @@
+# Depends on: intltool glib2 gobject-introspection perl-xml-parser git
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+run=(glib2)
+
+
+description="Shared GSettings schemas for the desktop"
+url="https://gitlab.gnome.org/GNOME/gsettings-desktop-schemas"
+
+
+name=gsettings-desktop-schemas
+version=3.32.0
+release=1
+
+
+source=()
+
+
+prepare(){
+  git clone https://gitlab.gnome.org/GNOME/gsettings-desktop-schemas.git
+  cd $name
+  sed -i -r 's:"(/system):"/org/gnome\1:g' schemas/*.in
+  mkdir build
+}
+
+build() {
+  cd $name/build
+  meson --prefix=/usr 
+  ninja
+}
+
+
+package() {
+  cd $name
+  DESTDIR="$PKG" meson install -C build
+}
