@@ -1,0 +1,34 @@
+# Depends on: xcb-util xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=(doc man)
+
+
+description="RandR-based backlight control application"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-xbacklight
+version=1.2.2
+release=1
+
+
+source=(https://xorg.freedesktop.org/archive/individual/app/xbacklight-$version.tar.bz2)
+
+
+build(){
+  cd xbacklight-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd xbacklight-${version}
+  make DESTDIR="${PKG}" install
+  install -Dm644 COPYING "${PKG}/usr/share/licenses/${name}/COPYING"
+}
