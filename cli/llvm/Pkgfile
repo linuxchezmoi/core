@@ -11,8 +11,8 @@ url="http://llvm.org/"
 
 
 name=llvm
-version=7.0.1
-release=2
+version=8.0.0
+release=1
 
 
 source=(${url}releases/$version/$name-$version.src.tar.xz
