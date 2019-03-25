@@ -1,0 +1,33 @@
+# Depends on: libx11 xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X11 miscellaneous 'fixes' extension library"
+url="https://xorg.freedesktop.org/"
+
+
+name=libxfixes
+version=5.0.3
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/lib/libXfixes-$version.tar.bz2)
+
+
+build(){
+  cd "${SRC}/libXfixes-${version}"
+  ./configure --prefix=/usr --sysconfdir=/etc --disable-static
+  make
+}
+
+package() {
+  cd "${SRC}/libXfixes-${version}"
+  make DESTDIR="${PKG}" install
+
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+}
