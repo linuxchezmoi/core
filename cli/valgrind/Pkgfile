@@ -1,0 +1,36 @@
+# Depends on: boost llvm gdb libxslt
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Tool to help find memory-management problems in programs"
+url="http://valgrind.org/"
+
+
+name=valgrind
+version=3.14.0
+release=1
+
+
+source=(ftp://sourceware.org/pub/$name/$name-$version.tar.bz2)
+
+
+build() {
+	cd $name-$version
+	sed -i 's|/doc/valgrind||' docs/Makefile.in 
+	./configure --prefix=/usr \
+              --datadir=/usr/share/doc/$name-$version
+            
+	make
+}
+
+
+
+package() {
+	cd $name-$version
+  make DESTDIR="${PKG}" install
+}
+
