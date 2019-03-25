@@ -1,0 +1,35 @@
+# Depends on: libxmu xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=(doc man)
+
+
+description="X.Org authorization settings program"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-xauth
+version=1.0.10
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/app/xauth-$version.tar.bz2)
+
+
+build(){
+  cd xauth-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd xauth-${version}
+  make DESTDIR="${PKG}" install
+  install -d -m755 "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+}
