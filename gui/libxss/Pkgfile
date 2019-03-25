@@ -1,0 +1,33 @@
+# Depends on: libxext xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X11 Screen Saver extension library"
+url="https://gitlab.freedesktop.org/xorg/lib/libxscrnsaver"
+
+
+name=libxss
+version=1.2.3
+release=1
+
+
+source=(https://xorg.freedesktop.org/releases/individual/lib/libXScrnSaver-$version.tar.bz2)
+
+
+build(){
+  cd libXScrnSaver-${version}
+  ./configure --prefix=/usr --sysconfdir=/etc
+  make
+}
+
+package() {
+  cd libXScrnSaver-${version}
+  make DESTDIR="${PKG}" install
+
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+}
