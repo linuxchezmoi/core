@@ -1,0 +1,34 @@
+# Depends on: wayland
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Specifications of extended Wayland protocols"
+url="https://wayland.freedesktop.org/"
+
+
+name=wayland-protocols
+version=1.17
+release=1
+
+
+source=(https://wayland.freedesktop.org/releases/$name-$version.tar.xz)
+
+
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr
+  make
+}
+
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+  install -Dt "$PKG/usr/share/licenses/$name" -m 644 COPYING
+}
+
