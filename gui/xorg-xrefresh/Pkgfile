@@ -1,0 +1,34 @@
+# Depends on: libx11 xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=(doc man)
+
+
+description="Refresh all or part of an X screen"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-xrefresh
+version=1.0.6
+release=1
+
+
+source=(https://xorg.freedesktop.org/archive/individual/app/xrefresh-$version.tar.bz2)
+
+
+build(){
+  cd xrefresh-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd xrefresh-${version}
+  make DESTDIR="${PKG}" install
+  install -Dm644 COPYING "${PKG}/usr/share/licenses/${name}/COPYING"
+}
