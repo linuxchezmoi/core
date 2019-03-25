@@ -1,0 +1,36 @@
+# Depends on: libxrandr libx11 xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=(doc man)
+
+
+description="Primitive command line interface to RandR extension"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-xrandr
+version=1.5.0
+release=1
+
+
+source=(https://xorg.freedesktop.org/archive/individual/app/xrandr-$version.tar.bz2)
+
+
+build(){
+  cd "${SRC}/xrandr-${version}"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${SRC}/xrandr-${version}"
+  make DESTDIR="${PKG}" install
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+  rm -f "${PKG}/usr/bin/xkeystone"
+}
