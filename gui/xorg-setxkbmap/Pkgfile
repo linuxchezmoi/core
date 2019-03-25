@@ -1,0 +1,34 @@
+# Depends on: libxkbfile xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=(doc man)
+
+
+description="Set the keyboard using the X Keyboard Extension"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-setxkbmap
+version=1.3.1
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/app/setxkbmap-$version.tar.bz2)
+
+
+build(){
+	cd setxkbmap-${version}
+	./configure --prefix=/usr
+	make
+}
+
+package() {
+	cd setxkbmap-${version}
+	make DESTDIR="${PKG}" install
+	install -Dm644 COPYING "${PKG}/usr/share/licenses/${name}/COPYING"
+}
