@@ -1,0 +1,32 @@
+# Depends on: libice xorg-util-macros xtrans
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X11 Session Management library"
+url="https://xorg.freedesktop.org/"
+
+
+name=libsm
+version=1.2.3
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/lib/libSM-$version.tar.bz2)
+
+
+build(){
+  cd libSM-${version}
+  ./configure --prefix=/usr --sysconfdir=/etc
+  make
+}
+
+package() {
+  cd libSM-${version}
+  make DESTDIR="${PKG}" install
+
+  install -Dm644 COPYING "${PKG}/usr/share/licenses/${name}/COPYING"
+}
