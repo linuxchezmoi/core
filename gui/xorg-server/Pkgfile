@@ -1,0 +1,52 @@
+# Depends on: systemd xorgproto libxkbfile xorg-font-util xcb-util-keysyms libepoxy xcb-util-image xcb-util-renderutil xcb-util-wm mesa glu pixman libdmx libxres libxfont2 xkeyboard-config wayland xorg-xkbcomp libtirpc xdbus
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="The Xorg Server is the core of the X Window system."
+url="http://xorg.freedesktop.org"
+
+
+name=xorg-server
+version=1.20.4
+release=2
+
+
+source=(http://ftp.x.org/pub/individual/xserver/$name-$version.tar.bz2
+		xserver-autobind-hotplug.patch
+		0001-v2-FS-58644.patch
+		0002-fix-libshadow-2.patch)
+
+
+
+build() {
+cd $name-$version
+patch -Np1 -i ../xserver-autobind-hotplug.patch
+patch -Np1 -i ../0001-v2-FS-58644.patch
+patch -Np1 -i ../0002-fix-libshadow-2.patch
+./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
+--with-xkb-output=/var/lib/xkb \
+--enable-glamor \
+--with-fontrootdir=/usr/share/fonts \
+--enable-install-setuid \
+--disable-systemd-logind \
+--enable-suid-wrapper \
+--enable-config-udev \
+--enable-config-udev-kms
+
+make
+}
+
+
+package() {
+cd $name-$version
+make DESTDIR=$PKG install
+mkdir -pv $PKG/etc/X11/xorg.conf.d
+rm -rf $PKG/var
+rm $PKG/usr/lib/xorg/modules/{libexa,libfb,libfbdevhw,libglamoregl,libint10,libshadow,libshadowfb,libvbe,libvgahw,libwfb}.la
+rm $PKG/usr/lib/xorg/modules/drivers/modesetting_drv.la
+rm $PKG/usr/lib/xorg/modules/extensions/libglx.la
+}
