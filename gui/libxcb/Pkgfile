@@ -1,0 +1,43 @@
+# Depends on: xcb-proto libxdmcp libxau xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X11 client-side library"
+url="https://xcb.freedesktop.org/"
+
+
+name=libxcb
+version=1.13.1
+release=1
+
+
+source=(https://xcb.freedesktop.org//dist/libxcb-$version.tar.bz2)
+
+
+prepare(){
+  cd "$name-$version"
+  autoreconf -vfi
+}
+
+build() {
+  cd "$name-$version"
+  sed -i "s/pthread-stubs//" configure
+  ./configure --prefix=/usr \
+	--without-doxygen \
+    --enable-xinput \
+    --enable-xkb \
+    --disable-static
+  make -j1
+}
+
+
+package() {
+  cd "$name-$version"
+  make DESTDIR="$PKG" install
+  install -m755 -d "$PKG/usr/share/licenses/$name"
+  install -m644 COPYING "$PKG/usr/share/licenses/$name"
+}
