@@ -1,0 +1,35 @@
+# Depends on: libxmu xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=(doc man)
+
+
+description="User preference utility for X"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-xset
+version=1.2.4
+release=1
+
+
+source=(https://xorg.freedesktop.org/archive/individual/app/xset-$version.tar.bz2)
+
+
+build(){
+  cd xset-${version}
+  ./configure --prefix=/usr --without-fontcache --without-xf86misc
+  make
+ }
+ 
+package() {
+  cd xset-${version}
+  make DESTDIR="${PKG}" install
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+}
