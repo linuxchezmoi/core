@@ -1,0 +1,35 @@
+# Depends on: xorg-util-macros xorgproto 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=(doc man)
+
+
+description="Convert X font from Bitmap Distribution Format to Portable Compiled Format"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-bdftopcf
+version=1.1
+release=1
+
+
+source=(https://xorg.freedesktop.org/archive/individual/app/bdftopcf-$version.tar.bz2)
+
+
+build(){
+  cd "${SRC}/bdftopcf-${version}"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${SRC}/bdftopcf-${version}"
+  make DESTDIR="${PKG}" install
+
+  install -Dm644 COPYING "${PKG}/usr/share/licenses/${name}/COPYING"
+}
