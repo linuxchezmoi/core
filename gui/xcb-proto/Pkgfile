@@ -1,0 +1,33 @@
+# Depends on: python
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="XML-XCB protocol descriptions"
+url="https://xcb.freedesktop.org/"
+
+
+name=xcb-proto
+version=1.13
+release=1
+
+
+source=(https://xcb.freedesktop.org//dist/xcb-proto-$version.tar.bz2)
+
+
+build(){
+  cd $name-$version
+  ./configure --prefix=/usr
+  make
+}
+
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+  install -m755 -d "$PKG/usr/share/licenses/$name"
+  install -m644 COPYING "$PKG/usr/share/licenses/$name"
+}
