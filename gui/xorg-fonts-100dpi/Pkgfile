@@ -1,0 +1,50 @@
+# Depends on: xorg-bdftopcf xorg-mkfontscale xorg-font-util xorg-fonts-encodings xorg-fonts-alias fontconfig 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X.org 100dpi fonts"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-fonts-100dpi
+version=1.0.3
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/font/font-adobe-100dpi-1.0.3.tar.bz2
+		https://xorg.freedesktop.org//releases/individual/font/font-adobe-utopia-100dpi-1.0.4.tar.bz2
+		https://xorg.freedesktop.org//releases/individual/font/font-bh-100dpi-1.0.3.tar.bz2
+		https://xorg.freedesktop.org//releases/individual/font/font-bh-lucidatypewriter-100dpi-1.0.3.tar.bz2
+		https://xorg.freedesktop.org//releases/individual/font/font-bitstream-100dpi-1.0.3.tar.bz2)
+
+
+build(){
+  cd "${SRC}"
+  for dir in font-*-100dpi*; do
+    if [ -d "${dir}" ]; then
+      pushd ${dir}
+      ./configure --prefix=/usr \
+          --with-fontdir=/usr/share/fonts/100dpi
+      make
+      popd
+    fi
+  done
+}
+
+package() {
+  cd "${SRC}"
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  for dir in font-*-100dpi*; do
+    if [ -d "${dir}" ]; then
+      pushd ${dir}
+      make DESTDIR="${PKG}" install
+      install -m644 COPYING "${PKG}/usr/share/licenses/${name}/LICENSE.${dir%-100dpi-*}"
+      popd
+    fi
+  done
+  rm -f "${PKG}"/usr/share/fonts/100dpi/fonts.*
+}
