@@ -1,0 +1,32 @@
+# Depends on: libxv pkg-config
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X11 Video Motion Compensation extension library"
+url="https://xorg.freedesktop.org/"
+
+
+name=libxvmc
+version=1.0.11
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/lib/libXvMC-$version.tar.bz2)
+
+
+build(){
+  cd libXvMC-${version}
+  ./configure --prefix=/usr --sysconfdir=/etc --disable-static
+  make
+}
+
+package() {
+  cd libXvMC-${version}
+  make DESTDIR=${PKG} install
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+}
