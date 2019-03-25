@@ -1,0 +1,35 @@
+# Depends on: libsm libxt libxmu xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=(doc man)
+
+
+description="Allows X applications that do not support X11R6 session management to participate in an X11R6 session"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-smproxy
+version=1.0.6
+release=1
+
+
+source=(https://xorg.freedesktop.org/archive/individual/app/smproxy-$version.tar.bz2)
+
+
+build(){
+  cd smproxy-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd smproxy-${version}
+  make DESTDIR="${PKG}" install
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+}
