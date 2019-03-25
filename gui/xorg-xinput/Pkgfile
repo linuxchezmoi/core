@@ -1,0 +1,36 @@
+# Depends on: libx11 libxi xorg-xrandr libxinerama xorg-util-macros libxfixes
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=(doc man)
+run=(xorg-xrandr)
+
+
+description="Small commandline tool to configure devices"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-xinput
+version=1.6.2
+release=1
+
+
+source=(https://xorg.freedesktop.org/archive/individual/app/xinput-$version.tar.bz2)
+
+
+build(){
+  cd xinput-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd xinput-${version}
+  make DESTDIR="${PKG}" install
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+}

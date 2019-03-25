@@ -1,0 +1,47 @@
+# Depends on: font-bh-ttf xorg-server xorg-xkbcomp xkeyboard-config xorg-xauth xorg-xrdb xorg-xmodmap xf86-input-evdev xdbus
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+run=(font-bh-ttf xorg-server xorg-xkbcomp xkeyboard-config xorg-xauth xorg-xrdb xorg-xmodmap xf86-input-evdev xdbus)
+
+
+description="X.Org initialisation program "
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-xinit
+version=1.4.1
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/app/xinit-$version.tar.bz2
+		06_move_serverauthfile_into_tmp.diff 
+		fs25361.patch 
+		fs46369.patch 
+		xserverrc)
+
+
+prepare(){
+  cd xinit-${version}
+  patch -Np1 -i ../06_move_serverauthfile_into_tmp.diff
+  patch -Np1 -i ../fs25361.patch
+  patch -Np1 -i ../fs46369.patch
+  sed -i -e 's/XSLASHGLOB.sh/XSLASHGLOB/' xinitrc.cpp
+}
+
+build() {
+  cd xinit-${version}
+  autoreconf -fi
+  ./configure --prefix=/usr --with-xinitdir=/etc/X11/xinit
+  make
+}
+
+package() {
+  cd xinit-${version}
+  make DESTDIR="${PKG}" install
+  install -m644 "${SRC}/xserverrc" "${PKG}/etc/X11/xinit/xserverrc"
+}
