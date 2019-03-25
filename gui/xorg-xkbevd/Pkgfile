@@ -1,0 +1,35 @@
+# Depends on: libxkbfile xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=(doc man)
+
+
+description="XKB event daemon"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-xkbevd
+version=1.1.4
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/app/xkbevd-$version.tar.bz2)
+
+
+build(){
+  cd xkbevd-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd xkbevd-${version}
+  make DESTDIR="${PKG}" install
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+}
