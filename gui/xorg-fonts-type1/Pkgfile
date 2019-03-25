@@ -1,0 +1,50 @@
+# Depends on: xorg-fonts-encodings xorg-fonts-alias fontconfig xorg-bdftopcf xorg-mkfontscale xorg-font-util 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X.org Type1 fonts"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-fonts-type1
+version=7.7
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/font/font-adobe-utopia-type1-1.0.4.tar.bz2
+		https://xorg.freedesktop.org//releases/individual/font/font-bh-type1-1.0.3.tar.bz2
+	 	https://xorg.freedesktop.org//releases/individual/font/font-bitstream-type1-1.0.3.tar.bz2
+		https://xorg.freedesktop.org//releases/individual/font/font-ibm-type1-1.0.3.tar.bz2
+		https://xorg.freedesktop.org//releases/individual/font/font-xfree86-type1-1.0.4.tar.bz2)
+
+
+build(){
+  cd "${SRC}"
+  for dir in *; do
+    if [ -d "${dir}" ]; then
+      pushd "${dir}"
+      ./configure --prefix=/usr \
+        --with-fontdir=/usr/share/fonts/Type1
+      make
+      popd
+    fi
+  done
+}
+
+package() {
+  cd "${SRC}"
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  for dir in *; do
+    if [ -d "${dir}" ]; then
+      pushd "${dir}"
+      make DESTDIR="${PKG}" install
+      install -m644 COPYING "${PKG}/usr/share/licenses/${name}/LICENSE.${dir%-*}"
+      popd
+    fi
+  done
+  rm -f "${PKG}"/usr/share/fonts/Type1/fonts.*
+}
