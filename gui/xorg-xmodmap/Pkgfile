@@ -1,0 +1,34 @@
+# Depends on: libx11 xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=(doc man)
+
+
+description="Utility for modifying keymaps and button mappings"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-xmodmap
+version=1.0.10
+release=1
+
+
+source=(https://xorg.freedesktop.org/archive/individual/app/xmodmap-$version.tar.bz2)
+
+
+build(){
+  cd xmodmap-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd xmodmap-${version}
+  make DESTDIR="${PKG}" install
+  install -Dm644 COPYING "${PKG}/usr/share/licenses/${name}/COPYING"
+}
