@@ -1,0 +1,30 @@
+# Depends on:  
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X.org font alias files"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-fonts-alias
+version=1.0.3
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/font/font-alias-$version.tar.bz2)
+
+
+build(){
+  cd "${SRC}/font-alias-${version}"
+  ./configure --prefix=/usr --with-fontrootdir=/usr/share/fonts
+  make
+}
+
+package() {
+  cd "${SRC}/font-alias-${version}"
+  make DESTDIR="${PKG}" install
+}
