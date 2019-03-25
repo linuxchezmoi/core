@@ -1,0 +1,50 @@
+# Depends on: xorg-fonts-encodings xorg-fonts-alias fontconfig xorg-bdftopcf xorg-mkfontscale xorg-font-util 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X.org 75dpi fonts"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-fonts-75dpi
+version=1.0.3
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/font/font-adobe-75dpi-1.0.3.tar.bz2
+		https://xorg.freedesktop.org//releases/individual/font/font-adobe-utopia-75dpi-1.0.4.tar.bz2
+		https://xorg.freedesktop.org//releases/individual/font/font-bh-75dpi-1.0.3.tar.bz2
+		https://xorg.freedesktop.org//releases/individual/font/font-bh-lucidatypewriter-75dpi-1.0.3.tar.bz2
+		https://xorg.freedesktop.org//releases/individual/font/font-bitstream-75dpi-1.0.3.tar.bz2)
+
+
+build(){
+  cd "${SRC}"
+  for dir in *; do
+    if [ -d "${dir}" ]; then
+      pushd "${dir}"
+      ./configure --prefix=/usr \
+          --with-fontdir=/usr/share/fonts/75dpi
+      make
+      popd
+    fi
+  done
+}
+
+package() {
+  cd "${SRC}"
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  for dir in *; do
+    if [ -d "${dir}" ]; then
+      pushd "${dir}"
+      make DESTDIR="${PKG}" install
+      install -m644 COPYING "${PKG}/usr/share/licenses/${name}/LICENSE.${dir%-75dpi-*}"
+      popd
+    fi
+  done
+  rm -f "${PKG}"/usr/share/fonts/75dpi/fonts.*
+}
