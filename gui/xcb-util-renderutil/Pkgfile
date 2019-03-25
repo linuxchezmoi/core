@@ -1,0 +1,35 @@
+# Depends on: libxcb xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Utility libraries for XC Binding - Convenience functions for the Render extension"
+url="https://xcb.freedesktop.org"
+
+
+name=xcb-util-renderutil
+version=0.3.9
+release=1
+
+
+source=(https://xcb.freedesktop.org/dist/$name-$version.tar.bz2)
+
+
+build(){
+  cd ${name}-${version}
+  ./configure --prefix=/usr --disable-static
+  make
+}
+
+check() {
+  cd ${name}-${version}
+  make check
+}
+
+package() { 
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+}
