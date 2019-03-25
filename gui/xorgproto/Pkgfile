@@ -1,0 +1,42 @@
+# Depends on:  xorg-util-macros meson ninja
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=(doc man)
+
+
+description="combined X.Org X11 Protocol headers"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorgproto
+version=2018.4
+release=1
+
+
+source=(https://xorg.freedesktop.org/archive/individual/proto/$name-$version.tar.bz2)
+
+
+prepare(){
+  cd $name-$version
+  mkdir build
+}
+
+build() {
+  cd $name-$version/build
+  meson --prefix=/usr ..
+  ninja
+}
+
+package() {
+  cd $name-$version
+  DESTDIR="$PKG" ninja -C build install
+
+  rm -f ${PKG}/usr/include/X11/extensions/{apple,windows}*
+  rm -f ${PKG}/usr/share/licenses/${name}/COPYING-{apple,windows}wmproto
+  rm -f ${PKG}/usr/share/pkgconfig/{apple,windows}wmproto.pc
+}
