@@ -1,0 +1,34 @@
+# Depends on: libxml2
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A computer display server protocol"
+url="https://wayland.freedesktop.org/"
+
+
+name=wayland
+version=1.17.0
+release=1
+
+
+source=(http://wayland.freedesktop.org/releases/$name-$version.tar.xz)
+
+
+build() {
+cd $name-$version
+./configure --prefix=/usr    \
+            --disable-static \
+            --disable-documentation
+make
+}
+
+package() {
+cd $name-$version
+make DESTDIR=$PKG install
+rm $PKG/usr/lib/libwayland-{client,cursor,server,egl}.la
+}
+
