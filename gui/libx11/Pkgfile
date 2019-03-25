@@ -1,0 +1,34 @@
+# Depends on: libxcb xorgproto xorg-util-macros xtrans 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X11 client-side library"
+url="https://xorg.freedesktop.org/"
+
+
+name=libx11
+version=1.6.7
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/lib/libX11-$version.tar.bz2)
+
+
+build(){
+  cd "${SRC}/libX11-${version}"
+  ./configure --prefix=/usr --disable-static --disable-xf86bigfont
+  make
+}
+
+
+package() {
+  cd "${SRC}/libX11-${version}"
+  make DESTDIR="${PKG}" install
+
+  install -d -m755 "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+}
