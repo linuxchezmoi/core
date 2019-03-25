@@ -1,0 +1,33 @@
+# Depends on: libxt libxext xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X11 pixmap library"
+url="https://xorg.freedesktop.org/"
+
+
+name=libxpm
+version=3.5.12
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/lib/libXpm-$version.tar.bz2)
+
+
+build(){
+  cd "${SRC}/libXpm-${version}"
+  ./configure --prefix=/usr --sysconfdir=/etc --disable-static
+  make
+}
+
+package() {
+  cd "${SRC}/libXpm-${version}"
+  make DESTDIR="${PKG}" install
+
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+}
