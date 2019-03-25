@@ -1,0 +1,41 @@
+# Depends on: glib2 gnutls gsettings-desktop-schemas meson git ninja openssl
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+run=(gsettings-desktop-schemas)
+
+
+description="Network extensions for GLib"
+url="https://gitlab.gnome.org/GNOME/glib-networking"
+
+
+name=glib-networking
+version=2.60.0.1
+release=1
+
+
+source=(http://ftp.gnome.org/pub/gnome/sources/glib-networking/2.60/glib-networking-$version.tar.xz)
+
+
+prepare(){
+cd $name-$version
+mkdir build
+}
+
+build() {
+cd $name-$version/build
+meson --prefix=/usr          \
+      -Dlibproxy=disabled .. &&
+ninja
+}
+
+
+package() {
+cd $name-$version
+DESTDIR="$PKG" meson install -C build
+}
+
