@@ -1,0 +1,34 @@
+# Depends on: libxkbfile xorg-util-macros libxt
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=(doc man)
+
+
+description="X Window System image dumping utility"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-xwd
+version=1.0.7
+release=1
+
+
+source=(https://xorg.freedesktop.org/archive/individual/app/xwd-$version.tar.bz2)
+
+
+build(){
+  cd xwd-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd xwd-${version}
+  make DESTDIR="${PKG}" install
+  install -Dm644 COPYING "${PKG}/usr/share/licenses/${name}/COPYING"
+}
