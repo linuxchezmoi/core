@@ -1,0 +1,35 @@
+# Depends on: libx11 libxcursor libpng xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=(doc man)
+
+
+description="Create an X cursor file from PNG images"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-xcursorgen
+version=1.0.7
+release=1
+
+
+source=(https://xorg.freedesktop.org/archive/individual/app/xcursorgen-$version.tar.bz2)
+
+
+build(){
+  cd xcursorgen-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd xcursorgen-${version}
+  make DESTDIR="${PKG}" install
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+}
