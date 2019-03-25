@@ -1,0 +1,34 @@
+# Depends on:  
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X transport library"
+url="https://xorg.freedesktop.org/"
+
+
+name=xtrans
+version=1.4.0
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/lib/xtrans-$version.tar.bz2)
+
+
+build(){
+  cd ${name}-${version}
+  ./configure --prefix=/usr 
+}
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+
+  install -Dm644 COPYING "${PKG}/usr/share/licenses/${name}/COPYING"
+
+  install -m755 -d "${PKG}/usr/lib"
+  mv "${PKG}/usr/share/pkgconfig" "${PKG}/usr/lib/pkgconfig"
+}
