@@ -1,0 +1,39 @@
+# Depends on: glib2 libxml2 glib-networking sqlite krb5 libpsl gobject-introspection python vala git gtk-doc meson ninja
+
+
+run=(glib-networking)
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="HTTP client/server library for GNOME"
+url="https://wiki.gnome.org/Projects/libsoup"
+
+
+name=libsoup
+version=2.66.0
+release=1
+
+
+source=()
+
+
+prepare(){
+  git clone https://gitlab.gnome.org/GNOME/libsoup.git
+  cd $name
+  mkdir build
+}
+
+build() {
+  cd $name/build
+  meson --prefix=/usr -Dvapi=true
+  ninja
+}
+
+package() {
+  cd $name
+  DESTDIR="$PKG" meson install -C build
+}
