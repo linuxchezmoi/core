@@ -1,0 +1,32 @@
+# Depends on: xorgproto xtrans xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X11 Inter-Client Exchange library"
+url="https://xorg.freedesktop.org/"
+
+
+name=libice
+version=1.0.9
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/lib/libICE-$version.tar.bz2)
+
+
+build(){
+  cd libICE-${version}
+  ./configure --prefix=/usr --sysconfdir=/etc
+  make
+}
+
+package() {
+  cd libICE-${version}
+  make DESTDIR="${PKG}" install
+
+  install -Dm644 COPYING "${PKG}/usr/share/licenses/${name}/COPYING"
+}
