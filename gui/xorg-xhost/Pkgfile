@@ -1,0 +1,34 @@
+# Depends on: libx11 libxmu xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=(doc man)
+
+
+description="Server access control program for X"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-xhost
+version=1.0.8
+release=1
+
+
+source=(https://xorg.freedesktop.org/archive/individual/app/xhost-$version.tar.bz2)
+
+
+build(){
+  cd xhost-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd xhost-${version}
+  make DESTDIR="${PKG}" install
+  install -Dm644 COPYING "${PKG}/usr/share/licenses/${name}/COPYING"
+}
