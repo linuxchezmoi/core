@@ -1,0 +1,35 @@
+# Depends on: libx11 libxmu libxrender libxft libxext xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_GROUPS=(doc man)
+
+
+description="Simple X server performance benchmarker"
+url="https://xorg.freedesktop.org/"
+
+
+name=xorg-x11perf
+version=1.6.1
+release=1
+
+
+source=(https://xorg.freedesktop.org/archive/individual/app/x11perf-$version.tar.bz2)
+
+
+build(){
+  cd x11perf-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd x11perf-${version}
+  make DESTDIR="${PKG}" install
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+}
