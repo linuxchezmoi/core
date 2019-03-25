@@ -1,0 +1,32 @@
+# Depends on: libxext xorg-util-macros
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X11 Xinerama extension library"
+url="https://xorg.freedesktop.org/"
+
+
+name=libxinerama
+version=1.1.4
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/lib/libXinerama-$version.tar.bz2)
+
+
+build(){
+  cd libXinerama-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd libXinerama-${version}
+  make DESTDIR="${PKG}" install
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING "${PKG}/usr/share/licenses/${name}/"
+}
