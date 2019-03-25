@@ -1,0 +1,31 @@
+# Depends on: libx11
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X Rendering Extension client library"
+url="https://xorg.freedesktop.org/"
+
+
+name=libxrender
+version=0.9.10
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/lib/libXrender-$version.tar.bz2)
+
+
+build(){
+  cd libXrender-${version}
+  ./configure --prefix=/usr --disable-static
+  make
+}
+
+package() {
+  cd libXrender-${version}
+  make DESTDIR=${PKG} install
+  install -Dm644 COPYING "${PKG}/usr/share/licenses/${name}/COPYING"
+}
