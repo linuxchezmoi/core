@@ -8,9 +8,9 @@ contributors="sipo"
 maintainer="sipo"
 
 name=intel-ucode
-version=20180807.a
+version=20190312
 
-source=(https://downloadmirror.intel.com/28087/eng/microcode-20180807a.tgz)
+source=(https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/archive/microcode-${version}.tar.gz)
 
 build(){
   cd "$SRC"
