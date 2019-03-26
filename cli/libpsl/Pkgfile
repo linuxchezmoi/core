@@ -1,4 +1,4 @@
-# Depends on: python2 libidn libunistring
+# Depends on: python libidn libunistring
 
 
 packager="sipo"
@@ -18,15 +18,11 @@ release=1
 source=(https://github.com/rockdaboot/libpsl/releases/download/$name-$version/$name-$version.tar.gz)
 
 
-prepare(){
-  cd ${name}-${version}
-  rm -frv list
-  autoreconf -fiv
-}
-
 build() {
   cd ${name}-${version}
-  ./configure --prefix=/usr --disable-static
+  sed -i 's/env python/&3/' src/psl-make-dafsa
+  ./configure --prefix=/usr --disable-static       
+  make
 }
 
 
@@ -34,7 +30,6 @@ package() {
   cd ${name}-${version}
   make DESTDIR="${PKG}" install
   install -Dm 644 COPYING -t "${PKG}/usr/share/licenses/${name}"
-# Obsolet libs
   rm $PKG/usr/lib/libpsl.la
 }
 
