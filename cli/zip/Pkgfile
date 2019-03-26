@@ -12,6 +12,7 @@ url="http://www.info-zip.org/Zip.html"
 
 name=zip
 version=3.0
+_version=${version/./}
 release=1
 
 
