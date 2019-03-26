@@ -1,4 +1,4 @@
-# Depends on: python2 cracklib
+# Depends on: python cracklib
 
 
 packager="sipo"
@@ -25,11 +25,9 @@ prepare(){
 
 build() {
 	cd $name-$version
-	PYTHON=python2 
-	./configure --prefix=/usr \
-	        	--sysconfdir=/etc \
-  		      	--localstatedir=/var \
-            	--with-python-rev=2.7
+    ./configure --prefix=/usr --disable-static \
+            --with-securedir=/lib/security \
+            --with-python-binary=python3
     sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
     make
 }
@@ -38,7 +36,5 @@ package() {
 	cd $name-$version
     make DESTDIR="$PKG" install
     install -m755 -d "$PKG"/etc/security/pwquality.conf.d
-# Obsolets libs
     rm $PKG/usr/lib/libpwquality.la
-    rm $PKG/usr/lib/security/pam_pwquality.la
 }
