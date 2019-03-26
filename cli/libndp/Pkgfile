@@ -20,12 +20,12 @@ source=()
 
 prepare(){
   git clone https://github.com/jpirko/libndp
-  $name
+  cd $name
   ./autogen.sh
 }
 
 build() {
-  $name
+  cd $name
   ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
     --disable-static --libexecdir=/usr/lib
   make
