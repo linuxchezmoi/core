@@ -33,7 +33,7 @@ build() {
   ./configure --prefix=/usr --enable-shared \
 			    --with-audio=alsa \
 			    --with-vox=cmu_us_kal16 \
-			    --with-langvox=archlinux
+			    --with-langvox=yaolinux
   make
 }
 
