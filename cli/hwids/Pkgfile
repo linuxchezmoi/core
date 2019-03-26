@@ -11,7 +11,7 @@ url="https://github.com/gentoo/hwids"
 
 
 name=hwids
-version=20190316-git
+version=20190316
 release=1
 
 
