@@ -12,6 +12,7 @@ url="https://www.info-zip.org/UnZip.html"
 
 name=unzip
 version=6.0
+_version=${version/./}
 release=1
 
 
@@ -27,7 +28,7 @@ source=(https://downloads.sourceforge.net/infozip/unzip60.tar.gz
 
 
 prepare(){
-	cd "${SRC}/${name}${_version}"
+	cd "${SRC}/${name}$_version"
 	sed -i "/MANDIR =/s#)/#)/share/#" unix/Makefile
 	patch -p1 -i ../overflow-fsize.patch #FS#44171
 	patch -p1 -i ../cve20149636.patch #FS#44171
@@ -40,7 +41,7 @@ prepare(){
 }
 
 build() {
-	cd "${SRC}/${name}${_version}"
+	cd "${SRC}/${name}$_version"
 
 	# DEFINES, make, and install args from Debian
 	DEFINES='-DACORN_FTYPE_NFS -DWILD_STOP_AT_DIR -DLARGE_FILE_SUPPORT \
@@ -54,7 +55,7 @@ build() {
 }
 
 package() {
-	cd "${SRC}/${name}${_version}"
+	cd "${SRC}/${name}$_version"
 	make -f unix/Makefile prefix="${PKG}"/usr install
 	install -Dm644 LICENSE "${PKG}/usr/share/licenses/${name}/LICENSE"
 }
