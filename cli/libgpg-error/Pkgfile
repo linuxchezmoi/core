@@ -11,7 +11,7 @@ url="http://www.gnupg.org"
 
 
 name=libgpg-error
-version=1.35
+version=1.36
 
 
 source=(ftp://ftp.gnupg.org/gcrypt/$name/$name-$version.tar.bz2)
