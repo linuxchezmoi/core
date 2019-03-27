@@ -1,0 +1,30 @@
+# Depends on: cmake
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="C library that performs DNS requests and name resolves asynchronously"
+url="https://c-ares.haxx.se/"
+
+
+name=c-ares
+version=1.15.0
+release=1
+
+
+source=(https://c-ares.haxx.se/download/c-ares-$version.tar.gz)
+
+
+build(){
+  cd "$name-$version"
+  ./configure --prefix=/usr --enable-shared
+  make
+}
+
+package() {
+  cd "$name-$version"
+  make DESTDIR="$PKG" install
+}
