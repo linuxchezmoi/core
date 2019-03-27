@@ -1,0 +1,38 @@
+# Depends on: dbus glib2 python gtk-doc
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="GLib bindings for DBUS"
+url="https://www.freedesktop.org/wiki/Software/DBusBindings"
+
+
+name=dbus-glib
+version=0.110
+release=1
+
+
+source=(https://dbus.freedesktop.org/releases/dbus-glib/dbus-glib-$version.tar.gz)
+
+
+build(){
+  cd $name-$version
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libexecdir=/usr/lib \
+    --enable-gtk-doc \
+    --disable-static
+  make
+}
+
+package() {
+  cd $name-$version
+  _c=/usr/share/bash-completion/completions
+  make DESTDIR="$PKG" install completiondir=$_c
+  mv "$PKG$_c"/{dbus-bash-completion.sh,dbus-send}
+}
