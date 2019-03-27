@@ -11,8 +11,8 @@ url="https://www.freedesktop.org/wiki/Software/fontconfig/"
 
 
 name=fontconfig
-version=2.13.1-git
-release=2
+version=2.13.1+12+g5f5ec56
+release=1
 
 
 source=()
