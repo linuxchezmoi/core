@@ -12,7 +12,7 @@ url="https://github.com/gentoo/hwids"
 
 name=hwids
 version=20190316
-release=1
+release=2
 
 
 prepare() {
