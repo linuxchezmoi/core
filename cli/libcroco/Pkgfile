@@ -32,7 +32,7 @@ make
 
 package() {
 
-  cd $name
+cd $name-$version
   make DESTDIR="$PKG" install
   rm $PKG/usr/lib/$name-0.6.la
 
