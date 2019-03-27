@@ -1,0 +1,31 @@
+# Depends on: python2 libxslt docbook-xsl 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Text document format for short documents, articles, books and UNIX man pages."
+url="http://www.methods.co.nz/asciidoc/"
+
+
+name=asciidoc
+version=8.6.10
+release=1
+
+
+source=(https://downloads.sourceforge.net/asciidoc/asciidoc-$version.tar.gz)
+
+
+
+build() {
+cd $name-$version
+./configure --prefix=/usr --sysconfdir=/etc
+make
+}
+
+package() {
+cd ${name}-${version}
+make DESTDIR=$PKG install
+}
