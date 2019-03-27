@@ -11,7 +11,7 @@ url="http://0pointer.de/lennart/projects/libdaemon/"
 
 
 name=libdaemon
-version=0.14-git
+version=0.14
 release=1
 
 
