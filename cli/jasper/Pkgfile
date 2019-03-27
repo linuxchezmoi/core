@@ -11,16 +11,24 @@ url="http://www.ece.uvic.ca/~frodo/jasper/"
 
 
 name=jasper
-version=2.0.14
+version=2.0.16
 release=4
 
 
-source=(http://www.ece.uvic.ca/~frodo/jasper/software/$name-$version.tar.gz)
+source=(https://github.com/mdadams/jasper/archive/version-${version}.tar.gz
+		jasper-1.900.1-fix-filename-buffer-overflow.patch)
+
+
+prepare() {
+  cd ${name}-version-${version}
+  patch -p1 < "${SRC}/jasper-1.900.1-fix-filename-buffer-overflow.patch"
+  sed -r 's|(CMAKE_SKIP_BUILD_RPATH) FALSE|\1 TRUE|g' -i CMakeLists.txt
+}
 
 
 build() {
 
-	cd $name-$version
+	cd ${name}-version-${version}
 	mkdir BUILD
 	cd BUILD
 
@@ -36,9 +44,8 @@ build() {
 
 package() {
 
-	cd $name-$version/BUILD
+	cd ${name}-version-${version}/BUILD
 	make DESTDIR=$PKG install
-
 	install -v -m755 -d $PKG/usr/share/doc/jasper-$version
 	install -v -m644 ../doc/*.pdf $PKG/usr/share/doc/$name-$version
 
