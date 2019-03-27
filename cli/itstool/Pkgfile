@@ -11,8 +11,8 @@ url="http://itstool.org/"
 
 
 name=itstool
-version=2.0.5-git
-release=2
+version=2.0.2+5+g676f3f7
+release=1
 
 
 source=()
