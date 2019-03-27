@@ -1,0 +1,37 @@
+# Depends on: 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A daemon for delivering ACPI power management events with netlink support"
+url="https://sourceforge.net/projects/acpid2/"
+
+
+name=acpid
+version=2.0.31
+release=1
+
+
+source=(https://downloads.sourceforge.net/sourceforge/acpid2/acpid-$version.tar.xz 
+        acpid.service
+        anything
+        handler.sh)
+
+
+build(){
+  cd $name-$version
+  ./configure --prefix=/usr --sbindir=/usr/bin
+  make
+}
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+  install -Dm644 ../anything "$PKG/etc/acpi/events/anything"
+  install -Dm755 ../handler.sh "$PKG/etc/acpi/handler.sh"
+  install -Dm644 ../acpid.service "$PKG/usr/lib/systemd/system/acpid.service"
+}
+
