@@ -1,0 +1,35 @@
+# Depends on: openssl apr
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="The Apache Portable Runtime"
+url="http://apr.apache.org/"
+
+
+name=apr-util
+version=1.6.1
+release=1
+
+
+source=(https://archive.apache.org/dist/apr/$name-$version.tar.bz2)
+
+
+build() {
+  cd $name-$version
+	./configure --prefix=/usr       \
+	            --with-apr=/usr     \
+	            --with-gdbm=/usr    \
+	            --with-openssl=/usr \
+	            --with-crypto
+	make
+}
+
+
+package() {
+cd $name-$version
+make DESTDIR="${PKG}" install
+}
