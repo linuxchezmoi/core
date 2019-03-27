@@ -11,7 +11,7 @@ url="http://talloc.samba.org/"
 
 
 name=talloc
-version=2.1.16
+version=2.2.0
 release=1
 
 
