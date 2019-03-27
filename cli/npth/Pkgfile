@@ -1,0 +1,31 @@
+# Depends on:  
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="New portable threads library"
+url="https://git.gnupg.org/cgi-bin/gitweb.cgi?p=npth.git"
+
+
+name=npth
+version=1.6
+release=1
+
+
+source=(ftp://ftp.gnupg.org/gcrypt/npth/npth-$version.tar.bz2)
+
+
+build(){
+	cd "${SRC}/${name}-${version}"
+	./configure --prefix=/usr --enable-maintainer-mode
+	make
+}
+
+
+package() {
+	cd "${SRC}/${name}-${version}"
+	make DESTDIR="${PKG}" install
+}
