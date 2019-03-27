@@ -1,0 +1,43 @@
+# Depends on: libassuan libgcrypt libgpg-error libksba npth pinentry
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Complete and free implementation of the OpenPGP standard"
+url="https://www.gnupg.org/"
+
+
+name=gnupg
+version=2.2.15
+release=1
+
+
+source=(https://gnupg.org/ftp/gcrypt/gnupg/gnupg-$version.tar.bz2)
+
+
+
+build() {
+	cd "${name}-${version}"
+	./configure \
+		--prefix=/usr \
+		--libexecdir=/usr/lib/$name \
+		--enable-symcryptrun \
+		--disable-nls
+	make
+}
+
+
+package() {
+	cd "${name}-${version}"
+	make DESTDIR="${PKG}" install
+	ln -s gpg "${PKG}"/usr/bin/gpg2
+	ln -s gpgv "${PKG}"/usr/bin/gpgv2
+
+	cd doc/examples/systemd-user
+	for i in *.*; do
+		install -Dm644 "$i" "${PKG}/usr/lib/systemd/user/$i"
+	done
+}
