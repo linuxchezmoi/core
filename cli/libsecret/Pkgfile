@@ -1,0 +1,39 @@
+# Depends on: glib2 libgcrypt gobject-introspection vala 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Library for storing and retrieving passwords and other secrets"
+url="https://wiki.gnome.org/Projects/Libsecret"
+
+
+name=libsecret
+version=0.18.8
+release=1
+
+
+source=(https://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+
+
+
+build() {
+cd $name-$version
+./configure \
+--prefix=/usr \
+--disable-static \
+--disable-manpages \
+--disable-nls
+make
+}
+
+
+package() {
+cd $name-$version
+make DESTDIR=$PKG install
+rm -r $PKG/usr/share/gtk-doc
+}
+
+
