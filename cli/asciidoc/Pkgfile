@@ -15,17 +15,28 @@ version=8.6.10
 release=1
 
 
-source=(https://downloads.sourceforge.net/asciidoc/asciidoc-$version.tar.gz)
+source=(https://github.com/asciidoc/asciidoc/archive/$version.tar.gz)
 
+
+prepare(){
+  cd ${name}-${version}
+  sed -i -e 's#python a2x.py#python2 a2x.py#' Makefile.in
+}
 
 
 build() {
-cd $name-$version
-./configure --prefix=/usr --sysconfdir=/etc
-make
+  cd ${name}-${version}
+
+  autoconf
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc
 }
 
+
 package() {
-cd ${name}-${version}
-make DESTDIR=$PKG install
+  cd ${name}-${version}
+  make install DESTDIR=${PKG}
+  install -Dm644 asciidocapi.py \
+  ${PKG}/usr/lib/python2.7/site-packages/asciidocapi.py
 }
