@@ -11,8 +11,8 @@ url="http://gegl.org/babl"
 
 
 name=babl
-version=0.1.60
-release=2
+version=0.1.62
+release=1
 
 
 source=(http://download.gimp.org/pub/$name/${version:0:3}/$name-$version.tar.bz2)
