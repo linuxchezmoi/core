@@ -1,0 +1,39 @@
+# Depends on: slang popt
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Not Erik's Windowing Toolkit - text mode windowing with slang"
+url="https://pagure.io/newt"
+
+
+name=libnewt
+version=0.52.20
+release=1
+
+
+source=(https://releases.pagure.org/newt/newt-$version.tar.gz)
+
+
+prepare(){
+  cd "newt-$version"
+	sed -e 's/^LIBNEWT =/#&/' \
+	    -e '/install -m 644 $(LIBNEWT)/ s/^/#/' \
+	    -e 's/$(LIBNEWT)/$(LIBNEWTSONAME)/g' \
+	    -i Makefile.in
+}
+
+build() {
+  cd "newt-$version"
+  ./configure --prefix=/usr --with-gpm-support
+  make
+}
+
+package() {
+  cd "newt-$version"
+  make DESTDIR=$PKG install
+}
+
