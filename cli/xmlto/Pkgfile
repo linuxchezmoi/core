@@ -1,0 +1,31 @@
+# Depends on: libxslt docbook-xsl
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Convert xml to many other formats"
+url="https://pagure.io/xmlto/"
+
+
+name=xmlto
+version=0.0.28
+release=1
+
+
+source=(https://releases.pagure.org/xmlto/xmlto-$version.tar.bz2)
+
+
+build(){
+  cd "$SRC/${name}-${version}"
+  ./configure BASH=/bin/bash --prefix=/usr \
+                             --mandir=/usr/share/man
+  make
+}
+
+package() {
+  cd "$SRC/${name}-${version}"
+  make DESTDIR="${PKG}" install
+}
