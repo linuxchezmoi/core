@@ -1,0 +1,38 @@
+# Depends on: alsa-lib
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Extra alsa plugins"
+url="http://www.alsa-project.org"
+
+
+name=alsa-plugins
+version=1.1.8
+release=1
+
+
+source=(ftp://ftp.alsa-project.org/pub/plugins/alsa-plugins-$version.tar.bz2)
+
+
+prepare(){
+  cd $name-$version
+  autoreconf -fvi
+}
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+
+  install -d "$PKG/usr/share/doc/$name"
+  install -m644 doc/README* doc/*.txt "$PKG/usr/share/doc/$name/"
+}
