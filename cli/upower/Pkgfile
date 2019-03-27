@@ -1,0 +1,37 @@
+# Depends on: dbus-glib libgudev libusb polkit gobject-introspection
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Abstraction for enumerating power devices, listening to device events and querying history and statistics"
+url="https://upower.freedesktop.org"
+
+
+name=upower
+version=0.99.10
+release=1
+
+
+source=(https://gitlab.freedesktop.org/upower/upower/uploads/c438511024b9bc5a904f8775cfc8e4c4/upower-$version.tar.xz)
+
+
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--libexecdir=/usr/lib/$name \
+--localstatedir=/var \
+--enable-deprecated \
+--disable-static \
+--disable-nls
+  make
+}
+
+package() {
+cd $name-$version
+make DESTDIR="$PKG" install
+}
