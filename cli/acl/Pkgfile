@@ -1,0 +1,39 @@
+# Depends on: attr 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Access control list utilities, libraries and headers"
+url="https://savannah.nongnu.org/projects/acl"
+
+
+name=acl
+version=2.2.53
+release=1
+
+
+source=(https://download.savannah.gnu.org/releases/acl/acl-2.2.53.tar.gz)
+
+
+build(){
+  cd $name-$version
+
+  ./configure \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib \
+    --prefix=/usr
+  make
+}
+
+package() {
+  cd $name-$version
+	make DESTDIR=$PKG install
+	chmod -v 755 $PKG/usr/lib/libacl.so
+	mkdir -p $PKG/lib
+	mv -v $PKG/usr/lib/libacl.so.* $PKG/lib
+	ln -sfv ../../lib/$(readlink $PKG/usr/lib/libacl.so) $PKG/usr/lib/libacl.so
+	rm -fr $PKG/usr/share/doc
+}
