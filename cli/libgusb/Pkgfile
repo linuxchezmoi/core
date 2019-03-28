@@ -1,0 +1,37 @@
+# Depends on: glib2 libusb git gobject-introspection meson python2 vala ninja
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="GObject wrapper for libusb1"
+url="https://github.com/hughsie/libgusb"
+
+
+name=libgusb
+version=0.3.0
+release=1
+
+
+source=()
+
+
+prepare(){
+git clone https://github.com/hughsie/libgusb
+cd $name 
+mkdir build
+}
+
+build(){
+cd $name/build
+meson --prefix=/usr -Ddocs=false
+ninja
+}
+
+package() {
+cd $name
+DESTDIR="${PKG}" ninja -C build install
+}
+
