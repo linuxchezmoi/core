@@ -1,0 +1,31 @@
+# Depends on:
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A utility to show the full path of commands"
+url="https://savannah.gnu.org/projects/which/"
+
+
+name=which
+version=2.21
+release=1
+
+
+source=(https://ftp.gnu.org/gnu/which/which-$version.tar.gz)
+
+
+build(){
+  cd $name-$version
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+}
+
