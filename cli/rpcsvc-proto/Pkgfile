@@ -1,0 +1,35 @@
+# Depends on: 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="rpcsvc protocol definitions from glibc"
+url="https://github.com/thkukuk/rpcsvc-proto"
+
+
+name=rpcsvc-proto
+version=1.4
+release=1
+
+
+source=(https://github.com/thkukuk/rpcsvc-proto/archive/v$version.tar.gz)
+
+
+prepare(){
+  cd $name-$version
+  autoreconf -fi
+}
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+}
