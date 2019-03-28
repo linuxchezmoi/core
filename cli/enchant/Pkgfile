@@ -1,0 +1,41 @@
+# Depends on: glib2 git gnupg
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A wrapper library for generic spell checking"
+url="https://abiword.github.io/enchant/"
+
+
+name=enchant
+version=2.2.3
+release=1
+
+
+source=(https://github.com/AbiWord/enchant/archive/v$version.tar.gz)
+
+
+prepare(){
+  cd $name-$version
+  ./bootstrap
+}
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr \
+    --disable-static 
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make
+}
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+  ln -sv enchant-2 $PKG/usr/include/enchant
+  ln -sv enchant-2 $PKG/usr/bin/enchant
+  ln -sv libenchant-2.so $PKG/usr/lib/libenchant.so
+  ln -sv enchant-2.pc $PKG/usr/lib/pkgconfig/enchant.pc
+}
