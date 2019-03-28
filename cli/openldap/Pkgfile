@@ -1,0 +1,50 @@
+# Depends on:
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Lightweight Directory Access Protocol (LDAP) client libraries"
+url="https://www.openldap.org/"
+
+
+name=openldap
+version=2.4.47
+release=1
+
+
+source=(https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-$version.tgz
+		http://www.linuxfromscratch.org/patches/blfs/svn/openldap-$version-consolidated-1.patch)
+
+
+prepare() {
+cd $name-$version
+patch -Np1 -i ../openldap-$version-consolidated-1.patch
+autoconf
+}
+
+
+build() {
+cd $name-$version
+./configure --prefix=/usr     \
+            --sysconfdir=/etc \
+            --disable-static  \
+            --enable-dynamic  \
+            --disable-debug   \
+            --disable-slapd 
+
+make depend 
+make
+}
+
+
+package() {
+cd $name-$version
+make DESTDIR=$PKG install
+rm $PKG/usr/lib/libldap{,_r}.la
+rm $PKG/usr/lib/liblber.la
+}
+
+
