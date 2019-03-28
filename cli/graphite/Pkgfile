@@ -1,0 +1,39 @@
+# Depends on: cmake freetype
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="reimplementation of the SIL Graphite text processing engine"
+url="https://github.com/silnrsi/graphite"
+
+
+name=graphite
+version=1.3.13
+release=1
+
+
+source=(https://github.com/silnrsi/graphite/releases/download/$version/graphite2-$version.tgz)
+
+
+prepare(){
+cd graphite2-$version
+sed -i '/cmptest/d' tests/CMakeLists.txt
+mkdir build
+}
+
+
+build() {
+cd graphite2-$version/build
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+..
+make
+}
+
+
+package() {
+cd graphite2-$version/build
+make DESTDIR=$PKG install
+}
