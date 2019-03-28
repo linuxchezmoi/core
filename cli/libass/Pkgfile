@@ -1,0 +1,34 @@
+# Depends on: fontconfig fribidi glib2 freetype nasm
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A portable library for SSA/ASS subtitles rendering"
+url="https://github.com/libass/libass/"
+
+
+name=libass
+version=0.14.0
+release=1
+
+
+source=(https://github.com/libass/libass/releases/download/$version/libass-$version.tar.xz)
+
+
+build(){
+  cd libass-${version}
+  ./configure \
+    --prefix='/usr' \
+    --enable-fontconfig
+  make
+}
+
+package() {
+  cd libass-${version}
+  make DESTDIR="${PKG}" install
+  install -Dm 644 COPYING -t "${PKG}"/usr/share/licenses/libass/
+}
+
