@@ -1,0 +1,33 @@
+# Depends on:  
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Symas Lightning Memory-Mapped Database"
+url="http://symas.com/mdb"
+
+
+name=lmdb
+version=0.9.23
+release=1
+
+
+source=(https://github.com/LMDB/lmdb/archive/LMDB_$version.tar.gz)
+
+
+build() {
+cd lmdb-LMDB_${version}/libraries/liblmdb
+make
+sed -i 's| liblmdb.a||' Makefile
+}
+
+
+package() {
+cd lmdb-LMDB_${version}/libraries/liblmdb
+make prefix=$PKG/usr install
+}
+
+
