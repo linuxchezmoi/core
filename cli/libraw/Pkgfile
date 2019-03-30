@@ -1,0 +1,34 @@
+# Depends on: lcms2 jasper libjpeg-turbo 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A library for reading RAW files obtained from digital photo cameras (CRW/CR2, NEF, RAF, DNG, and others)"
+url="https://www.libraw.org/"
+
+
+name=libraw
+version=0.19.2
+release=1
+
+
+source=(https://www.libraw.org/data/LibRaw-$version.tar.gz)
+
+
+build(){
+  cd LibRaw-$version
+  ./configure --prefix=/usr    \
+	            --enable-jpeg    \
+	            --enable-jasper  \
+	            --enable-lcms    \
+	            --disable-static
+	make
+}
+
+package() {
+  cd LibRaw-$version
+  make DESTDIR="$PKG" install
+}
