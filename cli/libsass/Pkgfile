@@ -1,0 +1,31 @@
+# Depends on:  
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="C implementation of Sass CSS preprocessor (library)."
+url="http://libsass.org/"
+
+
+name=libsass
+version=3.5.5
+release=1
+
+
+source=(https://github.com/sass/libsass/archive/$version.tar.gz)
+
+
+build(){
+	cd "$SRC/$name-$version"
+	autoreconf -i
+	./configure --prefix=/usr
+	make
+}
+
+package() {
+	cd "$SRC/$name-$version"
+	make DESTDIR="$PKG/" install
+}
