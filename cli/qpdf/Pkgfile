@@ -1,0 +1,33 @@
+# Depends on: libjpeg-turbo 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="QPDF: A Content-Preserving PDF Transformation System"
+url="https://github.com/qpdf/qpdf"
+
+
+name=qpdf
+version=8.4.0
+release=1
+
+
+source=(https://github.com/qpdf/qpdf/releases/download/release-qpdf-$version/qpdf-$version.tar.gz)
+
+
+build(){
+  cd ${name}-${version}
+  ./configure --prefix=/usr --disable-static
+  make
+}
+
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}/" install
+  install -Dm644 completions/bash/qpdf "${PKG}/usr/share/bash-completion/completions/qpdf"
+  install -Dm644 completions/zsh/_qpdf "${PKG}/usr/share/zsh/site-functions/_qpdf"
+}
