@@ -1,0 +1,45 @@
+# Depends on: glib2 graphite icu gobject-introspection ragel git
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="OpenType text shaping engine"
+url="https://www.freedesktop.org/wiki/Software/HarfBuzz"
+
+
+name=harfbuzz
+version=2.4
+release=1
+
+
+source=()
+
+
+prepare() {
+git clone https://github.com/harfbuzz/harfbuzz
+cd $name
+NOCONFIGURE=1 ./autogen.sh
+}
+
+build() {
+  cd $name
+  ./configure \
+    --prefix=/usr \
+    --with-freetype \
+    --with-glib \
+    --with-gobject \
+    --with-graphite2 \
+    --with-icu 
+
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make
+}
+
+package() {
+  cd $name
+  make DESTDIR="$PKG" install
+}
+
