@@ -1,0 +1,36 @@
+# Depends on: librsvg hicolor-icon-theme
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+run=(librsvg hicolor-icon-theme)
+
+
+
+description="GNOME standard icons"
+url="https://gitlab.gnome.org/GNOME/adwaita-icon-theme"
+
+
+name=adwaita-icon-theme
+version=3.32.0
+release=1
+
+
+source=(https://ftp.gnome.org/pub/gnome/sources/$name/${version::4}/$name-$version.tar.xz)
+
+
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr
+  make
+}
+
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+}
