@@ -1,0 +1,37 @@
+# Depends on: xorg-xset docbook-xsl lynx xmlto git
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Command line tools that assist applications with a variety of desktop integration tasks"
+url="https://www.freedesktop.org/wiki/Software/xdg-utils/"
+
+
+name=xdg-utils
+version=1.1.3
+release=1
+
+
+source=(https://portland.freedesktop.org/download/xdg-utils-1.1.3.tar.gz 0001_better_pcmanfm_check.patch drop_obsolete_GNOME_support.patch)
+
+
+prepare(){
+	cd $name-$version
+	patch -Np1 -i ../0001_better_pcmanfm_check.patch
+	patch -Np1 -i ../drop_obsolete_GNOME_support.patch
+}
+
+build() {
+	cd $name-$version
+	./configure --prefix=/usr --mandir=/usr/share/man
+	make
+}
+
+package() {
+	cd $name-$version
+	make DESTDIR="${PKG}" install
+	install -dm755 $PKG/usr/share/desktop-directories
+}
