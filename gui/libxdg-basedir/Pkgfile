@@ -1,0 +1,36 @@
+# Depends on:  
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="An implementation of the XDG Base Directory specifications."
+url="https://github.com/devnev/libxdg-basedir"
+
+
+name=libxdg-basedir
+version=1.2.0
+release=1
+
+
+source=(https://github.com/devnev/libxdg-basedir/archive/libxdg-basedir-1.2.0.tar.gz xdgGetRelativeHome-overflow.patch)
+
+
+prepare(){
+   cd "${SRC}/$name-$name-$version"
+   patch -Np0 -i "${SRC}/xdgGetRelativeHome-overflow.patch"
+}
+
+build() {
+   cd "${SRC}/$name-$name-$version"
+   ./autogen.sh --prefix=/usr
+   make
+}
+
+package() {
+   cd "${SRC}/$name-$name-$version"
+   make DESTDIR=${PKG} install
+}
+
