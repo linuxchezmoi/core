@@ -1,0 +1,30 @@
+# Depends on: glib2 libsoup 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="HTTP web service mocking project for projects which use libsoup"
+url="https://gitlab.com/uhttpmock/uhttpmock"
+
+
+name=uhttpmock
+version=0.5.1
+release=1
+
+
+source=(https://tecnocode.co.uk/downloads/uhttpmock/uhttpmock-$version.tar.xz)
+
+
+build(){
+  cd $name-$version
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd $name-$version
+  make install DESTDIR="$PKG"
+}
