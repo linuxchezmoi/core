@@ -1,0 +1,41 @@
+# Depends on: glib2 libpng libtiff libjpeg-turbo libx11 jasper shared-mime-info  gobject-introspection git docbook-xsl meson ninja
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="An image loading library"
+url="https://wiki.gnome.org/Projects/GdkPixbuf"
+
+
+name=gdk-pixbuf2
+version=2.38.1
+release=1
+
+
+source=()
+
+
+prepare(){
+  git clone https://gitlab.gnome.org/GNOME/gdk-pixbuf.git
+  cd gdk-pixbuf
+  mkdir build
+}
+
+
+build() {
+  cd gdk-pixbuf/build
+  meson --prefix=/usr  \
+        --libexecdir=/usr/lib/$name \
+         -D jasper=true 
+  ninja 
+}
+
+
+package() {
+  cd gdk-pixbuf
+  DESTDIR="$PKG" meson install -C build
+}
+
