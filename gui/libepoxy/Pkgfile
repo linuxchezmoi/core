@@ -1,4 +1,4 @@
-# Depends on: mesa python xorg-util-macros
+# Depends on: meson ninja mesa
 
 
 packager="sipo"
