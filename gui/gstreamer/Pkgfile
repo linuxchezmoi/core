@@ -1,0 +1,37 @@
+# Depends on: glib2 gobject-introspection
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="GStreamer open-source multimedia framework core library"
+url="https://gstreamer.freedesktop.org/"
+
+
+name=gstreamer
+version=1.14.4
+release=1
+
+
+source=(http://gstreamer.freedesktop.org/src/$name/$name-$version.tar.xz)
+
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+		    --libexecdir=/usr/lib \
+		    --disable-nls \
+        	--with-package-name="GStreamer $version (Venom)"
+
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make
+}
+
+
+package() {
+cd $name-$version
+make DESTDIR="$PKG" install
+rm -r $PKG/usr/share/gtk-doc
+}
