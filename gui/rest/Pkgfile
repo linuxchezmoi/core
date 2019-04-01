@@ -1,0 +1,38 @@
+# Depends on: glib2 libxml2 libsoup gobject-introspection git
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Helper library for RESTful services"
+url="https://wiki.gnome.org/Projects/Librest"
+
+
+name=rest
+version=0.8.1
+release=1
+
+
+source=()
+
+
+prepare(){
+  git clone https://gitlab.gnome.org/GNOME/librest.git
+  cd librest
+  NOCONFIGURE=1 ./autogen.sh
+}
+
+build() {
+  cd librest
+  ./configure --prefix=/usr --sysconfdir=/etc --without-ca-certificates
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make
+}
+
+package() {
+  cd librest
+  make DESTDIR="$PKG" install
+}
+
