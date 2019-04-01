@@ -1,0 +1,47 @@
+# Depends on: systemd dbus glib2 lcms2 sqlite libgudev libgusb polkit gobject-introspection vala meson ninja
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="System daemon for managing color devices"
+url="https://www.freedesktop.org/software/colord"
+
+
+name=colord
+version=1.4.4
+release=1
+
+
+source=(https://www.freedesktop.org/software/colord/releases/$name-$version.tar.xz)
+
+
+prepare() {
+cd $name-$version	
+mkdir build
+}
+
+build() {
+cd $name-$version/build
+	meson --prefix=/usr \
+	      --sysconfdir=/etc \
+	      --libexecdir=/usr/lib/$name \
+	      --localstatedir=/var \
+	      -Ddaemon_user=colord \
+	      -Dvapi=true \
+	      -Dsystemd=false \
+	      -Dlibcolordcompat=true \
+	      -Dargyllcms_sensor=false \
+	      -Dbash_completion=false \
+	      -Ddocs=false \
+	      -Dman=false ..
+	ninja	
+}
+
+package() {
+cd $name-$version/build
+DESTDIR=$PKG ninja install
+}
+
