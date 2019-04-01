@@ -1,0 +1,41 @@
+# Depends on: gst-plugins-base cairo flac gdk-pixbuf2 libjpeg-turbo libpng libsoup libvpx libxdamage
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="GStreamer Multimedia Framework Good Plugins"
+url="https://gstreamer.freedesktop.org/"
+
+
+name=gst-plugins-good
+version=1.14.4
+release=1
+
+
+source=(https://gstreamer.freedesktop.org/src/$name/$name-$version.tar.xz
+		gst-plugins-good-vpx_1.8-1.patch)
+
+
+prepare(){
+cd $name-$version
+patch -Np1 -i ../gst-plugins-good-vpx_1.8-1.patch
+autoreconf -fi
+}
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+		    --disable-nls \
+		    --with-package-name="GStreamer Good Plugins $version (Yaolinux)"
+sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+make
+}
+
+
+package() {
+cd $name-$version
+make DESTDIR="$PKG" install
+}
