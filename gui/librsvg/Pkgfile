@@ -1,4 +1,4 @@
-# Depends on: gdk-pixbuf2 pango libcroco git rust vala
+# Depends on: gdk-pixbuf2 pango libcroco gobject-introspection vala git rust
 
 
 packager="sipo"
@@ -15,19 +15,20 @@ version=2.44.13
 release=1
 
 
-source=(http://ftp.gnome.org/pub/gnome/sources/librsvg/2.44/librsvg-$version.tar.xz)
+source=(https://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+
 
 
 build() {
-  cd librsvg-$version
-  ./configure --prefix=/usr --disable-static --enable-vala
+  cd $name-$version
+  ./configure --prefix=/usr --disable-static --enable-vala 
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0 /g' libtool
   make
 }
 
 
 package() {
-  cd librsvg-$version
+  cd $name-$version
   make DESTDIR="$PKG" install
 }
 
