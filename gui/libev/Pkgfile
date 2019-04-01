@@ -1,0 +1,32 @@
+# Depends on: 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A full-featured and high-performance event loop"
+url="http://software.schmorp.de/pkg/libev.html"
+
+
+name=libev
+version=4.25
+release=1
+
+
+source=(http://dist.schmorp.de/libev/libev-$version.tar.gz)
+
+
+build(){
+  cd "${SRC}/${name}-${version}"
+  ./configure --prefix=/usr
+  make
+}
+
+
+package() {
+  cd "${SRC}/${name}-${version}"
+  make DESTDIR="${PKG}" install
+  rm ${PKG}/usr/include/event.h
+}
