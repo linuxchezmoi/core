@@ -1,0 +1,36 @@
+# Depends on: xkeyboard-config libxcb
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description=""
+url=""
+
+
+name=libxkbcommon
+version=0.8.4
+release=1
+
+
+source=(https://xkbcommon.org/download/$name-$version.tar.xz)
+
+
+
+build() {
+cd $name-$version
+./configure \
+--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--disable-static
+make
+}
+
+package() {
+cd $name-$version
+make DESTDIR=$PKG install
+}
+
