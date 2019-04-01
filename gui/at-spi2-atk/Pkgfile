@@ -1,0 +1,37 @@
+# Depends on: at-spi2-core libxml2 meson ninja atk
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A GTK+ module that bridges ATK to D-Bus at-spi"
+url="https://wiki.gnome.org/Accessibility"
+
+
+name=at-spi2-atk
+version=2.32.0
+release=1
+
+
+source=(http://ftp.gnome.org/pub/gnome/sources/at-spi2-atk/2.32/at-spi2-atk-$version.tar.xz)
+
+
+prepare(){
+  cd $name-$version
+  mkdir build
+}
+
+build() {
+  cd $name-$version/build
+  meson --prefix=/usr .. &&
+  ninja
+}
+
+
+package() {
+  cd $name-$version
+  DESTDIR="$PKG" meson install -C build
+}
+
