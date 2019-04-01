@@ -1,0 +1,37 @@
+# Depends on: libthai cairo libxft harfbuzz fribidi gobject-introspection libxxf86vm freetype meson ninja
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A library for layout and rendering of text"
+url="https://www.pango.org/"
+
+
+name=pango
+version=1.43.0
+release=1
+
+
+source=(http://ftp.gnome.org/pub/gnome/sources/pango/1.43/pango-$version.tar.xz)
+
+
+prepare(){
+cd $name-$version
+mkdir build
+}
+
+build() {
+cd $name-$version/build
+meson --prefix=/usr --sysconfdir=/etc \
+-D enable_docs=false
+ninja
+}
+
+
+package() {
+cd $name-$version
+DESTDIR="$PKG" meson install -C build
+}
