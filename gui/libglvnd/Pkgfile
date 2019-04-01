@@ -1,0 +1,31 @@
+# Depends on:  libxext libx11 xorgproto python
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="The GL Vendor-Neutral Dispatch library"
+url="https://github.com/NVIDIA/libglvnd"
+
+
+name=libglvnd
+version=1.1.1
+release=1
+
+
+source=(https://github.com/NVIDIA/libglvnd/archive/v$version.tar.gz)
+
+
+build(){
+cd $name-$version
+./autogen.sh
+./configure --prefix=/usr
+make
+}
+
+package() {
+cd $name-$version
+make DESTDIR="$PKG" install
+}
