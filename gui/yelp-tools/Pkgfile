@@ -1,0 +1,36 @@
+# Depends on: yelp-xsl libxslt libxml2 itstool docbook-xsl mallard-ducktype git
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Collection of tools for building and converting documentation"
+url="https://gitlab.gnome.org/GNOME/yelp-tools"
+
+
+name=yelp-tools
+version=3.32.0
+release=1
+
+
+source=()
+
+
+prepare(){
+  git clone https://gitlab.gnome.org/GNOME/yelp-tools.git
+  cd $name
+  NOCONFIGURE=1 ./autogen.sh
+}
+
+build() {
+  cd $name
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd $name
+  make DESTDIR="$PKG" install
+}
