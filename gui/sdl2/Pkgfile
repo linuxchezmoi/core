@@ -1,0 +1,32 @@
+# Depends on:
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A library for portable low-level access to a video framebuffer, audio output, mouse, and keyboard (Version 2)"
+url="https://www.libsdl.org"
+
+
+name=sdl2
+version=2.0.9
+release=1
+
+
+source=(https://www.libsdl.org/release/SDL2-$version.tar.gz)
+
+
+build() {
+cd SDL2-${version}
+./configure --prefix=/usr 
+make
+}
+
+package() {
+cd SDL2-${version}
+make DESTDIR=$PKG install
+rm -v $PKG/usr/lib/libSDL2*.a
+}
+
