@@ -1,0 +1,42 @@
+# Depends on: dbus glib2 libxtst gobject-introspection meson ninja
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Protocol definitions and daemon for D-Bus at-spi"
+url="https://gitlab.gnome.org/GNOME/at-spi2-core"
+
+
+name=at-spi2-core
+version=2.32.0
+release=1
+
+
+source=(https://ftp.gnome.org/pub/gnome/sources/$name/${version::4}/$name-$version.tar.xz)
+
+
+prepare() {
+cd $name-$version
+sed -i 's/subdir:/install_dir:/' atspi/meson.build
+mkdir build
+}
+
+build() {
+cd $name-$version/build
+meson --prefix=/usr \
+--sysconfdir=/etc \
+--libdir=/usr/lib \
+--libexecdir=/usr/lib/$name ..
+	ninja
+}
+
+
+package() {
+cd $name-$version/build
+DESTDIR=$PKG ninja install
+}
+
+
