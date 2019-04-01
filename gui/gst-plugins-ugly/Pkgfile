@@ -1,0 +1,35 @@
+# Depends on: gst-plugins-base lame liba52 libdvdread x264
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="GStreamer Multimedia Framework Ugly Plugins"
+url="https://gstreamer.freedesktop.org/"
+
+
+name=gst-plugins-ugly
+version=1.14.4
+release=1
+
+
+source=(https://gstreamer.freedesktop.org/src/$name/$name-$version.tar.xz)
+
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+		    --disable-nls \
+		    --with-package-name="GStreamer Ugly Plugins $version (Yaolinux)"
+make
+sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+make
+}
+
+
+package() {
+cd $name-$version
+make DESTDIR="$PKG" install
+}
