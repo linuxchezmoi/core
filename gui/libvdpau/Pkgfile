@@ -1,0 +1,37 @@
+# Depends on: libxfixes doxygen graphviz libxext
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Nvidia VDPAU library"
+url="https://www.freedesktop.org/wiki/Software/VDPAU/"
+
+
+name=libvdpau
+version=1.2
+release=1
+
+
+source=(https://gitlab.freedesktop.org/vdpau/libvdpau/uploads/14b620084c027d546fa0b3f083b800c6/libvdpau-$version.tar.bz2)
+
+
+
+build() {
+cd $name-$version
+./configure \
+--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--disable-static
+make
+}
+
+package() {
+cd $name-$version
+make DESTDIR=$PKG install
+rm $PKG/usr/lib/libvdpau.la
+rm $PKG/usr/lib/vdpau/libvdpau_trace.la
+}
