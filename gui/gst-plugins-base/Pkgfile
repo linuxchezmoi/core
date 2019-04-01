@@ -1,0 +1,36 @@
+# Depends on: alsa-lib gstreamer libtheora libvorbis libogg gobject-introspection
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Well-groomed and well-maintained collection of GStreamer plug-ins"
+url="https://gstreamer.freedesktop.org/"
+
+
+name=gst-plugins-base
+version=1.14.4
+release=1
+
+
+source=(http://gstreamer.freedesktop.org/src/$name/$name-$version.tar.xz)
+
+
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+		    --with-package-name="GStreamer Base Plugins $version (Yaolinux)" \
+		    --disable-nls \
+		    --disable-examples
+	make
+}
+
+package() {
+cd $name-$version
+make DESTDIR=$PKG install
+rm -r $PKG/usr/share/gtk-doc
+}
+
