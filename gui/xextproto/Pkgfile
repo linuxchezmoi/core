@@ -1,0 +1,31 @@
+# Depends on:  xmlto xorg-util-macros docbook-xsl
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X11 various extension wire protocol"
+url="https://xorg.freedesktop.org/"
+
+
+name=xextproto
+version=7.3.0
+release=1
+
+
+source=(https://xorg.freedesktop.org//releases/individual/proto/xextproto-$version.tar.bz2)
+
+
+build(){
+  cd ${name}-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+  install -Dm644 COPYING "${PKG}/usr/share/licenses/${name}/COPYING"
+}
