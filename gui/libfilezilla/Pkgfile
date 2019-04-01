@@ -1,0 +1,34 @@
+# Depends on: nettle
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Modern C++ library, offering some basic functionality to build high-performing."
+url="https://lib.filezilla-project.org/"
+
+
+name=libfilezilla
+version=0.15.1
+release=1
+
+
+source=(https://download.filezilla-project.org/libfilezilla/libfilezilla-$version.tar.bz2)
+
+
+build() {
+  cd "${SRC}/$name-$version"
+  ./configure \
+    --prefix=/usr \
+    --disable-static
+  make
+}
+
+
+package() {
+  cd "${SRC}/$name-$version"
+  make DESTDIR="${PKG}" install
+}
+
