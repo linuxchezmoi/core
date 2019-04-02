@@ -1,0 +1,81 @@
+# Depends on: systemd wpa-supplicant libndp libsoup libgudev dbus-glib iptables libnl nss wireless-tools polkit upower vala gobject-introspection libnewt dhcpcd
+
+
+run=(wpa-supplicant)
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Tools which simplify and make the network more directly manageable."
+url="http://projects.gnome.org/NetworkManager/"
+
+
+name=networkmanager
+version=1.16.0
+release=1
+
+
+source=(http://ftp.gnome.org/pub/gnome/sources/NetworkManager/${version%.*}/NetworkManager-$version.tar.xz)
+
+
+prepare() {
+cd NetworkManager-$version
+sed -i 's/1,12,2/1,12.2/' libnm-core/nm-version.h
+}
+
+build() {
+cd NetworkManager-$version
+CXXFLAGS+=" -fPIC"
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--with-nmtui \
+--with-libnm-glib \
+--disable-gtk-doc \
+--with-systemdsystemunitdir=/lib/systemd/system \
+--disable-json-validation \
+--disable-ovs \
+--disable-ppp \
+--disable-introspection \
+--docdir=/usr/share/doc/$name-$version
+make
+}
+
+package() {
+cd NetworkManager-$version
+make DESTDIR=$PKG install
+
+# create a VPN directory
+install -d $PKG/etc/$name/VPN
+install -m755 clients/.libs/nm-online -D $PKG/usr/bin/nm-online
+
+# create keyfile plugin system-settings directory
+install -d $PKG/etc/$name/system-connections
+
+mkdir -p $PKG/usr/share/polkit-1/rules.d
+cat > $PKG/usr/share/polkit-1/rules.d/org.freedesktop.NetworkManager.rules << "EOF"
+polkit.addRule(function(action, subject) {
+    if (action.id.indexOf("org.freedesktop.NetworkManager.") == 0 && subject.isInGroup("netdev")) {
+        return polkit.Result.YES;
+    }
+});
+EOF
+
+mkdir -p $PKG/tc/NetworkManager
+cat >> $PKG/etc/NetworkManager/NetworkManager.conf << "EOF"
+[main]
+plugins=keyfile
+EOF
+
+
+rm $PKG/usr/lib/NetworkManager/$version/libnm-device-plugin-adsl.la
+rm $PKG/usr/lib/NetworkManager/$version/libnm-device-plugin-wifi.la
+rm $PKG/usr/lib/libnm-glib-vpn.la
+rm $PKG/usr/lib/libnm-glib.la
+rm $PKG/usr/lib/libnm-util.la
+rm $PKG/usr/lib/libnm.la
+}
+
