@@ -1,0 +1,34 @@
+# Depends on: gst-plugins-base ffmpeg yasm
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="GStreamer Multimedia Framework ffmpeg Plugin"
+url="https://gstreamer.freedesktop.org/"
+
+
+name=gst-libav
+version=1.14.4
+release=1
+
+
+source=(https://gstreamer.freedesktop.org/src/gst-libav/$name-$version.tar.xz)
+
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+		    --with-package-name="GStreamer Good Plugins $version (YaoLinux)"
+make
+sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+make
+}
+
+
+package() {
+cd $name-$version
+make DESTDIR="$PKG" install
+}
