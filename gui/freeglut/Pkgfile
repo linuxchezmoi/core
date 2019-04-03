@@ -1,0 +1,35 @@
+# Depends on: libxi libxrandr mesa glu libxxf86vm cmake
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Provides functionality for small OpenGL programs"
+url="http://freeglut.sourceforge.net/"
+
+
+name=freeglut
+version=3.0.0
+release=1
+
+
+source=(https://downloads.sourceforge.net/freeglut/freeglut-$version.tar.gz)
+
+
+prepare(){
+  mkdir build
+}
+
+build() {
+  cd build
+  cmake ../$name-$version -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_BUILD_TYPE=Release
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="$PKG" install
+  install -Dm644 ../$name-$version/COPYING "$PKG/usr/share/licenses/$name/LICENSE"
+}
