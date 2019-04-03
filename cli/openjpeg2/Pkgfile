@@ -11,12 +11,11 @@ url="https://github.com/uclouvain/openjpeg"
 
 
 name=openjpeg2
-version=2.3.0
+version=2.3.1
 release=1
 
 
-source=(https://github.com/uclouvain/openjpeg/archive/v$version/${_name}-$version.tar.gz 
-		openjpeg2_install.patch)
+source=(https://github.com/uclouvain/openjpeg/archive/v$version/${_name}-$version.tar.gz)
 
 
 prepare(){
@@ -27,8 +26,6 @@ prepare(){
   
   # Install doxygen docs to the right directory
   sed -i -e "s:DESTINATION\ share/doc:DESTINATION\ share/doc/${name}:" openjpeg-${version}/doc/CMakeLists.txt
-
-  patch -Np0 -i openjpeg2_install.patch
 }
 
 build() {
