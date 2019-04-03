@@ -1,0 +1,49 @@
+# Depends on: systemd ninja meson libcdio-paranoia dbus-glib libgudev libbluray intltool libsecret gtk3 libsoup udisks2 fuse2 libarchive libmtp bluez gcr
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Userspace virtual filesystem implemented as a pluggable module for gio"
+url="http://www.gnome.org/"
+
+
+name=gvfs
+version=1.40.0
+release=1
+
+
+source=(https://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+
+
+prepare() {
+cd $name-$version
+mkdir build
+}
+
+build() {
+cd $name-$version/build
+meson --prefix=/usr     \
+      --sysconfdir=/etc \
+      -Dfuse=false      \
+      -Dgphoto2=false   \
+      -Dafc=false       \
+      -Dbluray=false    \
+      -Dnfs=false       \
+      -Dmtp=false       \
+      -Dsmb=false       \
+      -Ddnssd=false     \
+      -Dgoa=false       \
+      -Dgoogle=false    \
+      -Dsystemduserunitdir=/usr/lib/systemd/user ..
+ninja
+}
+
+package() {
+cd $name-$version/build
+DESTDIR=$PKG ninja install
+rm -r $PKG/usr/share/locale
+}
+
