@@ -1,0 +1,36 @@
+# Depends on: glib2 git
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Command line utilities for working with desktop entries"
+url="https://www.freedesktop.org/wiki/Software/desktop-file-utils"
+
+
+name=desktop-file-utils
+version=0.23
+release=1
+
+
+source=()
+
+
+prepare(){
+  git clone https://anongit.freedesktop.org/git/xdg/desktop-file-utils
+  cd $name
+  NOCONFIGURE=1 ./autogen.sh
+}
+
+build() {
+  cd "${SRC}/$name"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${SRC}/$name"
+  make DESTDIR="${PKG}" install
+}
