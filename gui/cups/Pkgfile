@@ -1,9 +1,13 @@
-# Depends on: gnutls libusb pam dbus colord xdg-utils
+# Depends on: systemd libusb avahi python gnutls xdg-utils
 
 
 packager="sipo"
 contributors=""
 maintainer="sipo"
+
+
+run=(xdg-utils)
+PKGMK_GROUPS=(devel man)
 
 
 description="Print spooler and associated utilities"
@@ -12,7 +16,7 @@ url="https://www.cups.org/"
 
 name=cups
 version=2.2.11
-release=1
+release=4
 
 
 source=(https://github.com/apple/cups/releases/download/v$version/$name-$version-source.tar.gz
