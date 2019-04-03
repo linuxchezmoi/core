@@ -1,0 +1,37 @@
+# Depends on: libx11 xcb-util 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Monitor and display application startup"
+url="https://www.freedesktop.org"
+
+
+name=startup-notification
+version=0.12
+release=1
+
+
+source=(https://www.freedesktop.org/software/startup-notification/releases/startup-notification-$version.tar.gz)
+
+
+prepare(){
+  cd "${SRC}/${name}-${version}"
+  sed -i -e '/AC_PATH_XTRA/d' configure.in
+  autoreconf --force --install
+}
+
+build() {
+  cd "${SRC}/${name}-${version}"
+  ./configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make
+}
+
+package() {
+  cd "${SRC}/${name}-${version}"
+  make DESTDIR="${PKG}" install
+}
