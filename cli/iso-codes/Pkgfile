@@ -1,0 +1,38 @@
+# Depends on:  python git
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Lists of the country, language, and currency names"
+url="https://salsa.debian.org/iso-codes-team/iso-codes"
+
+
+name=iso-codes
+version=4.2
+release=1
+
+
+source=()
+
+
+prepare(){
+  git clone https://salsa.debian.org/iso-codes-team/iso-codes
+  cd $name
+  autoreconf -fi
+}
+
+build() {
+  cd "$SRC/$name"
+  ./configure --prefix=/usr
+  make
+  sed -i '/^LN_S/s/s/sfvn/' */Makefile
+}
+
+package() {
+  cd "$SRC/$name"
+  make DESTDIR="$PKG" install 
+}
+
