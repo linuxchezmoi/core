@@ -1,0 +1,39 @@
+# Depends on: perl-xml-simple 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Names of icons for Tango to the legacy names used by the GNOME and KDE desktops."
+url="http://tango.freedesktop.org/"
+
+
+name=icon-naming-utils
+version=0.8.90
+release=1
+
+
+source=(https://sources.archlinux.org/other/icon-naming-utils/icon-naming-utils-$version.tar.gz 
+		remove-legacy-calc.patch)
+
+
+prepare(){
+  cd "$SRC/$name-$version"
+  patch -Np1 -i "$SRC/remove-legacy-calc.patch"
+}
+
+build() {
+  cd "$SRC/$name-$version"
+  ./configure --prefix=/usr --sysconfdir=/etc \
+              --libexecdir=/usr/lib/icon-naming-utils \
+	      --localstatedir=/var
+  make
+}
+
+package() {
+  cd "$SRC/$name-$version"
+  make DESTDIR="$PKG" install
+  mv "$PKG/usr/share/pkgconfig" "$PKG/usr/lib/pkgconfig"
+}
