@@ -1,0 +1,45 @@
+# Depends on: gtk2 gtk-doc gobject-introspection
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Library for writing single instance applications"
+url="http://live.gnome.org/LibUnique"
+
+
+name=libunique
+version=1.1.6
+release=1
+
+
+source=(https://download.gnome.org/sources/libunique/1.1/libunique-1.1.6.tar.bz2
+		unique-gdbus.patch
+		remove_G_CONST_RETURN.patch)
+
+
+prepare(){
+  cd $name-$version
+  patch -Np1 -i "${SRC}/unique-gdbus.patch"
+  patch -Np1 -i "${SRC}/remove_G_CONST_RETURN.patch"
+  sed -e 's/-Werror//' -i configure.ac
+}
+
+build() {
+  cd $name-$version
+  autoreconf -fi
+  ./configure --prefix=/usr --sysconfdir=/etc \
+      --localstatedir=/var --disable-static \
+      --disable-dbus
+  make
+}
+
+package() {
+  cd $name-$version
+  make DESTDIR="${PKG}" install
+
+  # Remove documentation, provided by libunique3
+  rm -r "$PKG/usr/share/gtk-doc"
+}
