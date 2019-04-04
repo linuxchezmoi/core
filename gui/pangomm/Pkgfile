@@ -1,0 +1,32 @@
+# Depends on: cairomm glibmm pango
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="C++ bindings for Pango"
+url="https://www.gtkmm.org/"
+
+
+name=pangomm
+version=2.42.0
+release=1
+
+
+source=(https://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+
+
+build() {
+cd $name-$version
+./configure --prefix=/usr
+make
+}
+
+package() {
+cd $name-$version
+sed -i -e 's/^doc_subdirs/#doc_subdirs/' Makefile
+make DESTDIR=$PKG install
+}
+
