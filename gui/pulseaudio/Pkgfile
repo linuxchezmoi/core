@@ -1,0 +1,59 @@
+# Depends on: fftw intltool json-c libsndfile alsa-lib dbus glib2 libcap openssl speex speexdsp libsamplerate bluez sbc webrtc-audio-processing jack gconf
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+run=(bluez sbc)
+
+
+description="A featureful, general-purpose sound server"
+url="http://www.pulseaudio.org"
+
+
+name=pulseaudio
+version=12.2
+release=2
+
+
+source=(https://www.freedesktop.org/software/pulseaudio/releases/$name-$version.tar.xz)
+
+
+
+build() {
+cd $name-$version
+./configure --prefix=/usr         \
+            --sysconfdir=/etc     \
+            --localstatedir=/var  \
+            --disable-bluez4      \
+            --disable-rpath       \
+            --enable-gsettings \
+            --enable-gconf \
+            --enable-jack \
+            --enable-webrtc-aec \
+            --with-systemduserunitdir=/usr/lib/systemd/user \
+            --with-udev-rules-dir=/lib/udev/rules.d
+make
+}
+
+package() {
+cd $name-$version
+make DESTDIR=$PKG install bashcompletiondir=/usr/share/bash-completion/completions
+mkdir -p $PKG/usr/share/icons/hicolor/scalable/devices
+for size in 16 22 32 48 64 128; do
+    mkdir -p $PKG/usr/share/icons/hicolor/${size}x${size}/{apps,devices}
+    ln -s ../apps/pulseaudio.png $PKG/usr/share/icons/hicolor/${size}x${size}/devices/audio-backend-pulseaudio.png
+done
+rm -f $PKG/etc/dbus-1/system.d/pulseaudio-system.conf
+
+# Obsolets libs
+rm $PKG/usr/lib/libpulse-mainloop-glib.la
+rm $PKG/usr/lib/libpulse-simple.la
+rm $PKG/usr/lib/libpulse.la
+rm $PKG/usr/lib/pulseaudio/libpulsecommon-$version.la
+rm $PKG/usr/lib/pulseaudio/libpulsecore-$version.la
+rm $PKG/usr/lib/pulseaudio/libpulsedsp.la
+}
+
