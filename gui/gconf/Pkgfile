@@ -1,0 +1,38 @@
+# Depends on: dbus-glib libxml2 gtk3 polkit gobject-introspection git gnome-common
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="An obsolete configuration database system"
+url="https://projects-old.gnome.org/gconf/"
+
+
+name=gconf
+version=3.2.6
+release=1
+
+
+source=(http://ftp.gnome.org/pub/gnome/sources/GConf/3.2/GConf-$version.tar.xz)
+
+
+
+build() {
+cd GConf-$version
+./configure --prefix=/usr \
+	        --sysconfdir=/etc \
+		    --libexecdir=/usr/lib/$name \
+	        --disable-orbit \
+	        --disable-static
+sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+make
+}
+
+
+package() {
+cd GConf-$version
+DESTDIR="$PKG" make install
+ln -s gconf.xml.defaults $PKG/etc/gconf/gconf.xml.system
+}
