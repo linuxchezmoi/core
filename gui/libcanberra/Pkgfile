@@ -1,0 +1,32 @@
+# Depends on: libvorbis alsa-lib gstreamer gtk3 pulseaudio
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A small and lightweight implementation of the XDG Sound Theme Specification"
+url="http://0pointer.de/lennart/projects/libcanberra"
+
+
+name=libcanberra
+version=0.30
+release=1
+
+
+source=(http://0pointer.de/lennart/projects/libcanberra/libcanberra-$version.tar.xz)
+
+
+
+build() {
+cd libcanberra-$version
+./configure --prefix=/usr --disable-oss --disable-gtk --enable-pulse
+make
+}
+
+package() {
+cd libcanberra-$version
+make -j1 DESTDIR="$PKG" install
+}
+
