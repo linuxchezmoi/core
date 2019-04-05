@@ -1,0 +1,32 @@
+# Depends on: python
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+PKGMK_KEEP_SOURCES=no
+
+
+description="Easily download, build, install, upgrade, and uninstall Python packages"
+url="https://pypi.org/project/setuptools/"
+
+
+name=python-setuptools
+version=40.9.0
+release=1
+
+
+source=(https://github.com/pypa/setuptools/archive/v$version.tar.gz)
+
+
+
+build() {
+cd setuptools-$version
+export SETUPTOOLS_INSTALL_WINDOWS_SPECIFIC_FILES=0
+python3 bootstrap.py
+python3 setup.py build install --root=$PKG
+rm $PKG/usr/bin/easy_install
+}
+
