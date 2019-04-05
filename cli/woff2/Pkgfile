@@ -1,0 +1,37 @@
+# Depends on: brotli git cmake ninja
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Web Open Font Format 2 reference implementation"
+url="https://github.com/google/woff2"
+
+
+name=woff2
+version=1.0.2
+release=1
+
+
+source=()
+
+
+prepare(){
+  git clone https://github.com/google/woff2
+  cd $name
+  sed -i 's/NOT BUILD_SHARED_LIBS/TRUE/' CMakeLists.txt
+}
+
+build() {
+  cd $name
+  cmake -G Ninja -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=/usr/lib .
+  ninja
+}
+
+package() {
+  cd $name
+  DESTDIR="$PKG" ninja install
+  install -Dt "$PKG/usr/share/licenses/$name" -m644 LICENSE
+}
