@@ -1,0 +1,37 @@
+# Depends on:
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="library for high quality hyphenation and justification"
+url="http://hunspell.sf.net"
+
+
+name=hyphen
+version=2.8.8
+release=1
+
+
+source=(http://downloads.sourceforge.net/hunspell/${name}-${version}.tar.gz)
+
+
+prepare() {
+
+}
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr --disable-static
+  make
+}
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG/" install-libLTLIBRARIES
+  make DESTDIR="$PKG/" install-binSCRIPTS
+  make DESTDIR="$PKG/" install-includeHEADERS
+}
+
