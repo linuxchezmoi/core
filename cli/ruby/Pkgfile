@@ -12,55 +12,22 @@ url="http://www.ruby-lang.org/en/"
 
 name=ruby
 version=2.6.2
-release=1
+release=2
 
 
 source=(https://cache.ruby-lang.org/pub/ruby/${version:0:3}/ruby-${version}.tar.xz)
 
 
-prepare() {
-  cd ruby-${version}
-  rm -rf gems/
-}
-
 build(){
-    cd ruby-${version}
-
-  ./configure \
-    --prefix=/usr \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    --sharedstatedir=/var/lib \
-    --libexecdir=/usr/lib/ruby \
-    --enable-shared \
-    --disable-rpath \
-    --with-dbm-type=gdbm_compat
-
-  make
+cd ruby-${version}
+./configure --prefix=/usr --enable-shared \
+--docdir=/usr/share/doc/$name-$version
+make
 }
 
 
 package() {
   cd ruby-${version}
-
-  make DESTDIR="${PKG}" install-nodoc
-
-  install -D -m644 COPYING "${PKG}/usr/share/licenses/ruby/LICENSE"
-  install -D -m644 BSDL "${PKG}/usr/share/licenses/ruby/BSDL"
-  rubyver=${version:0:3}.0
-  rm -r "${PKG}"/usr/lib/ruby/${rubyver}/{rubygems,rubygems.rb}
-  rm "${PKG}"/usr/bin/gem
-  rm -r "${PKG}"/usr/lib/ruby/${rubyver}/{bundler,bundler.rb}
-  rm "${PKG}"/usr/bin/{bundle,bundler}
-  rm "${PKG}"/usr/lib/ruby/gems/${rubyver}/specifications/default/bundler-*.gemspec
-  rm "${PKG}"/usr/share/man/man1/{bundle,bundle-*}.1
-  rm -r "${PKG}"/usr/lib/ruby/${rubyver}/{rdoc,rdoc.rb}
-  rm "${PKG}"/usr/bin/{rdoc,ri}
-  rm "${PKG}"/usr/lib/ruby/gems/${rubyver}/specifications/default/rdoc-*.gemspec
-  rm -r "${PKG}"/usr/lib/ruby/${rubyver}/{irb,irb.rb}
-  rm "${PKG}"/usr/bin/irb
-  rm "${PKG}"/usr/lib/ruby/gems/${rubyver}/specifications/default/irb-*.gemspec
-  rm "${PKG}"/usr/share/man/man1/irb.1
-  rm -r "${PKG}"/usr/lib/ruby/gems/${rubyver}/gems/*
+  make DESTDIR=$PKG install
 } 
 
