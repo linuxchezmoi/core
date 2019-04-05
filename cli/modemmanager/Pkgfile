@@ -1,0 +1,40 @@
+# Depends on: libgudev gobject-introspection libmbim libqmi polkit gtk-doc
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="ModemManager library"
+url="https://www.freedesktop.org/wiki/Software/ModemManager/"
+
+
+name=modemmanager
+version=1.10.0
+release=1
+
+
+source=(http://www.freedesktop.org/software/ModemManager/ModemManager-$version.tar.xz)
+
+
+
+build() {
+cd ModemManager-$version
+./configure --prefix=/usr             \
+            --sysconfdir=/etc/ModemManager  \
+            --localstatedir=/var      \
+            --enable-more-warnings=no \
+            --disable-static \
+            --with-systemd-journal        \
+            --with-systemd-suspend-resume
+make
+}
+
+package() {
+cd ModemManager-$version
+make DESTDIR=$PKG install
+rm $PKG/usr/lib/ModemManager/*.la
+rm $PKG/usr/lib/libmm-glib.la
+}
+
