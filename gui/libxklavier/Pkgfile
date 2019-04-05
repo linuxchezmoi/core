@@ -1,0 +1,32 @@
+# Depends on: glib2 libxkbfile libxml2 xkeyboard-config libxi iso-codes gobject-introspection intltool libxfixes git gtk-doc
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="High-level API for X Keyboard Extension"
+url="https://www.freedesktop.org/wiki/Software/LibXklavier/"
+
+
+name=libxklavier
+version=5.4
+release=1
+
+
+source=()
+
+
+build(){
+  git clone https://anongit.freedesktop.org/git/libxklavier
+  cd "$name"
+  ./autogen.sh --prefix=/usr --with-xkb-bin-base=/usr/bin \
+      --with-xkb-base=/usr/share/X11/xkb --disable-static --enable-gtk-doc
+  make
+}
+
+package() {
+  cd "$name"
+  make DESTDIR="$PKG" install
+}
