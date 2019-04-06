@@ -12,7 +12,7 @@ url="https://gstreamer.freedesktop.org/"
 
 name=gstreamer
 version=1.14.4
-release=1
+release=2
 
 
 source=(http://gstreamer.freedesktop.org/src/$name/$name-$version.tar.xz)
@@ -21,9 +21,8 @@ source=(http://gstreamer.freedesktop.org/src/$name/$name-$version.tar.xz)
 build() {
 cd $name-$version
 ./configure --prefix=/usr \
-		    --libexecdir=/usr/lib \
 		    --disable-nls \
-        	--with-package-name="GStreamer $version (Venom)"
+        	--with-package-name="GStreamer $version (Yaolinux)"
 
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make
@@ -33,5 +32,4 @@ cd $name-$version
 package() {
 cd $name-$version
 make DESTDIR="$PKG" install
-rm -r $PKG/usr/share/gtk-doc
 }
