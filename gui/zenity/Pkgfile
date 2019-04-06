@@ -1,0 +1,37 @@
+# Depends on: libnotify yelp-tools autoconf-archive git
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Display graphical dialog boxes from shell scripts"
+url="https://gitlab.gnome.org/GNOME/zenity"
+
+
+name=zenity
+version=3.32.0
+release=1
+
+
+source=()
+
+
+prepare(){
+  git clone https://gitlab.gnome.org/GNOME/zenity.git
+  cd $name
+  NOCONFIGURE=1 ./autogen.sh
+}
+
+build() {
+  cd $name
+  ./configure --prefix=/usr --sysconfdir=/etc \
+      --localstatedir=/var --disable-webkitgtk
+  make
+}
+
+package() {
+  cd $name
+  make DESTDIR="${PKG}" install
+}
