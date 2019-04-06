@@ -1,0 +1,32 @@
+# Depends on: gtk3 pangomm cairomm atkmm
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="C++ bindings for GTK"
+url="http://www.gtkmm.org/"
+
+
+name=gtkmm3
+version=3.24.1
+release=1
+
+
+source=(https://ftp.gnome.org/pub/gnome/sources/gtkmm/3.24/gtkmm-$version.tar.xz)
+
+
+build(){
+cd gtkmm-$version
+./configure --prefix=/usr
+make
+}
+
+package() {
+cd gtkmm-$version
+make DESTDIR=$PKG install
+rm $PKG/usr/lib/libgdkmm-3.0.la
+rm $PKG/usr/lib/libgtkmm-3.0.la
+}
