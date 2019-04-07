@@ -1,4 +1,4 @@
-# Depends on:
+# Depends on: python
 
 
 packager="sipo"
@@ -11,41 +11,27 @@ url="http://www.icu-project.org/"
 
 
 name=icu
-version=63.1
-release=2
+version=64.1
+release=1
 
 
-source=(https://ssl.icu-project.org/files/icu4c/$version/icu4c-63_1-src.tgz 
-		https://github.com/unicode-org/icu/commit/9ec2c332c1.patch)
+source=(https://ssl.icu-project.org/files/${name}4c/${version}/${name}4c-${version//./_}-src.tgz)
 
-
-prepare(){
-
-  cd icu/source
-  # https://unicode-org.atlassian.net/browse/ICU-20208
-  patch -Np3 -i ${SRC}/9ec2c332c1.patch
-
-}
 
 
 build() {
 
-  cd icu/source
-  ./configure --prefix=/usr \
-			  --sysconfdir=/etc \
-			  --mandir=/usr/share/man \
-			  --sbindir=/usr/bin
-  make
+cd icu/source
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--mandir=/usr/share/man \
+--sbindir=/usr/bin
+make
 
 }
 
 
 package() {
-
-  cd icu/source
-  make -j1 DESTDIR=${PKG} install
-
-  # Install license
-  install -Dm644 ${SRC}/icu/LICENSE ${PKG}/usr/share/licenses/icu/LICENSE
-
+cd icu/source
+make -j1 DESTDIR=${PKG} install
 }
