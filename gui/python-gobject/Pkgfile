@@ -1,0 +1,40 @@
+# Depends on: gobject-introspection git meson ninja python-cairo
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Python Bindings for GLib/GObject/GIO/GTK+"
+url="https://wiki.gnome.org/Projects/PyGObject"
+
+
+name=python-gobject
+version=3.32.0
+release=1
+
+
+source=()
+
+
+prepare() {
+git clone https://gitlab.gnome.org/GNOME/pygobject.git
+cd pygobject
+mkdir build
+}
+
+
+build() {
+cd pygobject/build
+meson --prefix=/usr \
+-D python=/usr/bin/python3
+ninja
+}
+
+
+package() {
+cd pygobject/build
+DESTDIR=$PKG ninja install
+}
+
