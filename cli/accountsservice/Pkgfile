@@ -1,0 +1,42 @@
+# Depends on: glib2 polkit systemd gtk-doc gobject-introspection git meson docbook-xsl xmlto dbus
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="D-Bus interface for user account query and manipulation"
+url="https://gitlab.freedesktop.org/accountsservice/accountsservice"
+
+
+name=accountsservice
+version=0.6.54+10+gd07621b
+release=1
+
+
+source=()
+
+
+prepare(){
+  git clone https://gitlab.freedesktop.org/accountsservice/accountsservice.git
+  cd $name
+  sed -i '/dbus_conf_dir/s/sysconfdir/datadir/g' meson.build
+}
+
+build() {
+    meson $name build \
+    --prefix=/usr \
+    -D admin_group=wheel \
+    -D systemd=true \
+    -D docbook=true \
+    -D gtk_doc=true \
+    -D user_heuristics=false
+  ninja -C build
+}
+
+
+package() {
+  DESTDIR="$PKG" meson install -C build
+}
+
