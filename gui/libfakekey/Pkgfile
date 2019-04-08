@@ -1,0 +1,32 @@
+# Depends on: libxtst 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X virtual keyboard library."
+url="https://www.yoctoproject.org/tools-resources/projects/matchbox"
+
+
+name=libfakekey
+version=0.3
+release=1
+
+
+source=(http://git.yoctoproject.org/cgit/cgit.cgi/libfakekey/snapshot/libfakekey-$version.tar.gz)
+
+
+build(){
+  cd "${name}-${version}"
+
+  ./autogen.sh
+  ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --disable-static
+  make AM_LDFLAGS=-lX11
+}
+
+package() {
+  cd "${name}-${version}"
+  make DESTDIR="${PKG}" install
+}
