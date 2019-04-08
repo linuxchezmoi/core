@@ -1,0 +1,32 @@
+# Depends on: git
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="FFmpeg version of headers required to interface with Nvidias codec APIs"
+url="https://git.videolan.org/?p=ffmpeg/nv-codec-headers.git"
+
+
+name=ffnvcodec-headers
+version=9.0.18.1
+release=1
+
+
+source=()
+
+
+build(){
+  git clone https://git.videolan.org/git/ffmpeg/nv-codec-headers.git
+  make PREFIX='/usr' -C nv-codec-headers
+  sed -n '4,25p' nv-codec-headers/include/ffnvcodec/nvEncodeAPI.h > LICENSE
+  sed -i '1,22s/^.\{,3\}//' LICENSE # Delete C comments
+}
+
+package() {
+  make PREFIX='/usr' DESTDIR="${PKG}" -C nv-codec-headers install
+  install -Dm 644 LICENSE -t "${PKG}"/usr/share/licenses/ffnvcodec-headers/
+}
+
