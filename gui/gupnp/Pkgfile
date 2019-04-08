@@ -1,0 +1,33 @@
+# Depends on: gssdp util-linux gobject-introspection gtk-doc vala meson git ninja
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="An object-oriented UPNP framework"
+url="https://wiki.gnome.org/Projects/GUPnP"
+
+
+name=gupnp
+version=1.2.0
+release=2
+
+
+source=()
+
+
+prepare(){ 
+  git clone https://gitlab.gnome.org/GNOME/gupnp.git
+  cd $name
+}
+
+build() {
+  meson $name build --prefix=/usr -D gtk_doc=true
+  ninja -C build
+}
+
+package() {
+  DESTDIR="$PKG" meson install -C build
+}
