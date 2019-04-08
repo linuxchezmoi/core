@@ -10,8 +10,8 @@ run=(xdg-utils gtk-update-icon-cache)
 PKGMK_GROUPS=(devel man)
 
 name=cups
-version=2.2.10
-release=3
+version=2.2.11
+release=1
 run=(xdg-utils gtk-update-icon-cache)
 
 source=(https://github.com/apple/cups/releases/download/v${version}/cups-${version}-source.tar.gz \
