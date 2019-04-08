@@ -1,0 +1,35 @@
+# Depends on: gnutls zlib git
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Tool to download rtmp streams"
+url="https://rtmpdump.mplayerhq.hu/"
+
+
+name=rtmpdump
+version=2.4.r96.fa8646d
+release=1
+
+
+source=()
+
+
+build(){
+git clone https://git.ffmpeg.org/rtmpdump
+cd rtmpdump
+sed -e 's/^CRYPTO=OPENSSL/#CRYPTO=OPENSSL/' -e 's/#CRYPTO=GNUTLS/CRYPTO=GNUTLS/' -i Makefile -i librtmp/Makefile
+make \
+OPT="$CFLAGS" \
+XLDFLAGS="$LDFLAGS"
+}
+
+package() {
+cd rtmpdump
+mkdir -pv $PKG/usr/{bin,lib/pkgconfig}
+make prefix=/usr mandir=/usr/share/man DESTDIR=$PKG install
+}
+
