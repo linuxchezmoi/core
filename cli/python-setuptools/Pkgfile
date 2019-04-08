@@ -14,7 +14,7 @@ url="https://pypi.org/project/setuptools/"
 
 
 name=python-setuptools
-version=40.9.0
+version=41.0.0
 release=1
 
 
