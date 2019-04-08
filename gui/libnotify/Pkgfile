@@ -11,7 +11,7 @@ url="https://developer.gnome.org/notification-spec/"
 
 
 name=libnotify
-version=0.7.7
+version=0.7.8
 release=1
 
 
