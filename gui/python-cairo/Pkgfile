@@ -1,0 +1,26 @@
+# Depends on: python cairo 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Python bindings for the cairo graphics library"
+url="https://pycairo.readthedocs.io/en/latest/"
+
+
+name=python-cairo
+version=1.18.0
+release=1
+
+
+source=(https://github.com/pygobject/pycairo/releases/download/v$version/pycairo-$version.tar.gz)
+
+
+build() {
+cd pycairo-$version
+python3 setup.py build
+python3 setup.py install --optimize=1 --root=$PKG
+}
+
