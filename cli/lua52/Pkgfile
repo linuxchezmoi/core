@@ -1,0 +1,61 @@
+# Depends on: readline 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Powerful lightweight programming language designed for extending applications"
+url="https://www.lua.org/"
+
+
+name=lua52
+version=5.2.4
+release=1
+
+
+source=(https://www.lua.org/ftp/lua-5.2.4.tar.gz 
+		liblua.so.patch 
+		lua.pc)
+
+
+prepare(){
+  cd lua-$version
+  patch -p1 -i ../liblua.so.patch
+
+  sed "s/%VER%/${version%.*}/g;s/%REL%/$version/g" ../lua.pc > lua.pc
+  sed -e 's:llua:llua5.2:' -e 's:/include:/include/lua5.2:' -i lua.pc
+  sed -r -e '/^LUA_(SO|A|T)=/ s/lua/lua5.2/' -e '/^LUAC_T=/ s/luac/luac5.2/' -i src/Makefile
+}
+
+build() {
+  cd lua-$version
+
+  make MYCFLAGS="$CFLAGS -fPIC" MYLDFLAGS="$LDFLAGS" linux
+}
+
+package() {
+  cd lua-$version
+
+  make \
+    TO_BIN='lua5.2 luac5.2' \
+    TO_LIB="liblua5.2.a liblua5.2.so liblua5.2.so.5.2 liblua5.2.so.$version" \
+    INSTALL_DATA='cp -d' \
+    INSTALL_TOP="$PKG"/usr \
+    INSTALL_INC="$PKG"/usr/include/lua5.2 \
+    INSTALL_MAN="$PKG"/usr/share/man/man1 \
+    install
+
+  install -Dm644 lua.pc "$PKG"/usr/lib/pkgconfig/$name.pc
+
+  install -d "$PKG"/usr/share/doc/$name
+  install -m644 doc/*.{gif,png,css,html} "$PKG"/usr/share/doc/$name
+
+  ln -s liblua5.2.so "$PKG"/usr/lib/liblua.so.5.2
+  ln -s liblua5.2.so "$PKG"/usr/lib/liblua.so.$version
+ 
+  cd "$PKG"/usr/share/man/man1
+  mv lua.1 lua5.2.1
+  mv luac.1 luac5.2.1
+}
