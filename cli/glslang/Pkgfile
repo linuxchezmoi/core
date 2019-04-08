@@ -1,0 +1,49 @@
+# Depends on: spirv-tools cmake
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="OpenGL and OpenGL ES shader front end and validator"
+url="https://github.com/KhronosGroup/glslang"
+
+
+name=glslang
+version=7.11.3113
+release=1
+
+
+source=(https://github.com/KhronosGroup/glslang/archive/$version.tar.gz)
+
+
+build(){
+  cd ${name}-${version}
+  mkdir -p build-{shared,static}
+  (cd build-shared
+    cmake .. \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DBUILD_SHARED_LIBS=ON
+    make
+  )
+  (cd build-static
+    cmake .. \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DBUILD_SHARED_LIBS=OFF
+    make
+  )
+}
+
+package() {
+  cd ${name}-${version}
+  make -C build-shared DESTDIR="${PKG}" install
+  make -C build-static DESTDIR="${PKG}" install
+  cd "${PKG}"/usr/lib
+  for lib in *.so; do
+    ln -sf "${lib}" "${lib}.0"
+  done
+}
+
