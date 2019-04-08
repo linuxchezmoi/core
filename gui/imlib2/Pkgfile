@@ -1,0 +1,39 @@
+# Depends on: libtiff giflib bzip2 freetype libxext libpng libid3tag libjpeg-turbo 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Library that does image file loading and saving as well as rendering, manipulation, arbitrary polygon support"
+url="http://sourceforge.net/projects/enlightenment/"
+
+
+name=imlib2
+version=1.5.1
+release=1
+
+
+source=(http://downloads.sourceforge.net/enlightenment/imlib2-$version.tar.bz2)
+
+
+prepare(){
+  cd "${name}-${version}"
+  sed -i 's/@my_libs@//' imlib2-config.in
+}
+
+
+build() {
+  cd "${name}-${version}"
+  ./configure --prefix=/usr \
+              --sysconfdir=/etc/imlib2 \
+              --x-libraries=/usr/lib --enable-amd64
+  make
+}
+
+
+package() {
+  cd "${name}-${version}"
+  make DESTDIR="${PKG}" install
+}
