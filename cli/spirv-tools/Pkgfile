@@ -1,0 +1,43 @@
+# Depends on: cmake python git
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="API and commands for processing SPIR-V modules"
+url="https://www.khronos.org/vulkan/"
+
+
+name=spirv-tools
+version=2018.5
+release=1
+
+
+source=()
+
+
+build(){
+  git clone https://github.com/KhronosGroup/SPIRV-Tools.git
+  git clone https://github.com/KhronosGroup/SPIRV-Headers.git
+  cd SPIRV-Tools
+
+  rm -rf build && mkdir build && cd build
+  cmake .. \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_INSTALL_LIBDIR=lib \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DSPIRV_WERROR=Off \
+      -DSPIRV-Headers_SOURCE_DIR=${SRC}/SPIRV-Headers
+  make
+}
+
+package() {
+  cd SPIRV-Tools/build
+
+  make DESTDIR="${PKG}" install
+
+  install -dm755 "${PKG}/usr/share/licenses/${name}"
+  install -m644 ../LICENSE "${PKG}/usr/share/licenses/${name}/"
+}
