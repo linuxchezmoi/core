@@ -1,0 +1,33 @@
+# Depends on: imlib2 ncurses 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Color AsCii Art library"
+url="http://caca.zoy.org/wiki/libcaca"
+
+
+name=libcaca
+version=0.99.beta19
+release=1
+
+
+source=(http://libcaca.zoy.org/files/libcaca/libcaca-$version.tar.gz)
+
+
+build(){
+  cd $name-$version
+  ./configure --prefix=/usr --mandir=/usr/share/man \
+    --enable-shared --disable-doc \
+    --disable-cxx --disable-gl --disable-csharp --disable-static
+  make
+}
+
+package() {
+  cd $name-$version
+  make DESTDIR="${PKG}" install
+  install -Dm644 COPYING "${PKG}/usr/share/licenses/libcaca/COPYING"
+}
