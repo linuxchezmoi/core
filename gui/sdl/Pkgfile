@@ -1,0 +1,53 @@
+# Depends on: libxext libxrender libx11 alsa-lib mesa pulseaudio glu
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A library for portable low-level access to a video framebuffer, audio output, mouse, and keyboard"
+url="https://www.libsdl.org"
+
+
+name=sdl
+version=1.2.15
+release=1
+
+
+source=(https://www.libsdl.org/release/SDL-$version.tar.gz 
+		SDL-1.2.10-GrabNotViewable.patch 
+		SDL-1.2.15-SDL_EnableUNICODE_drops_keyboard_events.patch 
+		SDL-1.2.15-const_XData32.patch 
+		SDL-1.2.15-ignore_insane_joystick_axis.patch 
+		SDL-1.2.15-no-default-backing-store.patch 
+		SDL-1.2.15-x11-Bypass-SetGammaRamp-when-changing-gamma.patch 
+		sdl-1.2.14-fix-mouse-clicking.patch 
+		libsdl-1.2.15-resizing.patch 
+		X11_KeyToUnicode.patch)
+
+
+prepare(){
+  cd SDL-$version
+  patch -Np1 -i ../SDL-1.2.10-GrabNotViewable.patch
+  patch -Np1 -i ../SDL-1.2.15-SDL_EnableUNICODE_drops_keyboard_events.patch
+  patch -Np1 -i ../SDL-1.2.15-const_XData32.patch
+  patch -Np1 -i ../SDL-1.2.15-ignore_insane_joystick_axis.patch
+  patch -Np1 -i ../SDL-1.2.15-no-default-backing-store.patch
+  patch -Np1 -i ../SDL-1.2.15-x11-Bypass-SetGammaRamp-when-changing-gamma.patch
+  patch -Np1 -i ../sdl-1.2.14-fix-mouse-clicking.patch
+  patch -Np1 -i ../libsdl-1.2.15-resizing.patch
+  patch -Np1 -i ../X11_KeyToUnicode.patch
+}
+
+build() {
+  cd SDL-$version
+  ./configure --prefix=/usr --disable-nasm --enable-alsa \
+              --with-x --disable-rpath --disable-static
+  make
+}
+
+package() {
+  cd SDL-$version
+  make DESTDIR="$PKG" install
+}
