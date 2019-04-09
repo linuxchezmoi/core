@@ -1,4 +1,4 @@
-# Depends on: libdrm wayland git libglvnd  
+# Depends on: libdrm libx11 libxext libxfixes wayland git libglvnd meson ninja
 
 
 packager="sipo"
@@ -11,27 +11,26 @@ url="https://01.org/linuxmedia/vaapi"
 
 
 name=libva
-version=2.4.0
+version=2.4.1
 release=1
 
 
-source=(https://github.com/01org/libva/releases/download/$version/$name-$version.tar.bz2)
+source=()
 
 
 build(){
-cd $name-$version
-./configure \
---prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---disable-static
-make
+git clone https://github.com/intel/libva.git
+CFLAGS+=" -DENABLE_VA_MESSAGING"
+meson --prefix=/usr libva build
+ninja -C build
 }
-
+        
 package() {
-cd $name-$version
-make DESTDIR=$PKG install
-rm $PKG/usr/lib/libva-drm.la
-rm $PKG/usr/lib/libva.la
+DESTDIR="${PKG}" meson install -C build
+install -Dm 644 libva/COPYING -t "${PKG}"/usr/share/licenses/libva
+            
+install -Dm 644 /dev/stdin "${PKG}"/etc/libva.conf <<END
+LIBVA_MESSAGING_LEVEL=1
+END
 }
 
