@@ -1,0 +1,35 @@
+# Depends on: help2man python2 python
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Open-source braille translator and back-translator"
+url="http://liblouis.org/"
+
+
+name=liblouis
+version=3.9.0
+release=1
+
+
+source=(https://github.com/liblouis/liblouis/releases/download/v$version/liblouis-$version.tar.gz)
+
+
+build(){
+  cd $name-$version
+  ./configure --prefix=/usr --disable-static --enable-ucs4
+  make -j1
+}
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+
+  cd python
+  LD_PRELOAD+=":$SRC/$name-$version/liblouis/.libs/liblouis.so"
+  python2 setup.py install --root="$PKG" --prefix="/usr" --optimize=1
+  python3 setup.py install --root="$PKG" --prefix="/usr" --optimize=1
+}
