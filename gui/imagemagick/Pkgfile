@@ -1,0 +1,55 @@
+# Depends on: lcms2 fontconfig libxext liblqr libraqm libpng libxml2 ghostscript openexr libwmf librsvg libxml2 openjpeg2 libraw opencl-headers libwebp chrpath ocl-icd glu libheif
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="An image viewing/manipulation program"
+url="https://www.imagemagick.org/"
+
+
+name=imagemagick
+version=7.0.8.39
+_version=7.0.8-39
+release=1
+
+
+source=(https://www.imagemagick.org/download/releases/ImageMagick-${_version}.tar.xz)
+
+
+
+build() {
+
+    cd ImageMagick-${_version}
+    ./configure --prefix=/usr \
+                --enable-static=no \
+                --enable-shared \
+                --with-webp \
+                --with-gslib \
+                --with-perl \
+                --with-perl-options="INSTALLDIRS=vendor" \
+                --with-x \
+                --with-frozenpaths=no \
+                --with-modules \
+                --disable-openmp \
+                --enable-hdri \
+                --with-wmf \
+                --with-gs-font-dir=/usr/share/fonts/Type1 \
+                --with-lqr \
+                --with-rsvg \
+                --enable-opencl \
+                --with-openjp2
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make
+}
+
+
+package() {
+    cd ImageMagick-${_version}
+    make DESTDIR=$PKG install
+    find  $PKG -name perllocal.pod -exec rm {} \;
+    rm -v $PKG/usr/lib/*.la
+}
+
