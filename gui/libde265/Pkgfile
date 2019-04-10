@@ -1,0 +1,36 @@
+# Depends on: sdl
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Open h.265 video codec implementation"
+url="https://github.com/strukturag/libde265"
+
+
+name=libde265
+version=1.0.3
+release=1
+
+
+source=(https://github.com/strukturag/libde265/releases/download/v1.0.3/libde265-1.0.3.tar.gz 
+		https://github.com/strukturag/libde265/commit/e5b8e2e7.patch)
+
+
+prepare(){
+  cd $name-$version
+  patch -p1 -i ../e5b8e2e7.patch
+}
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr --enable-static=no
+  make
+}
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+}
