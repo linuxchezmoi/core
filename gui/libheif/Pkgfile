@@ -1,0 +1,30 @@
+# Depends on: libde265 x265 shared-mime-info libjpeg-turbo libpng
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="HEIF file format decoder and encoder"
+url="https://github.com/strukturag/libheif"
+
+
+name=libheif
+version=1.4.0
+release=1
+
+
+source=(https://github.com/strukturag/libheif/releases/download/v$version/libheif-$version.tar.gz)
+
+
+build(){
+  cd $name-$version
+  ./configure --prefix=/usr --enable-static=no
+  make
+}
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+}
