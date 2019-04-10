@@ -1,0 +1,42 @@
+# Depends on: libx11 libjpeg-turbo gsfonts freetype expat gtk2 libxt
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A library for reading vector images in Microsoft's native Windows Metafile Format (WMF)"
+url="http://wvware.sourceforge.net/libwmf.html"
+
+
+name=libwmf
+version=0.2.11
+release=1
+
+
+source=(https://github.com/caolanm/libwmf/archive/v0.2.11.tar.gz 
+		libwmf-freetype.patch)
+
+
+prepare(){
+  cd ${name}-${version}
+  patch -p1 -i ../libwmf-freetype.patch # Port away from freetype-config, patch from openembedded.org
+  autoreconf -vif -Ipatches
+}
+
+build() {
+  cd ${name}-${version}
+  ./configure --prefix=/usr \
+              --with-gsfontdir=/usr/share/fonts/Type1 \
+	      --with-fontdir=/usr/share/fonts/Type1 \
+	      --with-gsfontmap=/usr/share/ghostscript/9.10/Resource/Init/Fontmap.GS
+  make
+}
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install -j1
+  #Remove fonts, these are in gsfonts
+  rm -rf "${PKG}/usr/share/fonts"
+}
