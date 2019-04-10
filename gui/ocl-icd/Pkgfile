@@ -1,0 +1,40 @@
+# Depends on: ruby mesa xmlto asciidoc opencl-headers
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="OpenCL ICD Bindings"
+url="https://github.com/OCL-dev/ocl-icd"
+
+
+name=ocl-icd
+version=2.2.12
+release=1
+
+
+source=(https://github.com/OCL-dev/ocl-icd/archive/v$version.tar.gz)
+
+
+prepare(){
+  cd "$SRC/$name-$version"
+  autoreconf -fiv
+}
+
+build() {
+  cd "$SRC/$name-$version"
+  ./configure --prefix=/usr
+  make
+}
+
+
+package() {
+  cd "$SRC/$name-$version"
+  make DESTDIR="$PKG/" install
+
+  install -m755 -d "$PKG/usr/share/licenses/ocl-icd"
+  install -m644 "$SRC/$name-$version/COPYING" "${PKG}/usr/share/licenses/ocl-icd/"
+}
+
