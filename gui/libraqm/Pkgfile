@@ -1,0 +1,41 @@
+# Depends on: freetype fribidi gtk-doc harfbuzz
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A library that encapsulates the logic for complex text layout"
+url="https://github.com/HOST-Oman/libraqm/"
+
+
+name=libraqm
+version=0.5.0
+release=1
+
+
+source=(https://github.com/HOST-Oman/libraqm/releases/download/v$version/raqm-$version.tar.gz)
+
+
+build(){
+    cd raqm-$version
+    
+    ./configure \
+        --prefix=/usr \
+        --enable-static=no \
+        --enable-shared=yes \
+        --enable-fast-install=yes \
+        --enable-gtk-doc=yes \
+        --enable-gtk-doc-html=yes \
+        --enable-gtk-doc-pdf=no
+    make
+}
+
+package() {
+    cd raqm-$version
+    
+    make DESTDIR="$PKG" install
+    
+    install -D -m644 COPYING "$PKG"/usr/share/licenses/$name/LICENSE
+}
