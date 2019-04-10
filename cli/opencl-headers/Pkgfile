@@ -1,0 +1,40 @@
+# Depends on: git python
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="OpenCL (Open Computing Language) header files"
+url="https://www.khronos.org/registry/cl/"
+
+
+name=opencl-headers
+version=2.2.20170516
+release=1
+
+
+source=()
+
+
+build(){
+  git clone https://github.com/KhronosGroup/OpenCL-Headers.git
+  git clone https://github.com/KhronosGroup/OpenCL-CLHPP.git
+  cd "${SRC}"/OpenCL-Headers/CL
+
+  install -dm755 "${PKG}"/usr/include/CL
+
+  for h in *.h; do
+    install -m 644 ${h} "${PKG}"/usr/include/CL/
+  done
+
+  # remove useless headers
+  rm "${PKG}"/usr/include/CL/{cl_d3d,cl_dx9}*.h
+
+  cd "${SRC}"/OpenCL-CLHPP
+
+  python3 gen_cl_hpp.py -i input_cl.hpp -o cl.hpp
+  install -m 644 cl.hpp "${PKG}"/usr/include/CL/
+  install -m 644 input_cl2.hpp "${PKG}"/usr/include/CL/cl2.hpp
+}
