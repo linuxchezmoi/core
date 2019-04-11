@@ -1,0 +1,38 @@
+# Depends on: texinfo
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="C/C++ Configuration File Library"
+url="https://github.com/hyperrealm/libconfig"
+
+
+name=libconfig
+version=1.7.2
+release=1
+
+
+source=(https://github.com/hyperrealm/libconfig/archive/v$version.tar.gz)
+
+
+prepare(){
+  cd $name-$version
+  autoreconf -vi
+}
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd $name-$version
+
+  make DESTDIR="$PKG" install
+  rm "$PKG/usr/share/info/dir"
+}
+
