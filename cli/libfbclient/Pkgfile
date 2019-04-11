@@ -1,0 +1,48 @@
+# Depends on: libtommath icu 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Client library for Firebird"
+url="http://www.firebirdsql.org/"
+
+
+name=libfbclient
+version=3.0.4.33054
+release=1
+
+
+source=(https://github.com/FirebirdSQL/firebird/releases/download/R3_0_4/Firebird-$version-0.tar.bz2)
+
+
+build(){
+  cd Firebird-$version-0
+
+  ./configure --prefix=/usr --without-fbudf \
+    --without-fbsbin --without-fbconf --without-fbdoc --without-fbsample \
+    --without-fbsample-db --without-fbintl --without-fbmisc --without-fbhelp \
+    --without-fbsecure-db --with-fbmsg=/usr/share/firebird --without-fblog \
+    --without-fbglock --without-fbplugins
+
+  make
+}
+
+package() {
+  cd Firebird-$version-0
+
+  mkdir -p "$PKG"/usr/{bin,share/{firebird,licenses/$name}}
+
+  cp -R gen/Release/firebird/{lib,include} "$PKG"/usr
+  rm -f "$PKG"/usr/lib/libedit.a
+
+  install -m644 gen/Release/firebird/*.msg "$PKG"/usr/share/firebird
+  install -m755 gen/Release/firebird/bin/fb_config "$PKG"/usr/bin
+
+  # Add libgds support FS#30062 FS#30282
+  cd "$PKG"/usr/lib
+  ln -s libfbclient.so libgds.so.0
+  ln -s libfbclient.so libgds.so
+}
