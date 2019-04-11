@@ -1,0 +1,29 @@
+# Depends on:  
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Highly optimized and portable routines for integer based number theoretic applications"
+url="http://www.libtom.org/"
+
+
+name=libtommath
+version=1.1.0
+release=1
+
+
+source=(https://github.com/libtom/libtommath/releases/download/v1.1.0/ltm-$version.tar.xz)
+
+
+build(){
+  cd $name-$version
+  make -f makefile.shared IGNORE_SPEED=1
+}
+
+package() {
+  cd $name-$version
+  make -f makefile.shared PREFIX=/usr DESTDIR=$PKG INSTALL_GROUP=root install
+}
