@@ -1,0 +1,36 @@
+# Depends on: cmake
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Binary-decimal and decimal-binary routines for IEEE doubles"
+url="https://github.com/google/double-conversion"
+
+
+name=double-conversion
+version=3.1.4
+release=1
+
+
+source=(https://github.com/google/double-conversion/archive/v$version.tar.gz)
+
+
+prepare(){
+  mkdir -p build
+}
+
+build() {
+  cd build
+  cmake ../$name-$version \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DBUILD_SHARED_LIBS=ON
+  make
+}
+
+package () {
+  cd build
+  make DESTDIR="$PKG" install
+}
