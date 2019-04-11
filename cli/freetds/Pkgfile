@@ -1,0 +1,31 @@
+# Depends on: openssl unixodbc 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Library for accessing Sybase and MS SQL Server databases"
+url="http://www.freetds.org"
+
+
+name=freetds
+version=1.00.98
+release=1
+
+
+source=(ftp://ftp.freetds.org/pub/freetds/stable/freetds-$version.tar.bz2)
+
+
+build(){
+  cd $name-$version
+  ./configure --prefix=/usr --sysconfdir=/etc/freetds --enable-msdblib \
+    --with-tdsver=7.0 --with-unixodbc=/usr --with-openssl
+  make 
+}
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+}
