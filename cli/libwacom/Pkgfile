@@ -1,0 +1,36 @@
+# Depends on: glib2 systemd libgudev libxml2
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Library to identify Wacom tablets and their features"
+url="https://github.com/linuxwacom/libwacom/wiki"
+
+
+name=libwacom
+version=0.32
+release=1
+
+
+source=(https://github.com/linuxwacom/libwacom/releases/download/libwacom-$version/libwacom-$version.tar.bz2)
+
+
+build(){
+  cd $name-$version
+  ./configure --prefix=/usr
+  make
+}
+
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+  install -D -m644 COPYING "${PKG}/usr/share/licenses/${name}/LICENSE"
+  install -m755 -d ${PKG}/usr/lib/udev/rules.d
+  cd tools
+  ./generate-udev-rules > ${PKG}/usr/lib/udev/rules.d/65-libwacom.rules
+  
+}
