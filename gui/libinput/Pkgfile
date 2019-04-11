@@ -1,0 +1,32 @@
+# Depends on: mtdev systemd libevdev libwacom gtk3 meson ninja
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Input device management and event handling library"
+url="https://www.freedesktop.org/wiki/Software/libinput/"
+
+
+name=libinput
+version=1.13.1
+release=1
+
+
+source=(https://freedesktop.org/software/libinput/libinput-$version.tar.xz)
+
+
+build() {
+   meson $name-$version build \
+    --prefix=/usr \
+    -Dudev-dir=/usr/lib/udev \
+    -Dtests=false \
+    -Ddocumentation=false
+  ninja -C build
+}
+
+package() {
+  DESTDIR="$PKG" ninja -C build install
+}
