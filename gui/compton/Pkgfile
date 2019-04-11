@@ -1,0 +1,36 @@
+# Depends on: hicolor-icon-theme uthash libconfig dbus libev libxdg-basedir pcre pixman xcb-util-image xcb-util-renderutil asciidoc git mesa meson ninja
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="X compositor that may fix tearing issues"
+url="https://github.com/yshui/compton"
+
+
+name=compton
+version=6.2
+release=1
+
+
+source=(compton.conf)
+
+
+prepare(){
+  git clone https://github.com/yshui/compton
+  cd $name
+}
+
+build() {
+  mkdir -p build
+  meson build $name --prefix=/usr -D build_docs=true -D b_ndebug=true -D opengl=false
+  ninja -v -C build
+}
+
+
+package() {
+  DESTDIR="$PKG" ninja -C build install
+  install -Dm644 compton.conf "$PKG/etc/xdg/compton.conf"
+}
