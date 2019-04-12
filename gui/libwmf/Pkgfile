@@ -11,11 +11,11 @@ url="http://wvware.sourceforge.net/libwmf.html"
 
 
 name=libwmf
-version=0.2.11
+version=0.2.12
 release=1
 
 
-source=(https://github.com/caolanm/libwmf/archive/v0.2.11.tar.gz 
+source=(https://github.com/caolanm/libwmf/archive/v$version.tar.gz 
 		libwmf-freetype.patch)
 
 
