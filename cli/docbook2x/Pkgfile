@@ -1,0 +1,44 @@
+# Depends on: perl-sgmls perl-xml-parser perl-xml-sax libxslt openjade perl-xml-sax-expat texinfo
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A software package that converts DocBook documents."
+url="http://docbook2x.sourceforge.net"
+
+
+name=docbook2x
+version=0.8.8
+release=1
+
+
+source=(https://downloads.sourceforge.net/docbook2x/docbook2X-$version.tar.gz 
+		datadir.diff)
+
+
+prepare(){
+  cd "$SRC"/docbook2X-$version
+  patch -p1 <"$SRC"/datadir.diff
+  sed -e 's/AM_CONFIG_HEADER(/AC_CONFIG_HEADERS(/' -i configure.ac
+}
+
+build()  {
+  cd "$SRC"/docbook2X-$version
+  autoreconf -i -f
+  ./configure \
+    --prefix=/usr \
+    --mandir=/usr/share/man \
+    --program-transform-name 's,2x-,2,' \
+  make
+}
+
+package() {
+  cd "$SRC"/docbook2X-$version
+  make DESTDIR="$PKG" install
+  install -D -m0644 COPYING "$PKG"/usr/share/licenses/$name/license
+  sed -i 's|http://docbook2x.sf.net/latest|/usr/share/docbook2X|g' \
+    "$PKG"/usr/bin/db2x_xsltproc
+}
