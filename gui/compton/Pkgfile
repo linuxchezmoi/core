@@ -6,6 +6,9 @@ contributors=""
 maintainer="sipo"
 
 
+run=(libconfig)
+
+
 description="X compositor that may fix tearing issues"
 url="https://github.com/yshui/compton"
 
@@ -25,7 +28,7 @@ prepare(){
 
 build() {
   mkdir -p build
-  meson build $name --prefix=/usr -D build_docs=true -D b_ndebug=true -D opengl=false
+  meson build $name --prefix=/usr -D build_docs=true -D b_ndebug=true
   ninja -v -C build
 }
 
