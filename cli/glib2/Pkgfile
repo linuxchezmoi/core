@@ -15,7 +15,7 @@ PKGMK_GROUPS=(man devel doc)
 
 name=glib2
 _name=glib
-version=2.60.0
+version=2.60.1
 release=1
 
 
