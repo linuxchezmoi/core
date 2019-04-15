@@ -1,0 +1,32 @@
+# Depends on: libfm-extra gtk-doc
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Caching mechanism for freedesktop.org compliant menus"
+url="https://lxde.org/"
+
+
+name=menu-cache
+version=1.1.0
+release=1
+
+
+source=(https://downloads.sourceforge.net/lxde/menu-cache-$version.tar.xz)
+
+
+build(){
+  cd $name-$version
+  ./configure --prefix=/usr --sysconfdir=/etc \
+    --libexecdir=/usr/lib \
+    --enable-gtk-doc
+  make
+}
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+}
