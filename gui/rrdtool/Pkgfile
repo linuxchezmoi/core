@@ -1,0 +1,48 @@
+# Depends on: libxml2 pango ttf-dejavu intltool ruby python2-setuptools tcl lua51
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Data logging and graphing application"
+url="https://www.rrdtool.org"
+
+
+name=rrdtool
+version=1.7.1
+release=1
+
+
+source=(https://oss.oetiker.ch/rrdtool/pub/rrdtool-1.7.1.tar.gz 
+		https://github.com/oetiker/rrdtool-1.x/commit/865a9bad.patch)
+
+
+prepare(){
+  cd ${name}-${version}
+  sed -i 's|/usr/bin/python|/usr/bin/python2|' examples/stripes.py
+
+  patch -p1 -i ../865a9bad.patch
+  # fix FS#28521 make ruby install to vendor_ruby instead of site_ruby
+  sed -e 's/$(RUBY) ${abs_SRC}\/ruby\/extconf.rb/& --vendor/' -i bindings/Makefile.am
+  aclocal
+  automake
+}
+
+build() {
+  cd ${name}-${version}
+  PYTHON=python2 LUA=/usr/bin/lua5.1 \
+    LUA_CFLAGS="-I/usr/include/lua5.1 -llua5.1" LUA_INSTALL_CMOD="/usr/lib/lua/5.1" \
+    ./configure --prefix=/usr --localstatedir=/var --disable-rpath \
+    --enable-perl --enable-perl-site-install --with-perl-options='INSTALLDIRS=vendor' \
+    --enable-ruby --enable-ruby-site-install --enable-python \
+    --enable-lua --enable-lua-site-install --enable-tcl --disable-libwrap
+  make
+}
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" includedir=/usr/include install
+  install -D -m644 COPYRIGHT "${PKG}/usr/share/licenses/${name}/LICENSE"
+}
