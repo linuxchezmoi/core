@@ -1,0 +1,24 @@
+# Depends on: python2
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Set of tools for processing plaintext docs into formats such as HTML, XML, or LaTeX"
+url="http://docutils.sourceforge.net"
+
+
+name=python2-docutils
+version=0.14
+release=1
+
+
+source=(https://pypi.python.org/packages/84/f4/5771e41fdf52aabebbadecc9381d11dea0fa34e4759b4071244fa094804c/docutils-$version.tar.gz)
+
+
+build(){   
+cd docutils-$version
+python2 setup.py install --root=$PKG
+}
