@@ -11,7 +11,7 @@ url="https://gstreamer.freedesktop.org/"
 
 
 name=gst-plugins-base
-version=1.14.4
+version=1.16.0
 release=1
 
 
