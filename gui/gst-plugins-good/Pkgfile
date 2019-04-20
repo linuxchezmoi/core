@@ -11,17 +11,15 @@ url="https://gstreamer.freedesktop.org/"
 
 
 name=gst-plugins-good
-version=1.14.4
+version=1.16.0
 release=1
 
 
-source=(https://gstreamer.freedesktop.org/src/$name/$name-$version.tar.xz
-		gst-plugins-good-vpx_1.8-1.patch)
+source=(https://gstreamer.freedesktop.org/src/$name/$name-$version.tar.xz)
 
 
 prepare(){
 cd $name-$version
-patch -Np1 -i ../gst-plugins-good-vpx_1.8-1.patch
 autoreconf -fi
 }
 
