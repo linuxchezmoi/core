@@ -1,21 +1,27 @@
 # Depends on: systemd libusb avahi python gnutls xdg-utils gtk-update-icon-cache
 
-description="The Common Unix Printing System (CUPS) is a print spooler and associated utilities"
-url="http://www.cups.org"
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+
+packager="sipo"
+contributors="Pierre B, Tnut"
+maintainer="sipo"
+
 
 run=(xdg-utils gtk-update-icon-cache)
-
 PKGMK_GROUPS=(devel man)
+
+
+description="The Common Unix Printing System (CUPS) is a print spooler and associated utilities"
+url="http://www.cups.org"
+
 
 name=cups
 version=2.2.11
 release=1
-run=(xdg-utils gtk-update-icon-cache)
+
 
 source=(https://github.com/apple/cups/releases/download/v${version}/cups-${version}-source.tar.gz \
 	99-printer.rules)
+
 
 build() {
 	cd $name-$version
