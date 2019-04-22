@@ -1,0 +1,40 @@
+# Depends on: alsa-lib git
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Cross-platform audio output library and plugins"
+url="https://xiph.org/ao/"
+
+
+name=libao
+version=1.2.2
+release=1
+
+
+source=(libao.conf)
+
+
+prepare(){
+    git clone https://git.xiph.org/libao.git
+	cd "${SRC}/${name}"
+	./autogen.sh
+}
+
+
+build(){
+	cd "${SRC}/${name}"
+	./configure \
+		--prefix=/usr \
+		--enable-alsa-mmap 
+	make
+}
+
+package() {
+	cd "${SRC}/${name}"
+	make DESTDIR="${PKG}" install
+	install -Dm644 "${SRC}"/libao.conf "${PKG}"/etc/libao.conf
+}
