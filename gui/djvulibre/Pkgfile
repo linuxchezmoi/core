@@ -6,6 +6,9 @@ contributors=""
 maintainer="sipo"
 
 
+run=(librsvg hicolor-icon-theme)
+
+
 description="Suite to create, manipulate and view DjVu ('déjà vu') documents"
 url="http://djvu.sourceforge.net/"
 
@@ -24,6 +27,7 @@ build(){
 	./configure --prefix=/usr --disable-desktopfiles
 	make
 }
+
 
 package() {
 	cd "${SRC}/${name}-${version}"
