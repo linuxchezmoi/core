@@ -34,6 +34,7 @@ make
 make so
 }
 
+
 package() {
 cd $name-$version
 make DESTDIR=$PKG install soinstall
