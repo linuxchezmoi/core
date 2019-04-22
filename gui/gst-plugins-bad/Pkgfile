@@ -18,7 +18,6 @@ release=1
 source=(https://gstreamer.freedesktop.org/src/gst-plugins-bad/$name-$version.tar.xz)
 
 
-
 build() {
 cd $name-$version
 ./configure --prefix=/usr     \
