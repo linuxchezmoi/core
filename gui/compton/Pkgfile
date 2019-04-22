@@ -26,6 +26,7 @@ prepare(){
   cd $name
 }
 
+
 build() {
   mkdir -p build
   meson build $name --prefix=/usr -D build_docs=true -D b_ndebug=true
