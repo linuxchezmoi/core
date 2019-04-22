@@ -1,4 +1,4 @@
-# Depends on: gdk-pixbuf2 glib2 atk pango cairo libffi libpng pcre
+# Depends on: gdk-pixbuf2 glib2 atk cairo libffi libpng pcre pango
 
 
 packager="sipo"
