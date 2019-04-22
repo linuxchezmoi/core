@@ -21,7 +21,6 @@ release=2
 source=(https://www.freedesktop.org/software/pulseaudio/releases/$name-$version.tar.xz)
 
 
-
 build() {
 cd $name-$version
 ./configure --prefix=/usr         \
@@ -37,6 +36,7 @@ cd $name-$version
             --with-udev-rules-dir=/lib/udev/rules.d
 make
 }
+
 
 package() {
 cd $name-$version
