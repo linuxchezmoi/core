@@ -1,0 +1,31 @@
+# Depends on: 
+
+
+packager="sipo"
+contributors="sipo"
+maintainer="sipo"
+
+
+description="NVIDIA Cg libraries"
+url="https://developer.nvidia.com/cg-toolkit"
+
+
+name=nvidia-cg-toolkit
+version=3.1
+release=1
+
+
+source=(https://developer.download.nvidia.com/cg/Cg_$version/Cg-${version}_April2012_x86_64.tgz)
+
+
+build(){
+  install -Dm755 "${SRC}"/usr/bin/cgc "${PKG}"/usr/bin/cgc
+  install -dm755 "${PKG}"/usr/include/Cg
+  install -m644 "${SRC}"/usr/include/Cg/* "${PKG}"/usr/include/Cg
+  install -dm755 "${PKG}"/usr/lib
+  install -m644 "${SRC}"/usr/lib64/* "${PKG}"/usr/lib
+  install -Dm644 "${SRC}"/usr//local/Cg/docs/license.txt "${PKG}"/usr/share/licenses/nvidia-cg-toolkit/license.txt
+  cp -r "${SRC}"/usr/local/Cg "${PKG}"/usr/share/
+  find $PKG/usr/share/ -type d -exec chmod -R 755 '{}' ';'
+  find $PKG/usr/share/ -type f -exec chmod -R 644 '{}' ';'
+}
