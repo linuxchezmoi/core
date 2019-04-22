@@ -1,4 +1,4 @@
-# Depends on: libxi libxrandr mesa glu libxxf86vm cmake
+# Depends on: libxi libxrandr glu libxxf86vm cmake mesa
 
 
 packager="sipo"
@@ -22,11 +22,17 @@ prepare(){
   mkdir build
 }
 
+
 build() {
   cd build
-  cmake ../$name-$version -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_BUILD_TYPE=Release
-  make
+  cmake ../$name-$version          \
+  -DCMAKE_INSTALL_PREFIX=/usr      \
+  -DCMAKE_BUILD_TYPE=Release       \
+  -DCMAKE_INSTALL_LIBDIR=lib       \
+  -DFREEGLUT_BUILD_DEMOS=OFF       \
+  -DFREEGLUT_BUILD_STATIC_LIBS=OFF 
 }
+
 
 package() {
   cd build
