@@ -31,10 +31,6 @@ build(){
   make
 }
 
-check() {
-  cd OpenSP-$version
-  make check || /bin/true
-}
 
 package() {
   cd OpenSP-$version
