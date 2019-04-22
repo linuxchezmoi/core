@@ -1,0 +1,43 @@
+# Depends on: libxfce4util dbus-glib perl-extutils-depends perl-extutils-pkgconfig glib-perl intltool chrpath
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A simple client-server configuration storage and query system"
+url="https://www.xfce.org/"
+
+
+name=xfconf
+version=4.12.1
+release=1
+
+
+source=(https://archive.xfce.org/src/xfce/xfconf/4.12/xfconf-$version.tar.bz2)
+
+
+build(){
+  cd "$SRC/$name-$version"
+
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib/xfce4 \
+    --localstatedir=/var \
+    --disable-static \
+    --with-perl-options=INSTALLDIRS="vendor" \
+    --disable-debug
+  make
+}
+
+package() {
+  cd "$SRC/$name-$version"
+
+  make DESTDIR="$PKG" install
+
+  # Fix insecure rpath, http://bugs.archlinux.org/task/19980
+  find "$PKG" -name Xfconf.so -exec chrpath -d {} +
+}
+
