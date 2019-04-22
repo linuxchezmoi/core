@@ -1,0 +1,47 @@
+# Depends on: libao libvorbis curl flac 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Extra tools for Ogg-Vorbis"
+url="https://www.xiph.org/vorbis/"
+
+
+name=vorbis-tools
+version=1.4.0
+release=1
+
+
+source=(https://downloads.xiph.org/releases/vorbis/vorbis-tools-$version.tar.gz 
+		0001-vorbis-tools-cve9638-cve9639.patch 
+		0002-vorbis-tools-cve9640.patch 
+		0003-vorbis-tools-CVE-2015-6749.patch 
+		0004-fix-segfault-in-vcut.patch)
+
+
+prepare(){
+  cd ${name}-${version}
+
+  patch -p1 -i "${SRC}/0001-vorbis-tools-cve9638-cve9639.patch"
+  patch -p1 -i "${SRC}/0002-vorbis-tools-cve9640.patch"
+  patch -p1 -i "${SRC}/0003-vorbis-tools-CVE-2015-6749.patch"
+  patch -p1 -i "${SRC}/0004-fix-segfault-in-vcut.patch"
+}
+
+build() {
+  cd ${name}-${version}
+
+  ./configure \
+    --prefix=/usr \
+    --without-speex \
+    --enable-vcut
+  make
+}
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+}
