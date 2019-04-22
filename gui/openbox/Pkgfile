@@ -1,0 +1,55 @@
+# Depends on: startup-notification libxml2 libxinerama libxrandr libxcursor pango imlib2 librsvg libsm python2
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Highly configurable and lightweight X11 window manager"
+url="http://openbox.org"
+
+
+name=openbox
+version=3.6.1
+release=1
+
+
+source=(http://openbox.org/dist/openbox/openbox-3.6.1.tar.gz 
+		openbox-3.5.0-title-matching.patch 
+		openbox-3.5.0-which-2.20.patch)
+
+
+prepare(){
+  cd $name-$version
+
+  patch -Np1 -i "$SRC"/openbox-3.5.0-title-matching.patch 
+  patch -Np1 -i "$SRC"/openbox-3.5.0-which-2.20.patch
+
+  sed -i 's|/usr/bin/env python|/usr/bin/env python2|' \
+    data/autostart/openbox-xdg-autostart
+}
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr \
+    --with-x \
+    --enable-startup-notification \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib/openbox
+  make
+}
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+
+  # GNOME Panel is no longer available in the official repositories
+  rm -r "$PKG"/usr/bin/{gdm-control,gnome-panel-control,openbox-gnome-session} \
+    "$PKG"/usr/share/gnome{,-session} \
+    "$PKG"/usr/share/man/man1/openbox-gnome-session.1 \
+    "$PKG"/usr/share/xsessions/openbox-gnome.desktop
+
+  sed -i 's:startkde:/usr/bin/\0:' \
+    "$PKG"/usr/share/xsessions/openbox-kde.desktop
+}
