@@ -1,0 +1,39 @@
+# Depends on: libxfce4util gtk2 gtk3 xfconf libsm startup-notification hicolor-icon-theme intltool gobject-introspection vala
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Commonly used Xfce widgets among Xfce applications"
+url="https://www.xfce.org/"
+
+
+name=libxfce4ui
+version=4.13.4
+release=1
+
+
+source=(https://archive.xfce.org/src/xfce/libxfce4ui/4.13/libxfce4ui-$version.tar.bz2)
+
+
+build(){
+  cd "$SRC/$name-$version"
+
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib \
+    --localstatedir=/var \
+    --disable-static \
+    --disable-debug \
+    --with-vendor-info='YAO'
+  make
+}
+
+package() {
+  cd "$SRC/$name-$version"
+  make DESTDIR="$PKG" install
+}
+
