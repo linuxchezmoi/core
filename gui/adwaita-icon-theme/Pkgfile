@@ -1,4 +1,5 @@
-# Depends on: librsvg hicolor-icon-theme
+# Depends on: intltool gtk-update-icon-cache hicolor-icon-theme icon-naming-utils librsvg
+
 
 
 packager="sipo"
@@ -6,8 +7,7 @@ contributors=""
 maintainer="sipo"
 
 
-run=(librsvg hicolor-icon-theme)
-
+run=(librsvg hicolor-icon-theme gtk-update-icon-cache)
 
 
 description="GNOME standard icons"
