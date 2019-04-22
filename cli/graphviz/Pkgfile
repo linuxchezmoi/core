@@ -35,4 +35,14 @@ build() {
 package() {
 	cd "${SRC}/${name}-${version}"
 	make DESTDIR="${PKG}" install
+    rm $PKG/usr/lib/libcdt.la
+    rm $PKG/usr/lib/libcgraph.la
+    rm $PKG/usr/lib/libpathplan.la
+    rm $PKG/usr/lib/libxdot.la
+    rm $PKG/usr/lib/libgvc.la
+    rm $PKG/usr/lib/liblab_gamut.la
+    rm $PKG/usr/lib/libgvpr.la
+    rm $PKG/usr/lib/graphviz/libgvplugin_core.la
+    rm $PKG/usr/lib/graphviz/libgvplugin_dot_layout.la
+    rm $PKG/usr/lib/graphviz/libgvplugin_neato_layout.la
 }
