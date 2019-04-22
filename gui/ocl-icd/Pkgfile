@@ -1,4 +1,4 @@
-# Depends on: ruby mesa xmlto asciidoc opencl-headers
+# Depends on: ruby xmlto asciidoc opencl-headers
 
 
 packager="sipo"
@@ -12,7 +12,7 @@ url="https://github.com/OCL-dev/ocl-icd"
 
 name=ocl-icd
 version=2.2.12
-release=1
+release=2
 
 
 source=(https://github.com/OCL-dev/ocl-icd/archive/v$version.tar.gz)
