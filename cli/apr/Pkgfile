@@ -32,4 +32,5 @@ cd $name-$version
 package() {
 cd $name-$version
 make DESTDIR="$PKG" install
+rm $PKG/usr/lib/libapr-1.la
 }
