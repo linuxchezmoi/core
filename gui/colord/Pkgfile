@@ -23,6 +23,7 @@ cd $name-$version
 mkdir build
 }
 
+
 build() {
 cd $name-$version/build
 	meson --prefix=/usr \
@@ -31,7 +32,7 @@ cd $name-$version/build
 	      --localstatedir=/var \
 	      -Ddaemon_user=colord \
 	      -Dvapi=true \
-	      -Dsystemd=false \
+	      -Dsystemd=true \
 	      -Dlibcolordcompat=true \
 	      -Dargyllcms_sensor=false \
 	      -Dbash_completion=false \
@@ -39,6 +40,7 @@ cd $name-$version/build
 	      -Dman=false ..
 	ninja	
 }
+
 
 package() {
 cd $name-$version/build
