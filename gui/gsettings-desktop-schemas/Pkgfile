@@ -28,6 +28,7 @@ prepare(){
   mkdir build
 }
 
+
 build() {
   cd $name/build
   meson --prefix=/usr 
