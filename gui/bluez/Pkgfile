@@ -6,8 +6,8 @@ contributors=""
 maintainer="sipo"
 
 
-description=""
-url=""
+description="Bluetooth protocol stack for Linux"
+url="http://www.bluez.org/"
 
 
 name=bluez
@@ -16,7 +16,6 @@ release=1
 
 
 source=(https://www.kernel.org/pub/linux/bluetooth/$name-$version.tar.xz)
-
 
 
 build() {
@@ -29,6 +28,7 @@ cd $name-$version
 --enable-systemd
 make
 }
+
 
 package() {
 cd $name-$version
@@ -53,6 +53,5 @@ cat > $PKG/etc/bluetooth/uart.conf << "EOF"
 # See the hciattach man page for options
 # End of uart.conf
 EOF
-
 }
 
