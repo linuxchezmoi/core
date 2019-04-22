@@ -23,6 +23,7 @@ cd $name-$version
 mkdir build
 }
 
+
 build() {
 cd $name-$version/build
 meson --prefix=/usr --sysconfdir=/etc \
