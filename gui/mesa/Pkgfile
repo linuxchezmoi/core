@@ -1,10 +1,12 @@
-# Depends on: xorgproto pkg-config libtool wayland wayland-protocols libx11 libdrm libxext libxdamage expat llvm elfutils libxshmfence python-mako libxxf86vm xorg-xrandr
-
+# Depends on: xorgproto pkg-config libtool wayland wayland-protocols libx11 libdrm libxdamage expat llvm elfutils libxshmfence python-mako libxxf86vm xorg-xrandr python
 
 
 packager="sipo"
 contributors=""
 maintainer="sipo"
+
+
+run=(python python-mako)
 
 
 description="Mesa is an OpenGL compatible 3D graphics library."
@@ -13,7 +15,7 @@ url="http://www.xorg-mesa3d.org"
 
 name=mesa
 version=19.0.2
-release=1
+release=2
 
 
 source=(https://mesa.freedesktop.org/archive/mesa-$version.tar.xz)
@@ -34,6 +36,7 @@ cd mesa-$version
 --with-gallium-drivers="nouveau,virgl,r300,r600,radeonsi,svga,swrast"
 make
 }
+
 
 package() {
 cd mesa-$version
