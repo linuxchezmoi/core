@@ -1,4 +1,4 @@
-# Depends on: libdrm libx11 libxext libxfixes wayland git libglvnd meson ninja
+# Depends on: libdrm libx11 libxext libxfixes wayland git meson ninja
 
 
 packager="sipo"
@@ -12,7 +12,7 @@ url="https://01.org/linuxmedia/vaapi"
 
 name=libva
 version=2.4.1
-release=1
+release=2
 
 
 source=()
