@@ -1,0 +1,24 @@
+# Depends on: gawk 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Converts flat ASCII text to man page format"
+url="https://github.com/mvertes/txt2man"
+
+
+name=txt2man
+version=1.6.0
+release=1
+
+
+source=(https://github.com/mvertes/txt2man/archive/txt2man-$version.tar.gz)
+
+
+build(){
+cd "$SRC"/txt2man-txt2man-$version
+PATH=./:$PATH make prefix="$PKG"/usr install
+}
