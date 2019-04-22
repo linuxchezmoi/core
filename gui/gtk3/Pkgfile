@@ -15,7 +15,7 @@ url="https://www.gtk.org/"
 
 name=gtk3
 version=3.24.8
-release=2
+release=1
 
 
 source=(https://ftp.gnome.org/pub/gnome/sources/gtk+/${version::4}/gtk+-$version.tar.xz)
@@ -30,6 +30,7 @@ cd gtk+-$version
 --disable-wayland-backend
 make
 }
+
 
 package() {
 cd gtk+-$version
