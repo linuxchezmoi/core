@@ -1,0 +1,37 @@
+# Depends on: glib2 perl-extutils-depends perl-extutils-pkgconfig
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Perl wrappers for glib 2.x, including GObject"
+url="http://gtk2-perl.sourceforge.net/"
+
+
+name=glib-perl
+version=1.328
+release=1
+
+
+source=(https://downloads.sourceforge.net/sourceforge/gtk2-perl/Glib-$version.tar.gz)
+
+
+build(){
+  cd Glib-$version
+  PERL_USE_UNSAFE_INC=1 \
+  perl Makefile.PL INSTALLDIRS=vendor
+  PERL_USE_UNSAFE_INC=1 \
+  make
+}
+
+check() {
+  cd Glib-$version
+  make test
+}
+
+package() {
+  cd Glib-$version
+  make DESTDIR="${PKG}" install
+}
