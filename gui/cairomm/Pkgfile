@@ -6,8 +6,8 @@ contributors=""
 maintainer="sipo"
 
 
-description=""
-url=""
+description="C++ bindings to Cairo vector graphics library"
+url="http://cairographics.org/"
 
 
 name=cairomm
@@ -18,15 +18,22 @@ release=1
 source=(https://cairographics.org/releases/$name-$version.tar.gz)
 
 
+prepare() {
+cd $name-$version
+sed -e '/^libdocdir =/ s/$(book_name)/cairomm-1.12.2/' \
+    -i docs/Makefile.in
+}
+
+
 build() {
 cd $name-$version
 ./configure --prefix=/usr
 make
 }
 
+
 package() {
 cd $name-$version
-sed -i -e 's/^doc_subdirs/#doc_subdirs/' Makefile
 make DESTDIR=$PKG install
 }
 
