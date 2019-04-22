@@ -1,4 +1,4 @@
-# Depends on: gtk3 libxml2 intltool gobject-introspection vala gtk-doc autoconf-archive yelp-tools
+# Depends on: gtk3 libxml2
 
 
 packager="sipo"
@@ -12,7 +12,7 @@ url="https://wiki.gnome.org/Projects/GtkSourceView"
 
 name=gtksourceview3
 version=3.24.10
-release=2
+release=1
 
 
 source=(https://ftp.gnome.org/pub/gnome/sources/gtksourceview/${version::4}/gtksourceview-$version.tar.xz)
@@ -23,6 +23,7 @@ cd gtksourceview-$version
 ./configure --prefix=/usr --disable-nls --disable-gtk-doc
 make
 }
+
 
 package() {
 cd gtksourceview-$version
