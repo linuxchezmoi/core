@@ -1,4 +1,4 @@
-# Depends on: sqlite ca-certificates dbus harfbuzz glib2 icu jasper libjpeg-turbo libmng libpng libinput libxrender libsm libxi libtiff libxkbcommon mesa mtdev openssl pcre2 wayland xcb-util-image xcb-util-keysyms xcb-util-renderutil xcb-util-wm alsa-lib python gst-plugins-base cups
+# Depends on: sqlite ca-certificates dbus harfbuzz glib2 icu jasper libjpeg-turbo libmng libpng libinput libxrender libsm libxi libtiff libxkbcommon mtdev openssl pcre2 wayland xcb-util-image xcb-util-keysyms xcb-util-renderutil xcb-util-wm alsa-lib python gst-plugins-base cups
 
 
 packager="sipo"
@@ -10,7 +10,7 @@ description="Cross-platform application framework that is widely used for develo
 url=""
 
 
-name=qt5-base
+name=qt5
 version=5.12.2
 release=1
 
