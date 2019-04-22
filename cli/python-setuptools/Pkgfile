@@ -6,9 +6,6 @@ contributors=""
 maintainer="sipo"
 
 
-PKGMK_KEEP_SOURCES=no
-
-
 description="Easily download, build, install, upgrade, and uninstall Python packages"
 url="https://pypi.org/project/setuptools/"
 
@@ -19,7 +16,6 @@ release=1
 
 
 source=(https://github.com/pypa/setuptools/archive/v$version.tar.gz)
-
 
 
 build() {
