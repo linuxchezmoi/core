@@ -6,16 +6,13 @@ contributors=""
 maintainer="sipo"
 
 
-PKGMK_GROUPS=(doc man)
-
-
 description="Query configuration information of DRI drivers"
 url="https://xorg.freedesktop.org/"
 
 
 name=xorg-xdriinfo
 version=1.0.6
-release=1
+release=2
 
 
 source=(https://xorg.freedesktop.org/archive/individual/app/xdriinfo-$version.tar.bz2)
