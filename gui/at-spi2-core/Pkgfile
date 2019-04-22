@@ -1,4 +1,4 @@
-# Depends on: dbus glib2 libxtst gobject-introspection meson ninja
+# Depends on: dbus glib2 libxtst gobject-introspection meson ninja libx11
 
 
 packager="sipo"
@@ -24,13 +24,12 @@ sed -i 's/subdir:/install_dir:/' atspi/meson.build
 mkdir build
 }
 
+
 build() {
 cd $name-$version/build
 meson --prefix=/usr \
---sysconfdir=/etc \
---libdir=/usr/lib \
---libexecdir=/usr/lib/$name ..
-	ninja
+--sysconfdir=/etc ..
+ninja
 }
 
 
