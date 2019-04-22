@@ -24,6 +24,7 @@ cd $name
 NOCONFIGURE=1 ./autogen.sh
 }
 
+
 build() {
 cd $name
 ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
@@ -31,6 +32,7 @@ cd $name
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 make
 }
+
 
 package() {
 cd $name
