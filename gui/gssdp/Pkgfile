@@ -12,7 +12,7 @@ url="https://wiki.gnome.org/Projects/GUPnP"
 
 name=gssdp
 version=1.2.0
-release=2
+release=1
 
 
 source=()
@@ -21,6 +21,7 @@ source=()
 prepare(){
   git clone https://gitlab.gnome.org/GNOME/gssdp.git
 }
+
 
 build() {
   meson $name build --prefix=/usr -D gtk_doc=true
