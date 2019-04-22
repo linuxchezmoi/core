@@ -1,4 +1,4 @@
-# Depends on: libxext libxrender libx11 alsa-lib mesa pulseaudio glu
+# Depends on: libxext libxrender libx11 alsa-lib pulseaudio glu
 
 
 packager="sipo"
@@ -12,7 +12,7 @@ url="https://www.libsdl.org"
 
 name=sdl
 version=1.2.15
-release=1
+release=2
 
 
 source=(https://www.libsdl.org/release/SDL-$version.tar.gz 
