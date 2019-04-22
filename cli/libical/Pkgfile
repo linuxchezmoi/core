@@ -12,7 +12,7 @@ url="https://github.com/libical/libical"
 
 name=libical
 version=3.0.4
-release=1
+release=2
 
 
 source=(https://github.com/libical/libical/archive/v$version.tar.gz)
@@ -28,9 +28,7 @@ build() {
   cmake ../"${name}-${version}" \
     -G Ninja \
     -DCMAKE_BUILD_TYPE=Release \
-    -DSHARED_ONLY=true \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=/usr/lib
+    -DSHARED_ONLY=true 
   ninja
 }
 
