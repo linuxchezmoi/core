@@ -1,7 +1,6 @@
 # Depends on: gtk-doc shared-mime-info libxinerama libxrandr cairo pango atk libtiff cups gdk-pixbuf2 libxi libxcursor hicolor-icon-theme gtk-update-icon-cache desktop-file-utils
 
 
-
 packager="sipo"
 contributors="Pierre B, Tnut"
 maintainer="sipo"
@@ -20,7 +19,6 @@ source=(http://ftp.gnome.org/pub/gnome/sources/gtk+/${version%.*}/gtk+-$version.
 		xid-collision-debug.patch)
 
 
-
 build(){
 cd gtk+-$version
 patch -Np1 -i ../xid-collision-debug.patch
@@ -32,6 +30,7 @@ sed -i 's#l \(gtk-.*\).sgml#& -o \1#' docs/{faq,tutorial}/Makefile.in
 make
 }
 
+
 package(){
 cd gtk+-$version
 make DESTDIR=$PKG install
@@ -41,6 +40,7 @@ rm -f $PKG/usr/bin/gtk-update-icon-cache
 rm -f $PKG/usr/share/man/man1/gtk-update-icon-cache.1
 find $PKG -name '*.la' -delete
 }
+
 
 doc(){
 cd $PKG
