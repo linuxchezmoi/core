@@ -1,0 +1,43 @@
+# Depends on: glib2 intltool gobject-introspection vala
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Basic utility non-GUI functions for Xfce"
+url="https://www.xfce.org/"
+
+
+name=libxfce4util
+version=4.13.2
+release=1
+
+
+source=(https://archive.xfce.org/src/xfce/libxfce4util/4.13/libxfce4util-$version.tar.bz2)
+
+
+prepare(){
+  cd "$SRC/$name-$version"
+}
+
+build() {
+  cd "$SRC/$name-$version"
+
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --sbindir=/usr/bin \
+    --libexecdir=/usr/lib \
+    --localstatedir=/var \
+    --disable-static \
+    --disable-debug
+  make
+}
+
+package() {
+  cd "$SRC/$name-$version"
+  make DESTDIR="$PKG" install
+}
+
