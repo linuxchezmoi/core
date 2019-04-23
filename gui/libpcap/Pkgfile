@@ -1,0 +1,47 @@
+# Depends on: libnl libusb dbus flex bluez
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A system-independent interface for user-level packet capture"
+url="http://www.tcpdump.org/"
+
+
+name=libpcap
+version=1.9.0
+release=1
+
+
+source=(http://www.tcpdump.org/release/libpcap-$version.tar.gz
+		mgmt.h)
+
+
+prepare(){
+  mkdir -p include/bluetooth
+  cp mgmt.h include/bluetooth/
+}
+
+build() {
+  cd $name-$version
+  CFLAGS="$CFLAGS -I${SRC}/include $(pkg-config libnl-genl-3.0 --cflags)" \
+  ./configure --prefix=/usr \
+    --enable-ipv6 \
+    --enable-bluetooth \
+    --with-libnl
+  make
+}
+
+package() {
+  cd $name-$version
+  install -d -m755 "$PKG"/usr/bin
+  make DESTDIR="$PKG" install
+  install -Dm644 LICENSE "$PKG/usr/share/licenses/$name/LICENSE"
+
+  # backwards compatibility, programs often look for net/bpf.h
+  mkdir -p "$PKG/usr/include/net"
+  cd "$PKG/usr/include/net"
+  ln -s ../pcap-bpf.h bpf.h
+}
