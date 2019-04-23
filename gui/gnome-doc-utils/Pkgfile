@@ -1,0 +1,39 @@
+# Depends on: libxslt python2 docbook-xml rarian intltool gnome-common git
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Documentation utilities for Gnome"
+url="https://www.gnome.org"
+
+
+name=gnome-doc-utils
+version=0.20.10+16+gc03cc09
+release=1
+
+
+source=()
+
+
+prepare(){
+  git clone https://git.gnome.org/browse/gnome-doc-utils
+  cd $name
+  rm -f m4/glib-gettext.m4
+  NOCONFIGURE=1 ./autogen.sh
+}
+
+build() {
+  cd "$name"
+  PYTHON=/usr/bin/python2 ./configure --prefix=/usr \
+      --sysconfdir=/etc --mandir=/usr/share/man \
+      --localstatedir=/var --disable-scrollkeeper
+  make
+}
+
+package() {
+  cd "$name"
+  make DESTDIR="$PKG" install
+}
