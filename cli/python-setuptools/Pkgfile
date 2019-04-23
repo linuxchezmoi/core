@@ -11,8 +11,8 @@ url="https://pypi.org/project/setuptools/"
 
 
 name=python-setuptools
-version=41.0.0
-release=1
+version=41.0.1
+release=2
 
 
 source=(https://github.com/pypa/setuptools/archive/v$version.tar.gz)
