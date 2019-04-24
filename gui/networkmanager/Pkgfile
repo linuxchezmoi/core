@@ -14,7 +14,7 @@ url="http://projects.gnome.org/NetworkManager/"
 
 
 name=networkmanager
-version=1.16.0
+version=1.18.0
 release=1
 
 
