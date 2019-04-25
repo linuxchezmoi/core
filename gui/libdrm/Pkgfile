@@ -11,11 +11,11 @@ url="https://dri.freedesktop.org/"
 
 
 name=libdrm
-version=2.4.97
+version=2.4.98
 release=1
 
 
-source=(https://dri.freedesktop.org/libdrm/libdrm-2.4.97.tar.bz2 
+source=(https://dri.freedesktop.org/libdrm/libdrm-$version.tar.bz2 
 		no-drmdevice-test.diff)
 
 
