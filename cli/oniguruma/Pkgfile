@@ -1,0 +1,35 @@
+# Depends on:  
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="a regular expressions library"
+url="https://github.com/kkos/oniguruma"
+
+
+name=oniguruma
+version=6.9.1
+release=1
+
+
+source=(https://github.com/kkos/oniguruma/releases/download/v$version/onig-$version.tar.gz)
+
+
+build(){
+	cd "$SRC"/onig-$version
+	./configure --prefix=/usr
+	make
+}
+
+package() {
+	cd "$SRC"/onig-$version
+	make DESTDIR="$PKG" install
+	install -dm755 "$PKG"/usr/share/doc
+	cp -r doc "$PKG"/usr/share/doc/$name
+	for licfile in COPYING INSTALL; do
+		install -Dm644 $licfile "$PKG"/usr/share/licenses/$name/$licfile
+	done
+}
