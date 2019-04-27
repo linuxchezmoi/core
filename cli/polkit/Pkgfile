@@ -11,8 +11,8 @@ url="https://www.freedesktop.org/wiki/Software/polkit/"
 
 
 name=polkit
-version=0.115-git
-release=1
+version=0.115+24+g5230646
+release=2
 
 
 source=()
