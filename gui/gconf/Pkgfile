@@ -11,15 +11,15 @@ url="https://projects-old.gnome.org/gconf/"
 
 
 name=gconf
-version=3.2.6
+version=3.2.6+11+g07808097
 release=1
 
 
-source=(http://ftp.gnome.org/pub/gnome/sources/GConf/3.2/GConf-$version.tar.xz gconf-merge-schema)
+source=(http://ftp.gnome.org/pub/gnome/sources/GConf/3.2/GConf-3.2.6.tar.xz gconf-merge-schema)
 
 
 build() {
-cd GConf-$version
+cd GConf-3.2.6
 ./configure --prefix=/usr \
 	        --sysconfdir=/etc \
 		    --libexecdir=/usr/lib/$name \
@@ -31,7 +31,7 @@ make
 
 
 package() {
-cd GConf-$version
+cd GConf-3.2.6
 DESTDIR="$PKG" make install
 ln -s gconf.xml.defaults $PKG/etc/gconf/gconf.xml.system
 }
