@@ -11,22 +11,23 @@ url="http://0pointer.de/lennart/projects/libcanberra"
 
 
 name=libcanberra
-version=0.30
+version=0.30+2+gc0620e4
+
 release=1
 
 
-source=(http://0pointer.de/lennart/projects/libcanberra/libcanberra-$version.tar.xz)
+source=(http://0pointer.de/lennart/projects/libcanberra/libcanberra-0.30.tar.xz)
 
 
 
 build() {
-cd libcanberra-$version
+cd libcanberra-0.30
 ./configure --prefix=/usr --disable-oss --disable-gtk --enable-pulse
 make
 }
 
 package() {
-cd libcanberra-$version
+cd libcanberra-0.30
 make -j1 DESTDIR="$PKG" install
 }
 
