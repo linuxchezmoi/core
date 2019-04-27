@@ -35,4 +35,3 @@ make gtk-update-icon-cache
 mkdir -p $PKG/usr/{bin,share/man/man1}
 install -c gtk-update-icon-cache $PKG/usr/bin/gtk-update-icon-cache
 }
-
