@@ -1,4 +1,4 @@
-# Depends on: glib2 libxml2 libsoup gobject-introspection git
+# Depends on: glib2 libxml2 libsoup gobject-introspection git gtk-doc
 
 
 packager="sipo"
@@ -12,7 +12,7 @@ url="https://wiki.gnome.org/Projects/Librest"
 
 name=rest
 version=0.8.1
-release=1
+release=4
 
 
 source=()
@@ -26,7 +26,7 @@ prepare(){
 
 build() {
   cd librest
-  ./configure --prefix=/usr --sysconfdir=/etc --without-ca-certificates
+  ./configure --prefix=/usr --sysconfdir=/etc --enable-gtk-doc --with-ca-certificates=/etc/ssl/certs
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make
 }
