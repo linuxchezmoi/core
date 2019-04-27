@@ -11,7 +11,7 @@ url="https://bitbucket.org/pypa/setuptools"
 
 
 name=python2-setuptools
-version=40.8.0
+version=41.0.1
 release=1
 
 
