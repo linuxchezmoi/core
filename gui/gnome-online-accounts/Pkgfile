@@ -1,0 +1,39 @@
+# Depends on: webkit2gtk json-glib libnotify rest libsecret krb5 gcr gobject-introspection gtk-doc vala git meson
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Single sign-on framework for GNOME"
+url="https://wiki.gnome.org/Projects/GnomeOnlineAccounts"
+
+
+name=gnome-online-accounts
+version=3.32.0
+release=1
+
+
+source=()
+
+
+prepare(){
+  git clone https://gitlab.gnome.org/GNOME/gnome-online-accounts.git
+  cd $name
+}
+
+build() {
+    meson $name build --prefix=/usr \
+    -D lastfm=true \
+    -D media_server=true \
+    -D gtk_doc=true \
+    -D man=true
+  ninja -C build
+}
+
+
+package() {
+  DESTDIR="$PKG" meson install -C build
+}
+
