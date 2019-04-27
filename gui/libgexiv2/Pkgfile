@@ -1,0 +1,32 @@
+# Depends on: exiv2 glib2 git gobject-introspection meson python-gobject vala
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="GObject-based wrapper around the Exiv2 library"
+url="https://wiki.gnome.org/Projects/gexiv2"
+
+
+name=libgexiv2
+version=0.12.0
+release=1
+
+
+source=()
+
+
+build(){
+  git clone https://gitlab.gnome.org/GNOME/gexiv2.git
+  mkdir -p build
+  meson gexiv2 build --prefix=/usr -Denable-gtk-doc=true
+  ninja -C build
+}
+
+
+package() {
+  DESTDIR="$PKG" ninja -C build install
+}
+
