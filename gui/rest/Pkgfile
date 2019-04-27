@@ -1,4 +1,4 @@
-# Depends on: glib2 libxml2 libsoup gobject-introspection git gtk-doc
+# Depends on: glib2 libxml2 libsoup gobject-introspection gtk-doc
 
 
 packager="sipo"
@@ -12,27 +12,22 @@ url="https://wiki.gnome.org/Projects/Librest"
 
 name=rest
 version=0.8.1
-release=4
+release=5
 
 
-source=()
+source=(http://ftp.gnome.org/pub/gnome/sources/rest/${version%.*}/rest-$version.tar.xz)
 
 
-prepare(){
-  git clone https://gitlab.gnome.org/GNOME/librest.git
-  cd librest
-  NOCONFIGURE=1 ./autogen.sh
-}
 
 build() {
-  cd librest
-  ./configure --prefix=/usr --sysconfdir=/etc --enable-gtk-doc --with-ca-certificates=/etc/ssl/certs
-  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
-  make
+cd rest-$version
+./configure --prefix=/usr --sysconfdir=/etc --enable-gtk-doc --with-ca-certificates=/etc/ssl/certs
+sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+make
 }
 
 package() {
-  cd librest
-  make DESTDIR="$PKG" install
+cd rest-$version
+make DESTDIR="$PKG" install
 }
 
