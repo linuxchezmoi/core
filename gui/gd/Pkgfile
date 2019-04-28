@@ -1,0 +1,34 @@
+# Depends on: fontconfig libxpm libwebp 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Library for the dynamic creation of images by programmers"
+url="https://libgd.github.io/"
+
+
+name=gd
+version=2.2.5
+release=1
+
+
+source=(https://github.com/libgd/libgd/releases/download/gd-$version/libgd-$version.tar.xz)
+
+
+build(){
+  cd libgd-${version}
+  ./configure \
+    --prefix=/usr \
+    --disable-rpath
+  make
+}
+
+
+package() {
+  cd libgd-${version}
+  make DESTDIR="${PKG}" install
+  install -D -m644 COPYING "${PKG}/usr/share/licenses/${name}/LICENSE"
+}
