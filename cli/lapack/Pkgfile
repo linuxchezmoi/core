@@ -1,0 +1,44 @@
+# Depends on: cmake python doxygen
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Linear Algebra PACKage"
+url="http://www.netlib.org/lapack"
+
+
+name=lapack
+version=3.8.0
+release=1
+
+
+source=(http://www.netlib.org/lapack/lapack-$version.tar.gz)
+
+
+build(){
+  install -d build
+  cd build
+  cmake ../${name}-${version} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_SKIP_RPATH=ON \
+    -DBUILD_SHARED_LIBS=ON \
+    -DBUILD_TESTING=OFF \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_Fortran_COMPILER=gfortran \
+    -DLAPACKE_WITH_TMG=ON \
+    -DCBLAS=ON \
+    -DBUILD_DEPRECATED=ON
+  make
+
+}
+
+package() {
+  cd build
+  make DESTDIR="$PKG" install
+}
+
+
