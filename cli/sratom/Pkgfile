@@ -1,0 +1,46 @@
+# Depends on: lv2 sord python2
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="An LV2 Atom RDF serialisation library"
+url="https://drobilla.net/software/sratom/"
+
+
+name=sratom
+version=0.6.2
+release=1
+
+
+source=(https://download.drobilla.net/sratom-$version.tar.bz2)
+
+
+prepare(){
+  cd "${name}-${version}"
+  # remove local ldconfig call
+  sed -i '/ldconfig/d' wscript
+}
+
+build() {
+  cd "${name}-${version}"
+  python2 waf configure --prefix=/usr \
+                       --test
+  python2 waf build
+}
+
+
+
+package() {
+  cd "${name}-${version}"
+  python2 waf install --destdir="${PKG}"
+  # license
+  install -vDm 644 COPYING \
+    "${PKG}/usr/share/licenses/${name}/LICENSE"
+  # docs
+  install -t "${PKG}/usr/share/doc/${name}" \
+    -vDm 644 {NEWS,README}
+}
+
