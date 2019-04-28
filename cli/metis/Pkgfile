@@ -1,0 +1,36 @@
+# Depends on: cmake
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A set of serial programs for partitioning graphs, partitioning finite element meshes."
+url="http://glaros.dtc.umn.edu/gkhome/metis/metis/overview"
+
+
+name=metis
+version=5.1.0.p5
+_version=5.1.0-p5
+release=1
+
+
+source=(https://bitbucket.org/petsc/pkg-metis/get/v$_version.tar.bz2)
+
+
+prepare(){
+  mv petsc-pkg-metis-* $name-$_version
+}
+
+build() {
+  cd $name-$_version
+  make config shared=1 prefix=/usr
+  make
+}
+
+package() {
+  cd $name-$_version
+  make install DESTDIR="$PKG"
+  install -m644 -D LICENSE.txt "$PKG"/usr/share/licenses/$name/LICENSE
+}
