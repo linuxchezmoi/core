@@ -11,8 +11,8 @@ url="https://www.khronos.org/vulkan/"
 
 
 name=vulkan-headers
-version=1.1.107+130+171949d
-release=2
+version=1.1.107+133+5f1ceaa
+release=1
 
 
 source=()
