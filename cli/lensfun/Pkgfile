@@ -1,0 +1,41 @@
+# Depends on: glib2 python libpng doxygen cmake
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Database of photographic lenses and a library that allows advanced access to the database"
+url="https://lensfun.sourceforge.net"
+
+
+name=lensfun
+version=0.3.2
+release=1
+
+
+source=(https://sourceforge.net/projects/lensfun/files/$version/lensfun-$version.tar.gz 
+		lensfun-fix-python-install-dir.patch)
+
+
+prepare(){
+    cd $name-$version
+  # Fix python module install path
+    patch -p1 -i ../lensfun-fix-python-install-dir.patch
+}
+
+build() {
+    cd ${name}-${version}
+    cmake . \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_LIBDIR=lib \
+      -DCMAKE_CXX_FLAGS="${CXXFLAGS} -fno-delete-null-pointer-checks"
+    make all
+}
+
+package() {
+    cd ${name}-${version}
+    make DESTDIR="$PKG" install
+}
