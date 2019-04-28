@@ -1,0 +1,44 @@
+# Depends on: db
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Cyrus Simple Authentication Service Layer (SASL) library"
+url="https://www.cyrusimap.org/sasl/"
+
+
+name=cyrus-sasl
+version=2.1.27
+yao_version=1.0-RC1
+release=1
+
+
+source=(https://www.cyrusimap.org/releases/cyrus-sasl-$version.tar.gz 
+		http://download.yaolinux.org/yaolinux/files/yaolinux-$yao_version.tar.xz)
+
+
+
+build() {
+cd $name-$version
+	./configure --prefix=/usr \
+		--sysconfdir=/etc \
+		--mandir=/usr/share/man \
+		--enable-auth-sasldb \
+		--with-dbpath=/var/lib/sasl/sasldb2 \
+		--with-saslauthd=/var/run/saslauthd
+
+make
+}
+
+
+package() {
+cd $name-$version
+make DESTDIR=$PKG install
+install -v -m700 -d $PKG/var/lib/sasl $PKG/var/run/saslauthd
+cd $SRC/yaolinux-${yao_version}
+make DESTDIR=$PKG install-saslauthd
+}
+
