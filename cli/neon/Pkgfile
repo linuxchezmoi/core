@@ -1,0 +1,36 @@
+# Depends on: krb5 expat ca-certificates zlib 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="HTTP and WebDAV client library with a C interface"
+url="https://web.archive.org/web/20170928175008/http://www.webdav.org/neon/"
+
+
+name=neon
+version=0.30.2
+release=1
+
+
+source=(https://fossies.org/linux/www/neon-$version.tar.gz)
+
+
+build(){
+  cd "${SRC}"/${name}-${version}
+  ./configure --prefix=/usr \
+    --with-expat \
+    --enable-shared \
+    --disable-static \
+    --with-ssl=openssl \
+    --with-ca-bundle=/etc/ssl/certs/ca-certificates.crt
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make
+}
+
+package() {
+  cd "${SRC}"/${name}-${version}
+  make DESTDIR="${PKG}" install
+}
