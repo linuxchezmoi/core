@@ -12,7 +12,7 @@ url="http://www.sane-project.org/"
 
 name=sane
 version=1.0.27
-release=1
+release=2
 
 
 source=(http://fossies.org/linux/misc//sane-backends-$version.tar.gz 
@@ -56,7 +56,7 @@ package () {
   
   # Install the pkg-config file
   install -D -m644 tools/sane-backends.pc \
-     "${PKG}/usr/lib/pkg-config/sane-backends.pc"
+     "${PKG}/usr/lib/pkgconfig/sane-backends.pc"
   # install systemd files
   install -D -m644 ${SRC}/saned.socket \
       "${PKG}/usr/lib/systemd/system/saned.socket"
