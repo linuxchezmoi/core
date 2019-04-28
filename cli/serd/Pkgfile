@@ -1,0 +1,47 @@
+# Depends on: python
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Lightweight C library for RDF syntax supporting reading/ writing Turtle and NTriples."
+url="https://drobilla.net/software/serd/"
+
+
+name=serd
+version=0.30.0
+release=1
+
+
+source=(https://download.drobilla.net/serd-$version.tar.bz2)
+
+
+prepare(){
+  cd "${name}-${version}"
+  sed -i "/ldconfig/d" wscript
+}
+
+build() {
+  cd "${name}-${version}"
+  python3 waf configure --prefix=/usr \
+                       --mandir=/usr/share/man \
+                       --test
+  python3 waf
+}
+
+check() {
+  cd "${name}-${version}"
+  python3 waf test
+}
+
+package() {
+  cd "${name}-${version}"
+  python3 waf install --destdir="${PKG}"
+  install -vDm 644 COPYING \
+    "$PKG/usr/share/licenses/${name}/LICENSE"
+  install -t "$PKG/usr/share/doc/${name}" \
+    -vDm 644 {AUTHORS,NEWS,README.md}
+}
+
