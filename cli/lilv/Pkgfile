@@ -1,0 +1,47 @@
+# Depends on: sratom jack swig python
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A C library interface to the LV2 plug-in standard"
+url="https://drobilla.net/software/lilv/"
+
+
+name=lilv
+version=0.24.4
+release=1
+
+
+source=(https://download.drobilla.net/lilv-$version.tar.bz2)
+
+
+prepare(){
+  cd "${name}-${version}"
+  # don't run local ldconfig
+  sed -i "/ldconfig/d" wscript
+}
+
+build() {
+  cd "${name}-${version}"
+  python3 waf configure --prefix=/usr \
+                        --bindings \
+                        --no-bash-completion \
+                        --dyn-manifest \
+                        --test
+  python3 waf build
+}
+
+
+package() {
+  cd "${name}-${version}"
+  python3 waf install --destdir="${PKG}"
+  install -vDm 644 COPYING \
+    "${PKG}/usr/share/licenses/${name}/LICENSE"
+  # bash completion
+  install -vDm 644 utils/lilv.bash_completion\
+    "${PKG}/usr/share/bash-completion/completions/${name}"
+}
+
