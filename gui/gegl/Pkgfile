@@ -1,0 +1,45 @@
+# Depends on: babl libspiro json-glib libgexiv2 libraw openexr librsvg libtiff luajit jasper lensfun suitesparse intltool ruby mesa glu ffmpeg exiv2 vala python2 gobject-introspection git
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Graph based image processing framework"
+url="https://www.gegl.org/"
+
+
+name=gegl
+version=0.4.14
+release=1
+
+
+source=()
+
+
+prepare(){
+  git clone https://gitlab.gnome.org/GNOME/gegl.git
+  mkdir path
+  ln -s /usr/bin/python2 path/python
+  cd ${name}
+  NOCONFIGURE=1 ./autogen.sh
+}
+
+
+build() {
+  export PATH="$SRC/path:$PATH" PYTHON=/usr/bin/python2
+  cd ${name}
+  ./configure  --prefix=/usr  --with-sdl --with-librsvg \
+    --with-libavformat --with-jasper --disable-docs \
+    --enable-workshop
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make
+}
+
+
+package() {
+  export PATH="$SRC/path:$PATH" PYTHON=/usr/bin/python2
+  cd ${name}
+  make DESTDIR="${PKG}" install
+}
