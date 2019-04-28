@@ -1,0 +1,46 @@
+# Depends on: apr apr-util neon expat sqlite db cyrus-sasl serf lz4
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A Modern Concurrent Version Control System"
+url="http://subversion.apache.org/"
+
+
+name=subversion
+version=1.12.0
+release=1
+
+
+source=(https://www.apache.org/dist/subversion/subversion-$version.tar.bz2
+		subversion-$version-apr_1.7.0_fix-1.patch)
+
+
+
+prepare() {
+	cd $name-$version
+    patch -Np1 -i ../subversion-1.12.0-apr_1.7.0_fix-1.patch
+    ./autogen.sh
+}
+
+
+build() {
+	cd $name-$version
+	./configure --prefix=/usr         \
+            --disable-static          \
+            --with-apache-libexecdir  \
+            --with-lz4=internal       \
+            --with-utf8proc=internal 
+make
+}
+
+
+
+package() {
+	cd $name-$version
+    make DESTDIR=$PKG install
+}
+
