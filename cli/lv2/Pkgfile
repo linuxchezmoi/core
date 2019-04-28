@@ -1,0 +1,39 @@
+# Depends on: asciidoc doxygen libsndfile python
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Plugin standard for audio systems"
+url="http://lv2plug.in/"
+
+
+name=lv2
+version=1.16.0
+release=1
+
+
+source=(http://lv2plug.in/spec/lv2-$version.tar.bz2)
+
+
+build(){
+  cd "${name}-${version}"
+  python3 waf configure --prefix=/usr \
+    --libdir=/usr/lib 
+  python3 waf build $MAKEFLAGS
+}
+
+
+package() {
+  cd "${name}-${version}"
+  python3 waf install --destdir="${PKG}"
+  # license
+  install -vDm 644 COPYING \
+    -t "${PKG}/usr/share/licenses/${name}/"
+  # docs
+  install -vDm 644 {NEWS,README.md} \
+    -t "${PKG}/usr/share/doc/${name}"
+}
+
