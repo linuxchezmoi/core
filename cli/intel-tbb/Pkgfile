@@ -1,0 +1,33 @@
+# Depends on:  
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="High level abstract threading library"
+url="http://www.threadingbuildingblocks.org/"
+
+
+name=intel-tbb
+version=2019.5
+_tagname=${version/./_U}
+release=1
+
+
+source=(https://github.com/01org/tbb/archive/$_tagname.tar.gz)
+
+
+build() {
+  cd tbb-$_tagname
+  make
+}
+
+package() {
+  cd tbb-$_tagname
+  install -d "$PKG"/usr/lib
+  install -m755 build/linux_*/*.so* "$PKG"/usr/lib
+  install -d "$PKG"/usr/include
+  cp -a include/tbb "$PKG"/usr/include
+}
