@@ -1,0 +1,33 @@
+# Depends on: llvm libxslt qt5 python
+
+packager="sipo"
+contributors="Remy"
+maintainer="sipo"
+
+description="Generates bindings for C++ libraries using CPython source code"
+url="http://qt-project.org/"
+
+name=shiboken2
+version=5.12.3
+_qtver=5.12.3
+_pkgfqn=pyside-setup-everywhere-src-${_qtver}
+
+source=(http://download.qt.io/official_releases/QtForPython/pyside2/PySide2-$version-src/${_pkgfqn}.tar.xz)
+
+build() {
+ln -s /usr/bin/python3 /usr/bin/python
+mkdir -pv build
+cd build
+  cmake ../${_pkgfqn}/sources/shiboken2 \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_TESTS=OFF \
+    -DUSE_PYTHON_VERSION=3
+  make
+  
+}
+
+package() {
+  cd build
+  make DESTDIR="$PKG" install 
+  unlink /usr/bin/python
+}
