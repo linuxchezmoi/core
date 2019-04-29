@@ -1,0 +1,35 @@
+# Depends on: json-c glib2 json-glib intltool gobject-introspection
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Library for making brushstrokes which is used by MyPaint and other projects, with GEGL support"
+url="http://mypaint.org/"
+
+
+name=libmypaint
+version=1.3.0
+release=1
+
+
+source=(https://github.com/mypaint/libmypaint/releases/download/v$version/libmypaint-$version.tar.xz)
+
+
+
+build() {
+  cd ${name}-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+  install -Dm 644 README.md -t "${PKG}/usr/share/doc/${name}"
+  install -Dm 644 COPYING -t "${PKG}/usr/share/licenses/${name}"
+}
+
