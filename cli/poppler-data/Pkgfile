@@ -1,0 +1,28 @@
+# Depends on:  
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Encoding data for the poppler PDF rendering library"
+url="https://poppler.freedesktop.org/"
+
+
+name=poppler-data
+version=0.4.9
+release=1
+
+
+source=(https://poppler.freedesktop.org/poppler-data-$version.tar.gz)
+
+
+build(){
+cd ${name}-${version}
+  make prefix=/usr DESTDIR="${PKG}" install
+
+  install -m755 -d "${PKG}/usr/share/licenses/${name}"
+  install -m644 COPYING COPYING.adobe \
+    "${PKG}/usr/share/licenses/${name}/"
+}
