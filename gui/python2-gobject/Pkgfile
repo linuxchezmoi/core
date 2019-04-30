@@ -1,0 +1,38 @@
+# Depends on: python2-cairo gobject-introspection libxxf86vm meson ninja python2
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Python Bindings for GLib/GObject/GIO/GTK+"
+url="https://wiki.gnome.org/Projects/PyGObject"
+
+
+name=python2-gobject
+version=3.32.1
+release=1
+
+
+source=(http://ftp.gnome.org/pub/gnome/sources/pygobject/${version%.*}/pygobject-$version.tar.xz)
+
+
+prepare() {
+cd pygobject-$version
+mkdir build
+}
+
+
+build() {
+cd pygobject-$version/build
+meson --prefix=/usr -D python=/usr/bin/python2
+ninja
+}
+
+
+package() {
+cd pygobject-$version/build
+DESTDIR=$PKG ninja install
+rm -r $PKG/usr/{lib/pkgconfig,include}
+}
