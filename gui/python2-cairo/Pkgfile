@@ -1,0 +1,25 @@
+# Depends on: python2 cairo
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Python bindings for the cairo graphics library"
+url="https://pycairo.readthedocs.io/en/latest/"
+
+
+name=python2-cairo
+version=1.18.1
+release=1
+
+
+source=(https://github.com/pygobject/pycairo/releases/download/v$version/pycairo-$version.tar.gz)
+
+
+build(){
+	cd pycairo-$version
+	python2 setup.py build
+	python2 setup.py install --optimize=1 --root=$PKG
+}
