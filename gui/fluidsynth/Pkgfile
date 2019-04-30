@@ -1,0 +1,49 @@
+# Depends on: glib2 pulseaudio portaudio cmake ladspa doxygen
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A real-time software synthesizer based on the SoundFont 2 specifications"
+url="http://www.fluidsynth.org/"
+
+
+name=fluidsynth
+version=2.0.5
+release=1
+
+
+source=(https://github.com/fluidsynth/fluidsynth/archive/v$version.tar.gz)
+
+
+prepare(){
+  cd "${name}-${version}"
+  mkdir build
+}
+
+build() {
+  cd "${name}-${version}/build"
+  cmake .. -DCMAKE_INSTALL_PREFIX=/usr \
+           -DFLUID_DAEMON_ENV_FILE=/etc/conf.d/fluidsynth \
+           -Denable-ladspa=ON \
+           -Denable-portaudio=ON \
+           -DLIB_SUFFIX=""
+  make
+}
+
+
+package() {
+  cd "${name}-${version}/build"
+  make DESTDIR="$PKG" install
+  # systemd user unit
+  install -vDm 644 "${name}.service" \
+    -t "$PKG/usr/lib/systemd/user/"
+  # system-wide configuration file
+  install -vDm 644 "${name}.conf" "${PKG}/etc/conf.d/${name}"
+  # docs
+  install -t "${PKG}/usr/share/doc/${name}" \
+    -vDm 644 ../{AUTHORS,ChangeLog,NEWS,README.md,THANKS,TODO}
+}
+
