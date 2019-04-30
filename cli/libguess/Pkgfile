@@ -1,0 +1,31 @@
+# Depends on:  
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="High-speed character set detection library"
+url="http://atheme.org/projects/libguess.html"
+
+
+name=libguess
+version=1.2
+release=1
+
+
+source=(http://rabbit.dereferenced.org/~nenolod/distfiles/libguess-$version.tar.bz2)
+
+
+build(){
+	cd "${SRC}/${name}-${version}"
+	./configure --prefix=/usr
+	make
+}
+
+package() {
+	cd "${SRC}/${name}-${version}"
+	make DESTDIR="${PKG}" install
+	install -D COPYING "${PKG}"/usr/share/licenses/libguess/COPYING
+}
