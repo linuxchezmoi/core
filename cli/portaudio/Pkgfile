@@ -1,0 +1,33 @@
+# Depends on: jack 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A free, cross-platform, open source, audio I/O library."
+url="http://www.portaudio.com/"
+
+
+name=portaudio
+version=190600_20161030
+release=1
+
+
+source=(http://www.portaudio.com/archives/pa_stable_v$version.tgz)
+
+
+build(){
+  cd "$SRC/$name"
+
+  ./configure --prefix=/usr --enable-cxx
+  make
+}
+
+package() {
+  cd "$SRC/$name"
+
+  make DESTDIR="$PKG" install
+  install -Dm0644 LICENSE.txt "$PKG/usr/share/licenses/$name/LICENSE.txt"
+}
