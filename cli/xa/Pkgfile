@@ -1,0 +1,35 @@
+# Depends on: setconf
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Cross-assembler for the 6502 microprocessor"
+url="https://floodgap.com/retrotech/xa/"
+
+
+name=xa
+version=2.3.9
+release=1
+
+
+source=(http://floodgap.com/retrotech/xa/dists/xa-$version.tar.gz)
+
+
+prepare(){
+  ln -s /usr/bin/python3 /usr/bin/python
+  setconf $name-$version/Makefile CFLAGS="$CFLAGS"
+  setconf $name-$version/Makefile LDFLAGS="$LDFLAGS"
+}
+
+build() {
+  make -C $name-$version
+}
+
+package() {
+	make -C $name-$version DESTDIR="$PKG/usr" install
+    unlink /usr/bin/python
+}
+
