@@ -1,0 +1,34 @@
+# Depends on: xa
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Library to play Commodore 64 music derived from libsidplay2"
+url="https://sourceforge.net/projects/sidplay-residfp/"
+
+
+name=libsidplayfp
+version=1.8.8
+release=1
+
+
+source=(https://downloads.sourceforge.net/project/sidplay-residfp/libsidplayfp/1.8/libsidplayfp-$version.tar.gz)
+
+
+build(){
+	cd "$name-$version"
+	./configure --prefix=/usr
+	make
+}
+
+
+package() {
+	cd "$name-$version"
+	make DESTDIR="$PKG" install
+	install -d "$PKG/usr/share/sidplayfp"
+	ln -t "$PKG/usr/share/sidplayfp" -s /usr/lib/vice/C64/{kernal,basic,chargen}
+}
+
