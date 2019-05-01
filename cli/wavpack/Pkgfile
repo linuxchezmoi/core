@@ -1,0 +1,42 @@
+# Depends on: 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Audio compression format with lossless, lossy and hybrid compression modes"
+url="http://www.wavpack.com/"
+
+
+name=wavpack
+version=5.1.0
+release=1
+
+
+source=(http://www.wavpack.com/wavpack-$version.tar.bz2 
+		https://github.com/dbry/WavPack/commit/d5bf76b5.patch 
+		https://github.com/dbry/WavPack/commit/36a24c78.patch 
+		https://github.com/dbry/WavPack/commit/8e3fe45a.patch)
+
+
+prepare(){
+  cd $name-$version
+# Fix security issues
+  patch -p1 -i ../d5bf76b5.patch
+  patch -p1 -i ../36a24c78.patch
+  patch -p1 -i ../8e3fe45a.patch
+}
+
+build() {
+  cd ${name}-${version}
+  ./configure --prefix=/usr --disable-asm
+  make
+}
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+  install -Dm644 COPYING "${PKG}/usr/share/licenses/${name}/LICENSE"
+}
