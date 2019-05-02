@@ -1,0 +1,46 @@
+# Depends on: python2 nasm upx asciidoc mtools git
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+run=(mtools)
+
+
+description="Collection of boot loaders that boot from FAT, ext2/3/4 and btrfs filesystems, from CDs and via PXE"
+url="http://www.syslinux.org/"
+
+
+name=syslinux
+version=6.03
+release=1
+
+
+source=(http://www.kernel.org/pub/linux/utils/boot/syslinux/$name-$version.tar.xz
+		0012-ldlinux-Fix-return-pointer-to-local-data.patch
+		0013-extlinux-pull-in-sys_sysmacros.h-for-major_minor_makedev.patch)
+
+
+prepare(){
+	unset MAKEFLAGS
+	cd $name-$version
+	cp bios/core/isolinux.bin ../isolinux.bin
+	patch -p1 < ../0012-ldlinux-Fix-return-pointer-to-local-data.patch
+	patch -p1 < ../0013-extlinux-pull-in-sys_sysmacros.h-for-major_minor_makedev.patch
+	sed 's|> /dev/null 2>&1||' -i efi/check-gnu-efi.sh
+	sed -i "s|win32/syslinux.exe||g" Makefile
+}
+
+
+build() {
+  cd $name-$version
+  make bios || true
+}
+
+package() {
+  cd $name-$version
+  make SBINDIR=$PKG/usr/sbin BINDIR=$PKG/usr/bin INCDIR=$PKG/usr/include MANDIR=$PKG/usr/share/man AUXDIR=$PKG/usr/lib/syslinux install
+  install -m644 ../isolinux.bin $PKG/usr/lib/syslinux/isolinux.bin
+}
