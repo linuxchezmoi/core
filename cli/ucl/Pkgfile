@@ -1,0 +1,31 @@
+# Depends on: 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Portable lossless data compression library written in ANSI C"
+url="https://www.oberhumer.com/opensource/ucl/"
+
+
+name=ucl
+version=1.03
+release=1
+
+
+source=(https://www.oberhumer.com/opensource/ucl/download/ucl-$version.tar.gz)
+
+
+build(){
+  cd "$name-$version"
+  CFLAGS+=" -std=gnu90 -fPIC"
+  ./configure --prefix=/usr --enable-shared --disable-static
+  make
+}
+
+package() {
+  cd "$name-$version"
+  make DESTDIR="$PKG" install
+}
