@@ -1,0 +1,31 @@
+# Depends on: 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Library for reading, mastering and writing optical discs"
+url="https://dev.lovelyhq.com/libburnia"
+
+
+name=libburn
+version=1.5.0
+release=1
+
+
+source=(http://files.libburnia-project.org/releases/libburn-$version.tar.gz)
+
+
+build(){
+  cd ${name}-${version/.pl01/}
+  ./configure --prefix=/usr --disable-static
+  make
+}
+
+package() {
+  cd ${name}-${version/.pl01/}
+  make DESTDIR=${PKG} install
+}
+
