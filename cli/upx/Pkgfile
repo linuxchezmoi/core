@@ -1,0 +1,31 @@
+# Depends on: zlib ucl 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Ultimate executable compressor."
+url="http://upx.sourceforge.net/"
+
+
+name=upx
+version=3.95
+release=1
+
+
+source=(https://github.com/upx/upx/releases/download/v$version/upx-$version-src.tar.xz)
+
+
+build(){
+  cd "${name}-${version}-src"
+  make UPX_LZMA_VERSION=0x465 UPX_LZMADIR="${SRC}" CHECK_WHITESPACE=/bin/true all
+}
+
+package() {
+  cd "${name}-${version}-src"
+
+  install -Dm0755 src/upx.out "${PKG}/usr/bin/upx"
+  install -Dm0644 doc/upx.1 "${PKG}/usr/share/man/man1/upx.1"
+}
