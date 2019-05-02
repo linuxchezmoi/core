@@ -11,8 +11,8 @@ url="https://www.imagemagick.org/"
 
 
 name=imagemagick
-version=7.0.8.42
-_version=7.0.8-42
+version=7.0.8.43
+_version=7.0.8-43
 release=1
 
 
