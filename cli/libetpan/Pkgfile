@@ -1,0 +1,45 @@
+# Depends on: libgcrypt gnutls cyrus-sasl zlib expat
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A portable middleware for email access"
+url="https://www.etpan.org/libetpan.html"
+
+
+name=libetpan
+version=1.9.3
+release=1
+
+
+source=(https://github.com/dinhviethoa/libetpan/archive/$version.tar.gz)
+
+
+prepare(){
+  cd ${name}-${version}
+  libtoolize --force --copy
+  aclocal -I m4
+  autoheader
+  autoconf
+  automake --add-missing --foreign --force --copy
+}
+
+build() {
+  cd ${name}-${version}
+  ./configure --prefix=/usr \
+    --disable-static \
+    --disable-db \
+    --with-openssl=no \
+    --with-gnutls=yes
+  make
+}
+
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR=${PKG} install
+  install -Dm644 COPYRIGHT ${PKG}/usr/share/licenses/$name/license.txt
+}
