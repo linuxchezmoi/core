@@ -1,0 +1,50 @@
+# Depends on: db perl gsl valgrind xmlto
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A fast Bayesian spam filtering tool"
+url="http://bogofilter.sourceforge.net"
+
+
+name=bogofilter
+version=1.2.4
+release=1
+
+
+source=(https://sourceforge.net/projects/bogofilter/files/bogofilter-current/bogofilter-$version/bogofilter-$version.tar.bz2 
+		bogofilter-$version-test-env.patch)
+
+
+prepare(){
+  cd ${name}-${version}
+  # taken from Gentoo
+  patch -Np1 -i $SRC/bogofilter-1.2.4-test-env.patch
+  chmod +x src/tests/t.{ctype,leakfind,lexer.qpcr,lexer.eoh,message_id,queue_id}
+  autoreconf -vfi
+}
+
+build() {
+  cd ${name}-${version}
+  ./configure --prefix=/usr \
+              --sysconfdir=/etc/bogofilter  \
+              --localstatedir=/var \
+              --enable-transactions \
+              --with-database=db  #--help
+  make
+}
+
+
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+
+  mv "${PKG}/etc/bogofilter/bogofilter.cf.example" "${PKG}/etc/bogofilter/bogofilter.cf"
+
+  install -dm755 "${PKG}/usr/share/${name}/contrib"
+  install -m644 contrib/* "${PKG}/usr/share/${name}/contrib/"
+}
