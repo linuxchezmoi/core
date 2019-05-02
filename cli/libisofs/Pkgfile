@@ -1,0 +1,32 @@
+# Depends on: acl zlib 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Library to pack up hard disk files and directories into a ISO 9660 disk image"
+url="https://dev.lovelyhq.com/libburnia"
+
+
+name=libisofs
+version=1.5.0
+release=1
+
+
+source=(http://files.libburnia-project.org/releases/libisofs-$version.tar.gz)
+
+
+build(){
+  cd ${name}-${version}
+  ./configure --prefix=/usr \
+	--enable-libacl --enable-xattr --disable-static
+  make
+}
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR=${PKG} install
+}
+
