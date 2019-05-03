@@ -1,0 +1,38 @@
+# Depends on: libxt imake
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Lightweight passphrase dialog for SSH"
+url="http://www.jmknoble.net/software/x11-ssh-askpass/"
+
+
+name=x11-ssh-askpass
+version=1.2.4.1
+release=1
+
+
+source=(http://pkgs.fedoraproject.org/repo/pkgs/openssh/x11-ssh-askpass-1.2.4.1.tar.gz/8f2e41f3f7eaa8543a2440454637f3c3/x11-ssh-askpass-1.2.4.1.tar.gz)
+
+
+build(){
+	cd "${SRC}/${name}-${version}"
+	./configure \
+		--mandir=/usr/share/man \
+		--libexecdir=/usr/lib/ssh \
+		--with-app-defaults-dir=/usr/share/X11/app-defaults \
+
+	xmkmf
+	make includes
+	make
+}
+
+package() {
+	cd "${SRC}/${name}-${version}"
+	make DESTDIR="${PKG}" install install.man
+	install -d "${PKG}/usr/share/licenses/${name}"
+	sed '109,174p;d' README > "${PKG}/usr/share/licenses/${name}/LICENSE"
+}
