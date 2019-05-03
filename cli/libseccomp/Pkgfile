@@ -1,0 +1,33 @@
+# Depends on: 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Enhanced seccomp library"
+url="https://github.com/seccomp/libseccomp"
+
+
+name=libseccomp
+version=2.4.0
+release=1
+
+
+source=(https://github.com/seccomp/libseccomp/releases/download/v$version/libseccomp-$version.tar.gz)
+
+
+build(){
+  cd ${name}-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+  install -Dm 644 CHANGELOG README.md -t "${PKG}/usr/share/doc/${name}"
+}
+
