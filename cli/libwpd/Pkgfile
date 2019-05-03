@@ -1,0 +1,31 @@
+# Depends on: zlib librevenge libgsf doxygen boost
+
+
+packager="sipo"
+contributors="sipo"
+maintainer="sipo"
+
+
+description="Library for importing WordPerfect (tm) documents"
+url="https://libwpd.sourceforge.net/"
+
+
+name=libwpd
+version=0.10.3
+release=1
+
+
+source=(https://downloads.sourceforge.net/sourceforge/$name/$name-$version.tar.xz)
+
+
+build(){
+  cd ${name}-${version}
+  ./configure --prefix=/usr --disable-static
+  make
+}
+
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+}
