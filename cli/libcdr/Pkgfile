@@ -1,0 +1,31 @@
+# Depends on: libwpd lcms2 icu librevenge libwpg boost doxygen cppunit
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="CorelDraw file format importer library for LibreOffice"
+url="https://wiki.documentfoundation.org/DLP/Libraries/libcdr"
+
+
+name=libcdr
+version=0.1.5
+release=1
+
+
+source=(https://dev-www.libreoffice.org/src/libcdr/libcdr-$version.tar.xz)
+
+
+build(){
+  cd $name-$version
+  ./configure --prefix=/usr
+  make
+}
+
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+}
