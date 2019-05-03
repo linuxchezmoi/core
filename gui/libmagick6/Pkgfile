@@ -1,0 +1,78 @@
+# Depends on: libtool lcms2 fontconfig libxext liblqr libraqm libpng ghostscript openexr libwmf librsvg libxml2 openjpeg2 libraw opencl-headers libwebp chrpath ocl-icd glu ghostscript libheif jbigkit
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="An image viewing/manipulation program (version 6)"
+url="https://legacy.imagemagick.org/"
+
+
+name=libmagick6
+version=6.9.10.43
+_name=ImageMagick-6.9.10-43
+release=1
+
+
+source=(https://www.imagemagick.org/download/$_name.tar.gz
+		IM6-GS-policy.patch)
+
+
+prepare() {
+  mkdir -p binpkg/usr/lib/pkgconfig {binpkg,docpkg}/usr/share
+  cd $_name
+  patch -p1 -i ../IM6-GS-policy.patch
+}
+
+
+build(){
+  cd $_name
+  ./configure \
+    PKG_CONFIG="/usr/bin/env PKG_CONFIG_PATH=/usr/lib/$name/pkgconfig pkg-config" \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --with-dejavu-font-dir=/usr/share/fonts/TTF \
+    --with-gs-font-dir=/usr/share/fonts/gsfonts \
+    PSDelegate=/usr/bin/gs \
+    XPSDelegate=/usr/bin/gxps \
+    PCLDelegate=/usr/bin/gpcl6 \
+    --enable-hdri \
+    --enable-opencl \
+    --with-gslib \
+    --with-lqr \
+    --with-modules \
+    --with-openexr \
+    --with-openjp2 \
+    --with-perl \
+    --with-perl-options=INSTALLDIRS=vendor \
+    --with-rsvg \
+    --with-webp \
+    --with-wmf \
+    --with-xml \
+    --without-autotrace \
+    --without-djvu \
+    --without-dps \
+    --without-fftw \
+    --without-fpx \
+    --without-gcc-arch \
+    --without-gvc
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make
+}
+
+package() {
+  cd $_name
+  make DESTDIR="$PKG" install pkgconfigdir="/usr/lib/$name/pkgconfig"
+
+  rm "$PKG"/etc/ImageMagick-${version%%.*}/type-{apple,urw-base35,windows}.xml
+  rm "$PKG"/usr/lib/*.la
+
+  install -Dt "$PKG/usr/share/licenses/$name" -m644 LICENSE NOTICE
+  cd ../binpkg
+  mv "$PKG/usr/bin" usr/
+  mv "$PKG/usr/lib/perl5" usr/lib/
+  mv "$PKG/usr/share/man" usr/share/
+}
+
