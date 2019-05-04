@@ -2,7 +2,7 @@
 
 
 packager="sipo"
-contributors=""
+contributors="Pierre B., Tnut"
 maintainer="sipo"
 
 
@@ -11,31 +11,32 @@ url="http://www.oracle.com/technology/software/products/berkeley-db/index.html"
 
 
 name=db
-version=5.3.28
-release=1
+alias=(berkeley-db)
+version=6.2.32
+release=4
 
 
-source=(http://download.oracle.com/berkeley-db/db-$version.tar.gz 
-		atomic.patch)
+source=(http://download.oracle.com/berkeley-db/$name-$version.tar.gz)
 
-
-prepare(){
-  cd $name-$version
-  patch -p0 -i ../atomic.patch # Fix build 
-}
 
 build() {
-  cd "${SRC}"/$name-${version}/build_unix
-  ../dist/configure --prefix=/usr --enable-compat185 \
-    --enable-shared --enable-static --enable-cxx --enable-dbm \
-    --enable-stl
-  make LIBSO_LIBS=-lpthread
+	cd $name-$version
+	cd build_unix
+	../dist/configure --prefix=/usr \
+		--enable-compat185 \
+		--enable-shared \
+		--enable-cxx --enable-dbm
+	make
 }
 
+
+
 package() {
-  cd "${SRC}"/$name-${version}/build_unix
-  make DESTDIR="${PKG}" install
-  rm -r "${PKG}"/usr/docs
-  install -Dm644 "${SRC}"/${name}-${version}/LICENSE \
-    "${PKG}"/usr/share/licenses/${name}/LICENSE
+	cd $name-$version/build_unix
+	make DESTDIR=$PKG \
+	docdir=/usr/share/doc/$name-$version install
+
+	chown -R 0:0 $PKG
+	chmod -R +w $PKG
+	rm $PKG/usr/lib/{libdb-6.2.la,libdb_cxx-6.2.la}
 }
