@@ -11,7 +11,7 @@ url="https://gitlab.gnome.org/GNOME/libgsf.git"
 
 
 name=libgsf
-version=1.14.45
+version=1.14.46
 release=1
 
 
