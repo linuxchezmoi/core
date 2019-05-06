@@ -1,0 +1,44 @@
+# Depends on: qt5 fftw libsamplerate cmake
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A Qt C++ library for the Last.fm webservices"
+url="https://github.com/lastfm/liblastfm/"
+
+
+name=liblastfm
+version=1.0.9
+release=1
+
+
+source=(https://github.com/lastfm/liblastfm/archive/$version.tar.gz
+		liblastfm-qt5.11.patch 
+		https://github.com/lastfm/liblastfm/commit/480e2ec6.patch)
+
+
+prepare(){
+  cd ${name}-$version
+  patch -p1 -i ../liblastfm-qt5.11.patch
+  patch -p1 -i ../480e2ec6.patch
+}
+
+build() {
+  mkdir build
+  cd build
+  cmake ../${name}-$version \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib \
+    -DBUILD_TESTS=OFF
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${PKG}" install
+} 
+
