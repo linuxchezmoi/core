@@ -1,0 +1,44 @@
+# Depends on: qt5 cmake doxygen
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A C++/Qt client library for gpodder.net"
+url="http://wiki.gpodder.org/wiki/Libmygpo-qt"
+
+
+name=libmygpo-qt
+version=1.1.0
+release=1
+
+
+source=(http://stefan.derkits.at/files/libmygpo-qt/libmygpo-qt.1.1.0.tar.gz 
+        https://github.com/gpodder/libmygpo-qt/commit/0d76d960.patch 
+        https://github.com/gpodder/libmygpo-qt/commit/1b53767b.patch)
+
+
+prepare(){
+  mkdir -p build
+
+  cd libmygpo-qt.${version}
+  patch -p1 -i ../0d76d960.patch
+  patch -p1 -i ../1b53767b.patch
+}
+
+build() {
+  cd build
+  cmake ../libmygpo-qt.${version} \
+    -DCMAKE_BUILD_TYPE='Release' \
+    -DCMAKE_INSTALL_PREFIX='/usr' \
+    -DMYGPO_BUILD_TESTS=OFF
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${PKG}" install
+}
+
