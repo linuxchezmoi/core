@@ -1,0 +1,56 @@
+# Depends on: zlib unzip 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Protocol Buffers - Google's data interchange format"
+url="https://developers.google.com/protocol-buffers/"
+
+
+name=protobuf
+version=3.7.0
+_gtestver=1.8.0
+release=1
+
+
+source=(https://github.com/google/protobuf/archive/v$version.tar.gz 
+		https://github.com/google/googletest/archive/release-1.8.0.tar.gz)
+
+
+prepare(){
+  cd "$name-$version"
+  cp -r "$SRC/googletest-release-${_gtestver}/googletest" third_party/googletest/googletest
+  cp -r "$SRC/googletest-release-${_gtestver}/googlemock" third_party/googletest/googlemock
+}
+
+build() {
+  cd "$SRC/$name-$version"
+  ./autogen.sh
+
+  cd "$SRC/$name-$version/third_party/googletest/googletest"
+  autoreconf -fiv
+  ./configure
+  make
+
+  cd "$SRC/$name-$version/third_party/googletest/googlemock"
+  autoreconf -fiv
+  ./configure
+  make
+
+  cd "$SRC/$name-$version"
+  ./configure --prefix=/usr
+  make
+}
+
+
+package() {
+  cd "$SRC/$name-$version"
+  make DESTDIR="$PKG" install
+
+  install -Dm644 LICENSE "$PKG/usr/share/licenses/$name/LICENSE"
+  install -Dm644 editors/protobuf-mode.el "$PKG"/usr/share/emacs/site-lisp/protobuf-mode.el
+}
+
