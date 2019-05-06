@@ -1,0 +1,33 @@
+# Depends on: libxmu libxi glu 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="The OpenGL Extension Wrangler Library"
+url="http://glew.sourceforge.net"
+
+
+name=glew
+version=2.1.0
+release=1
+
+
+source=(http://downloads.sourceforge.net/glew/glew-$version.tgz)
+
+
+build(){
+  cd ${name}-${version}
+  
+  sed -i 's|lib64|lib|' config/Makefile.linux
+  sed -i '/^.PHONY: .*\.pc$/d' Makefile
+  make
+}
+
+package() {
+  cd ${name}-${version}
+  make GLEW_DEST="${PKG}/usr" install.all
+  install -D -m644 LICENSE.txt "${PKG}/usr/share/licenses/${name}/LICENSE"
+}
