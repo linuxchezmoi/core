@@ -1,0 +1,31 @@
+# Depends on:  
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Library that contains several hash-map implementations."
+url="https://github.com/sparsehash/sparsehash"
+
+
+name=sparsehash
+version=2.0.3
+release=1
+
+
+source=(https://github.com/sparsehash/sparsehash/archive/sparsehash-$version.tar.gz)
+
+
+build(){
+	cd "$SRC"/sparsehash-sparsehash-$version
+	./configure --prefix=/usr
+	make
+}
+
+package() {
+	cd "$SRC"/sparsehash-sparsehash-$version
+	make DESTDIR="$PKG/" install
+	install -D -m644 COPYING "$PKG"/usr/share/licenses/$name/COPYING
+}
