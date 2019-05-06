@@ -1,0 +1,34 @@
+# Depends on: ffmpeg cmake
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Library that implements a custom algorithm for extracting fingerprints from any audio source"
+url="https://acoustid.org/chromaprint"
+
+
+name=chromaprint
+version=1.4.3
+release=1
+
+
+source=(https://github.com/acoustid/chromaprint/releases/download/v$version/chromaprint-$version.tar.gz)
+
+
+build(){
+	cd "${SRC}/${name}-v${version}"
+	cmake \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DBUILD_TOOLS=ON \
+		.
+	make
+}
+
+package() {
+	cd "${SRC}/${name}-v${version}"
+	make DESTDIR="${PKG}" install
+}
