@@ -11,7 +11,7 @@ url="https://linuxtv.org/"
 
 
 name=v4l-utils
-version=1.16.5
+version=1.16.6
 release=1
 
 
