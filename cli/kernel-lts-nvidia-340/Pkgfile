@@ -5,11 +5,11 @@ contributors="Remy"
 maintainer="sipo"
 
 description="Additionnals modules for Nvidia proprietary drivers"
-url="http://www.nvidia.com/"
+url="https://www.nvidia.fr/object/unix-fr.html"
 
 name=kernel-lts-nvidia-340
 version=340.107
-release=20
+release=21
 
 modfolder=/lib/modules/`uname -r`/kernel/drivers/video
 
