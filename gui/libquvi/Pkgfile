@@ -1,0 +1,36 @@
+# Depends on: libquvi-scripts curl lua52 libproxy libgcrypt glib2 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Library for parsing video download links."
+url="http://quvi.sourceforge.net/"
+
+
+name=libquvi
+version=0.9.4
+release=1
+
+
+source=(https://downloads.sourceforge.net/sourceforge/quvi/libquvi-$version.tar.xz)
+
+
+prepare(){
+  cd "${name}-${version}"
+  sed -i 's/lua51/lua52/g' configure.ac
+  autoreconf -fvi
+}
+
+build() {
+  cd "${name}-${version}"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${name}-${version}"
+  make DESTDIR="${PKG}" install
+}
