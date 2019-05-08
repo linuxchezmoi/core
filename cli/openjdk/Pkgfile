@@ -1,12 +1,12 @@
 description="A set of programs called a Java Development Kit (JDK)."
-url="http://openjdk.java.net/"
+url="http://anduin.linuxfromscratch.org/BLFS/OpenJDK/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 
 name=openjdk
 version=11.0.2
-release=1
+release=2
 _version=11.0.2+9
 
 source=(http://anduin.linuxfromscratch.org/BLFS/OpenJDK/OpenJDK-${_version:0:6}/OpenJDK-${_version}-`uname -m`-bin.tar.xz)
