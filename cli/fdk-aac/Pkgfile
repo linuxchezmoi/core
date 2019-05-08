@@ -7,12 +7,12 @@ maintainer="sipo"
 
 
 description="Fraunhofer FDK AAC codec library"
-url="http://sourceforge.net/projects/opencore-amr/"
+url="https://sourceforge.net/projects/opencore-amr/files/"
 
 
 name=fdk-aac
 version=2.0.0
-release=1
+release=2
 
 
 source=()
