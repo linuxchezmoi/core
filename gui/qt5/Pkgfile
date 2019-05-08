@@ -7,12 +7,12 @@ maintainer="sipo"
 
 
 description="Cross-platform application framework that is widely used for developing application"
-url=""
+url="https://download.qt.io/archive/qt/"
 
 
 name=qt5
 version=5.12.3
-release=1
+release=2
 
 
 source=(https://download.qt.io/archive/qt/${version%.*}/$version/single/qt-everywhere-src-$version.tar.xz)
