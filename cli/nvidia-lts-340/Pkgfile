@@ -11,7 +11,7 @@ run=(kernel-lts-nvidia-340)
 
 name=nvidia-lts-340
 version=340.107
-release=19
+release=22
 
 [ "$PKGMK_ARCH" == "i686"   ] && _ARCH=x86
 [ "$PKGMK_ARCH" == "x86_64"   ] && _ARCH=x86_64
