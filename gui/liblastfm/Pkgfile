@@ -7,12 +7,12 @@ maintainer="sipo"
 
 
 description="A Qt C++ library for the Last.fm webservices"
-url="https://github.com/lastfm/liblastfm/"
+url="https://github.com/lastfm/liblastfm/releases"
 
 
 name=liblastfm
 version=1.0.9
-release=1
+release=2
 
 
 source=(https://github.com/lastfm/liblastfm/archive/$version.tar.gz
