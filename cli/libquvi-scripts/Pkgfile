@@ -1,0 +1,30 @@
+# Depends on: lua52
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Library for parsing video download links."
+url="http://quvi.sourceforge.net/"
+
+
+name=libquvi-scripts
+version=0.9.20131130
+release=1
+
+
+source=(https://downloads.sourceforge.net/sourceforge/quvi/libquvi-scripts-$version.tar.xz)
+
+
+build(){
+  cd "${name}-${version}"
+  ./configure --prefix=/usr --with-nsfw --with-geoblocked
+  make
+}
+
+package() {
+  cd "${name}-${version}"
+  make DESTDIR="${PKG}" install
+}
