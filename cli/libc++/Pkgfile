@@ -6,7 +6,7 @@ contributors="sipo"
 maintainer="sipo"
 
 
-url="http://libcxx.llvm.org/"
+url="https://releases.llvm.org/"
 description="A new implementation of the C++ standard library, targeting C++11."
 
 
@@ -18,7 +18,7 @@ run=(python)
 
 name=libc++
 version=8.0.0
-release=1
+release=2
 
 
 source=(
