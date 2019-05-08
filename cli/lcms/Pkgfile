@@ -2,7 +2,7 @@
 
 
 description="provides the management of colors for other programs"
-url="http://www.littlecms.com/"
+url="https://sourceforge.net/projects/lcms/files/"
 
 
 packager="sipo"
@@ -12,7 +12,7 @@ maintainer="sipo"
 
 name=lcms
 version=1.19
-release=5
+release=6
 
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz
