@@ -7,7 +7,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=kernel-lts-nvidia-390
 version=390.87
-release=3
+release=5
 
 modfolder=/lib/modules/`uname -r`/kernel/drivers/video
 
