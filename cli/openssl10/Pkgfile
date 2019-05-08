@@ -7,13 +7,13 @@ maintainer="sipo"
 
 
 description="The Open Source toolkit for Secure Sockets Layer and Transport Layer Security"
-url="https://www.openssl.org"
+url="https://github.com/openssl/openssl/releases"
 
 
 name=openssl10
 version=1.0.2.r
 _ver=1.0.2r
-release=1
+release=2
 
 
 source=(https://www.openssl.org/source/openssl-1.0.2r.tar.gz
