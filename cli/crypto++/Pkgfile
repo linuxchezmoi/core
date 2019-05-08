@@ -7,13 +7,13 @@ maintainer="sipo"
 
 
 description="A free C++ class library of cryptographic schemes"
-url="https://www.cryptopp.com/"
+url="https://github.com/weidai11/cryptopp/releases"
 
 
 name=crypto++
 version=8.2.0
 _srcver=${version//./}
-release=1
+release=2
 
 
 source=(https://www.cryptopp.com/cryptopp${_srcver}.zip
