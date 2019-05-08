@@ -9,7 +9,7 @@ url="https://www.nvidia.fr/object/unix-fr.html"
 
 name=kernel-lts-nvidia-340
 version=340.107
-release=21
+release=24
 
 modfolder=/lib/modules/`uname -r`/kernel/drivers/video
 
