@@ -1,4 +1,4 @@
-# Depends on: docbook-xml docbook-xsl itstool libxslt python2-six
+# Depends on: docbook-xml docbook-xsl itstool libxslt python2-six git meson ninja glib2
 
 
 packager="sipo"
@@ -6,29 +6,28 @@ contributors="Tnut"
 maintainer="sipo"
 
 
-description="Documentation tool for public library API"
-url="https://www.gtk.org/gtk-doc/"
-
-
-name=gtk-doc
-version=1.29
-release=3
-
-
 run=(python2-six)
 
 
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/$version/$name-$version.tar.xz)
+name=gtk-doc
+version=1.30+1+g44c5972
+release=1
 
+
+source=()
+
+
+prepare(){
+  git clone https://gitlab.gnome.org/GNOME/gtk-doc
+  cd $name
+}
 
 build() {
-  cd $name-$version
-  ./configure --prefix=/usr --disable-static
-  make
+  meson $name build --prefix=/usr
+  ninja -C build
 }
 
 
 package() {
-  cd $name-$version
-  make DESTDIR="$PKG" install
+  DESTDIR="$PKG" meson install -C build
 }
