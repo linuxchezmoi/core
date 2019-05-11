@@ -12,12 +12,11 @@ url="http://subversion.apache.org/"
 
 name=subversion
 version=1.12.0
-release=1
+release=2
 
 
 source=(https://www.apache.org/dist/subversion/subversion-$version.tar.bz2
 		subversion-$version-apr_1.7.0_fix-1.patch)
-
 
 
 prepare() {
@@ -34,7 +33,7 @@ build() {
             --with-apache-libexecdir  \
             --with-lz4=internal       \
             --with-utf8proc=internal 
-make
+make -j1
 }
 
 
