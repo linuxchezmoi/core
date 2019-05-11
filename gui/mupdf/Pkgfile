@@ -11,7 +11,7 @@ url="https://mupdf.com/"
 
 
 name=mupdf
-version=1.14.0
+version=1.15.0
 release=1
 
 
@@ -20,22 +20,24 @@ source=(http://www.linuxfromscratch.org/patches/blfs/svn/mupdf-$version-shared_l
 
 
 
-build() {
+prepare() {
 unset MAKEFLAGS
 cd $name-$version-source
-
-sed -i '/SYS_CURL_LIBS/s|$| -lpthread|' Makethird
-rm -rf thirdparty/{curl,freeglut,harfbuzz,libjpeg,openjpeg,zlib}
-
 patch -Np1 -i ../$name-$version-shared_libs-1.patch
 export USE_SYSTEM_LIBS=yes
-CFLAGS+=' -fPIC' CXXFLAGS+=' -fPIC' make build=release libs apps extra
-
-make prefix=$PKG/usr build=release \
-docdir=$PKG/usr/share/doc/$name-$version \
-install
-
-ln -svf mupdf-x11-curl $PKG/usr/bin/mupdf
 }
 
+build() {
+cd $name-$version-source
 
+USE_SYSTEM_LIBS=yes                     \
+make prefix=/usr                        \
+     build=release                      \
+     docdir=/usr/share/doc/mupdf-$version \
+     install                            
+
+mkdir -p $PKG/usr/bin/mupdf
+
+ln -sfv mupdf-x11 $PKG/usr/bin/mupdf        
+ldconfig
+}
