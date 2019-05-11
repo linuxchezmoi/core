@@ -1,4 +1,4 @@
-# Depends on: freetype fribidi gtk-doc harfbuzz
+# Depends on: freetype fribidi harfbuzz 
 
 
 packager="sipo"
@@ -26,8 +26,8 @@ build(){
         --enable-static=no \
         --enable-shared=yes \
         --enable-fast-install=yes \
-        --enable-gtk-doc=yes \
-        --enable-gtk-doc-html=yes \
+        --enable-gtk-doc=no \
+        --enable-gtk-doc-html=no \
         --enable-gtk-doc-pdf=no
     make
 }
