@@ -1,26 +1,28 @@
-# Depends on: docbook-xml docbook-xsl itstool libxslt python2-six git meson ninja glib2
+# Depends on: docbook-xsl docbook-xml glib2 python-lxml python-pygments python-anytree git meson ninja yelp-tools
 
 
 packager="sipo"
-contributors="Tnut"
+contributors=""
 maintainer="sipo"
 
 
-run=(python2-six)
+description="Documentation tool for public library API"
+url="https://www.gtk.org/gtk-doc/"
 
 
 name=gtk-doc
 version=1.30+1+g44c5972
-release=1
+release=2
 
 
 source=()
 
 
 prepare(){
-  git clone https://gitlab.gnome.org/GNOME/gtk-doc
+  git clone https://gitlab.gnome.org/GNOME/gtk-doc.git
   cd $name
 }
+
 
 build() {
   meson $name build --prefix=/usr
