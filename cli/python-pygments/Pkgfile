@@ -1,0 +1,26 @@
+# Depends on: python
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Python syntax highlighter"
+url="http://pygments.org/"
+
+
+name=python-pygments
+version=2.4.0
+release=1
+
+
+source=(https://pypi.org/packages/source/P/Pygments/Pygments-$version.tar.gz)
+
+
+build() {
+  cd "$SRC/Pygments-$version"
+  python3 setup.py install --root="$PKG" -O1
+  rm "$PKG/usr/bin/pygmentize"
+}
+
