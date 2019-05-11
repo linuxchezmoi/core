@@ -1,4 +1,4 @@
-# Depends on: gtk3 gtk-doc gobject-introspection
+# Depends on: gtk3 gobject-introspection
 
 
 packager="sipo"
@@ -20,7 +20,7 @@ source=(https://github.com/kupferlauncher/keybinder/releases/download/keybinder-
 
 build(){
   cd keybinder-3.0-${version}
-  ./configure --prefix=/usr --enable-gtk-doc
+  ./configure --prefix=/usr --disable-gtk-doc
   make
 }
 
