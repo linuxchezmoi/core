@@ -17,7 +17,7 @@ release=1
 
 
 source=(https://www.cyrusimap.org/releases/cyrus-sasl-$version.tar.gz 
-		http://download.yaolinux.org/yaolinux/files/yaolinux-$yao_version.tar.xz)
+		http://download.pausex.fr/files/yaolinux-$yao_version.tar.xz)
 
 
 
