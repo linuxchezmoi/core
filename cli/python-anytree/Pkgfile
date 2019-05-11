@@ -1,0 +1,30 @@
+# Depends on: python-six git
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Powerful and Lightweight Python Tree Data Structure"
+url="https://anytree.readthedocs.io/"
+
+
+name=python-anytree
+version=2.6.0
+release=1
+
+
+source=()
+
+
+build(){
+  git clone https://github.com/c0fec0de/anytree
+  cd anytree
+  python3 setup.py build
+}
+
+package() {
+  cd anytree
+  python3 setup.py install --root="$PKG" --optimize=1 --skip-build
+}
