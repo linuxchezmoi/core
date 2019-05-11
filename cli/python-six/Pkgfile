@@ -1,0 +1,26 @@
+# Depends on: python
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Python3 compatibility utilities"
+url="https://pypi.python.org/pypi/six/"
+
+
+name=python-six
+version=1.12.0
+release=1
+
+
+source=(https://pypi.io/packages/source/s/six/six-$version.tar.gz)
+
+
+build() {
+  cd six-$version
+  python3 setup.py install --root "$PKG" --optimize=1
+  install -Dm644 LICENSE "$PKG"/usr/share/licenses/$name/LICENSE
+}
+
