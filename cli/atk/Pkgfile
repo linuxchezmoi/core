@@ -1,8 +1,8 @@
-# Depends on: ninja meson glib2 pcre gobject-introspection git ninja gtk-doc
+# Depends on: glib2 gobject-introspection git meson ninja
 
 
 packager="sipo"
-contributors="Pierre B, Tnut"
+contributors=""
 maintainer="sipo"
 
 
@@ -19,18 +19,16 @@ source=()
 
 
 prepare(){
-  git clone https://gitlab.gnome.org/GNOME/atk.git
+  git clone https://gitlab.gnome.org/GNOME/atk.git 
 }
+
 
 build() {
-
-  meson $name build --prefix=/usr -D docs=true
+  meson $name build --prefix=/usr -D docs=false
   ninja -C build
-
 }
 
+
 package() {
-
   DESTDIR="$PKG" meson install -C build
-
 }
