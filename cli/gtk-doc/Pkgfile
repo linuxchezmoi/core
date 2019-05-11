@@ -1,9 +1,12 @@
-# Depends on: docbook-xsl docbook-xml glib2 python-lxml python-pygments python-anytree git meson ninja yelp-tools
+# Depends on: docbook-xsl docbook-xml glib2 python-lxml python-pygments python-anytree git meson ninja yelp-tools python2-six itstool libxslt
 
 
 packager="sipo"
 contributors=""
 maintainer="sipo"
+
+
+run=(python2-six)
 
 
 description="Documentation tool for public library API"
@@ -12,7 +15,7 @@ url="https://www.gtk.org/gtk-doc/"
 
 name=gtk-doc
 version=1.30+1+g44c5972
-release=2
+release=3 
 
 
 source=()
