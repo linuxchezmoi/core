@@ -1,4 +1,4 @@
-# Depends on: libpng fontconfig pixman glib2 git xcb-util libxrender libxxf86vm
+# Depends on: libpng fontconfig pixman glib2 git xcb-util libxrender
 
 
 packager="sipo"
@@ -30,6 +30,10 @@ build() {
 	./configure --prefix=/usr    \
         	    --disable-static \
 	            --enable-tee \
+        		--enable-tee \
+        		--enable-svg \
+        		--enable-ps \
+        		--enable-pdf \
                 --disable-gl
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make
