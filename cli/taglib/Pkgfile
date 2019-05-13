@@ -1,0 +1,43 @@
+# Depends on: zlib cmake boost
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A Library for reading and editing the meta-data of several popular audio formats"
+url="https://taglib.github.io/"
+
+
+name=taglib
+version=1.11.1
+release=1
+
+
+source=(https://taglib.github.io/releases/taglib-$version.tar.gz
+		https://github.com/taglib/taglib/commit/9336c82d.patch)
+
+
+prepare(){
+  mkdir -p build
+
+  cd $name-$version
+  patch -p1 -i ../9336c82d.patch
+}
+
+build() {
+  cd build
+  cmake ../$name-$version \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_SHARED_LIBS=ON \
+    -DWITH_MP4=ON \
+    -DWITH_ASF=ON
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="$PKG" install
+}
