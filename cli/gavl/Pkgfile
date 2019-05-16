@@ -1,0 +1,33 @@
+# Depends on: doxygen
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Low level library, upon which multimedia APIs can be built"
+url="http://gmerlin.sourceforge.net/"
+
+
+name=gavl
+version=1.4.0
+release=1
+
+
+source=(https://downloads.sourceforge.net/gmerlin/gavl-$version.tar.gz)
+
+
+build(){
+ cd $name-$version
+ LIBS=-lm \
+ ./configure --prefix=/usr \
+ --docdir=/usr/share/doc/gavl-$version
+ make
+}
+
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+}
