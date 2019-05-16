@@ -11,23 +11,28 @@ url="http://www.portaudio.com/"
 
 
 name=portaudio
-version=190600_20161030
+version=19.6.0
+_version=190600_20161030
 release=1
 
 
-source=(http://www.portaudio.com/archives/pa_stable_v$version.tgz)
+source=(http://www.portaudio.com/archives/pa_stable_v$_version.tgz)
 
 
-build(){
-  cd "$SRC/$name"
+prepare(){
+  mv -v "${name}" "${name}-${version}"
+}
 
-  ./configure --prefix=/usr --enable-cxx
+build() {
+  cd "${name}-${version}"
+  ./configure --prefix=/usr \
+              --enable-cxx
   make
 }
 
 package() {
-  cd "$SRC/$name"
-
-  make DESTDIR="$PKG" install
-  install -Dm0644 LICENSE.txt "$PKG/usr/share/licenses/$name/LICENSE.txt"
+  cd "${name}-${version}"
+  make DESTDIR="${PKG}" install
+  install -vDm 644 LICENSE.txt -t "${PKG}/usr/share/licenses/${name}"
+  install -vDm 644 README.txt -t "${PKG}/usr/share/doc/${name}"
 }
