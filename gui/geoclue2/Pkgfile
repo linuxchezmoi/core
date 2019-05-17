@@ -11,8 +11,8 @@ url="https://gitlab.freedesktop.org/geoclue/geoclue/wikis/home"
 
 
 name=geoclue2
-version=2.5.2
-release=3
+version=2.5.3
+release=1
 
 
 source=(https://gitlab.freedesktop.org/geoclue/geoclue/-/archive/$version/geoclue-$version.tar.bz2)
@@ -25,7 +25,7 @@ prepare(){
 
 build() {
   cd geoclue-$version/build
-  meson --prefix=/usr -D dbus-sys-dir=/usr/share/dbus-1/system.d
+  meson --prefix=/usr -D dbus-sys-dir=/usr/share/dbus-1/system.d -D gtk-doc=false
   ninja
 }
 
