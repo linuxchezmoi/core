@@ -8,12 +8,12 @@ contributors="sipo"
 maintainer="sipo"
 
 name=intel-ucode
-version=20190514
+version=20190514.a
 
-source=(https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/archive/microcode-${version}.tar.gz)
+source=(https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/archive/microcode-${version/./}.tar.gz)
 
 build(){
-  cd Intel-Linux-Processor-Microcode-Data-Files-microcode-${version}
+  cd Intel-Linux-Processor-Microcode-Data-Files-microcode-${version/./}
   rm -f intel-ucode{,-with-caveats}/list
   mkdir -p kernel/x86/microcode
   iucode_tool -w kernel/x86/microcode/GenuineIntel.bin intel-ucode{,-with-caveats}/
@@ -22,7 +22,7 @@ build(){
 }
 
 package() {
-  cd Intel-Linux-Processor-Microcode-Data-Files-microcode-${version}
+  cd Intel-Linux-Processor-Microcode-Data-Files-microcode-${version/./}
   install -D -m0644 intel-ucode.img "${PKG}"/boot/intel-ucode.img
   install -D -m0644 license "${PKG}"/usr/share/licenses/${name}/LICENSE
 }
