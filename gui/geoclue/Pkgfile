@@ -11,7 +11,7 @@ url="https://www.freedesktop.org/wiki/Software/GeoClue/"
 
 
 name=geoclue
-version=2.5.2
+version=2.5.3
 release=1
 
 
@@ -22,7 +22,7 @@ build() {
 cd geoclue-$version
 mkdir -pv build
 cd build
-meson --prefix=/usr
+meson --prefix=/usr -D gtk-doc=false
 ninja
 }
 
