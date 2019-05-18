@@ -11,8 +11,8 @@ url="https://www.freedesktop.org/wiki/Software/polkit/"
 
 
 name=polkit
-version=0.115+24+g5230646
-release=2
+version=0.116
+release=1
 
 
 source=()
@@ -29,7 +29,7 @@ build() {
   ./configure --prefix=/usr --sysconfdir=/etc \
       --localstatedir=/var --libexecdir=/usr/lib \
       --enable-libsystemd-login=yes --disable-static \
-      --enable-gtk-doc 
+      --disable-gtk-doc 
 
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 
