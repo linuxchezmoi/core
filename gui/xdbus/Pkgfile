@@ -12,7 +12,7 @@ url="https://wiki.freedesktop.org/www/Software/dbus/"
 
 name=xdbus
 _name=dbus
-version=1.12.12
+version=1.12.14
 release=1
 
 
