@@ -2,7 +2,7 @@
 
 
 packager="sipo"
-contributors="Pierre B., Tnut"
+contributors=""
 maintainer="sipo"
 
 
@@ -11,7 +11,7 @@ url="http://exiv2.org"
 
 
 name=exiv2
-version=0.26
+version=0.27.1
 release=1
 
 
