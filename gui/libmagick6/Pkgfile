@@ -11,8 +11,8 @@ url="https://legacy.imagemagick.org/"
 
 
 name=libmagick6
-version=6.9.10.43
-_name=ImageMagick-6.9.10-43
+version=6.9.10.46
+_name=ImageMagick-6.9.10-46
 release=2
 
 
