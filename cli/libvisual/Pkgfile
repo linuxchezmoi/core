@@ -1,0 +1,36 @@
+# Depends on:  
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Abstraction library that comes between applications and audio visualisation plugins"
+url="https://sourceforge.net/projects/libvisual/"
+
+
+name=libvisual
+version=0.4.0
+release=1
+
+
+source=(https://downloads.sourceforge.net/sourceforge/libvisual/libvisual-$version.tar.gz 
+		libvisual-0.4.0-inlinedefineconflict.patch)
+
+
+prepare(){
+  cd ${name}-${version}
+  patch -Np1 -i ../libvisual-0.4.0-inlinedefineconflict.patch
+}
+
+build() {
+  cd ${name}-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}" install
+}
