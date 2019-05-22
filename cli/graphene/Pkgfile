@@ -1,0 +1,36 @@
+# Depends on: glib2 git gtk-doc gobject-introspection meson ninja git
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A thin layer of graphic data types"
+url="https://github.com/ebassi/graphene"
+
+
+name=graphene
+version=1.8.6
+release=1
+
+
+source=()
+
+
+prepare(){
+  git clone https://github.com/ebassi/graphene
+  cd $name
+}
+
+build() {
+  meson $name build --prefix=/usr -D gtk_doc=false
+  ninja -C build
+}
+
+
+package() {
+  DESTDIR="$PKG" meson install -C build
+  install -Dt "$PKG/usr/share/licenses/$name" -m644 $name/LICENSE
+}
+
