@@ -1,0 +1,36 @@
+# Depends on: 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Compact Disc Digital Audio extraction tool"
+url="https://www.xiph.org/paranoia/"
+
+
+name=cdparanoia
+version=10.2
+release=1
+
+
+source=(https://downloads.xiph.org/releases/cdparanoia/cdparanoia-III-$version.src.tgz 
+		gcc.patch)
+
+
+prepare(){
+  cd cdparanoia-III-$version
+  patch -p0 -i "$SRC"/gcc.patch
+}
+
+build() {
+  cd cdparanoia-III-$version
+  ./configure --prefix=/usr --mandir=/usr/share/man
+  make -j1
+}
+
+package() {
+  cd cdparanoia-III-$version
+  make prefix="$PKG"/usr MANDIR="$PKG"/usr/share/man install
+}
