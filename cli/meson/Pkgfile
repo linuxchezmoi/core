@@ -1,0 +1,47 @@
+# Depends on: python ninja 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="High productivity build system"
+url="https://mesonbuild.com/"
+
+
+name=meson
+version=0.50.1
+release=1
+
+
+source=(https://github.com/mesonbuild/meson/releases/download/$version/meson-$version.tar.gz 
+        0001-Fix-failing-85-gtest-dependency-with-version-test-to.patch 
+        yao-meson)
+
+
+
+prepare(){
+  cd ${name}-${version}
+  patch -Np1 -i ../0001-Fix-failing-85-gtest-dependency-with-version-test-to.patch
+}
+
+
+
+build() {
+  cd ${name}-${version}
+  python3 setup.py build
+}
+
+
+
+package() {
+  cd ${name}-${version}
+  python3 setup.py install --root="${PKG}" --optimize=1 --skip-build
+  install -d "${PKG}/usr/share/vim/vimfiles"
+  cp -rt "${PKG}/usr/share/vim/vimfiles" data/syntax-highlighting/vim/*/
+  install -Dt "${PKG}/usr/share/emacs/site-lisp" -m644 data/syntax-highlighting/emacs/*
+  install -Dt "${PKG}/usr/share/zsh/site-functions" -m644 data/shell-completions/zsh/*
+  install -D ../yao-meson -t "${PKG}/usr/bin"
+}
+
