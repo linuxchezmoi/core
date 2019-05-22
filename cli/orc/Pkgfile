@@ -1,0 +1,36 @@
+# Depends on: valgrind git gtk-doc meson ninja
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Optimized Inner Loop Runtime Compiler"
+url="https://gitlab.freedesktop.org/gstreamer/orc"
+
+
+name=orc
+version=0.4.29
+release=1
+
+
+source=()
+
+
+prepare(){
+  git clone https://gitlab.freedesktop.org/gstreamer/orc
+  cd $name
+}
+
+
+build() {
+  meson $name build --prefix=/usr -D gtk_doc=disabled
+  ninja -C build
+}
+
+
+package() {
+  DESTDIR="$PKG" meson install -C build
+  install -Dt "$PKG/usr/share/licenses/$name" -m644 $name/COPYING
+}
