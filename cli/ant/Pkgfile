@@ -11,8 +11,8 @@ url="http://ant.apache.org/"
 
 
 name=ant
-version=1.10.5
-release=5
+version=1.10.6
+release=1
 
 
 source=(https://www.apache.org/dist/ant/source/apache-${name}-${version}-src.tar.bz2)
