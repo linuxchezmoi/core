@@ -1,4 +1,4 @@
-# Depends on: libxt libxslt gst-plugins-base libsecret libwebp openjpeg2 harfbuzz icu gtk3 libnotify hyphen woff2 gperf gobject-introspection ruby gtk-doc cmake python geoclue enchant libxcomposite
+# Depends on: libxt libxslt gst-plugins-base gst-plugins-bad libsecret libwebp openjpeg2 harfbuzz icu gtk3 libnotify hyphen woff2 gperf gobject-introspection ruby gtk-doc cmake python geoclue enchant libxcomposite
 
 
 packager="sipo"
@@ -16,7 +16,7 @@ release=1
 
 
 source=(https://webkitgtk.org/releases/webkitgtk-$version.tar.xz
-		gstreamergl_no.patch)
+        gstreamergl_no.patch)
 
 
 prepare(){
@@ -31,7 +31,7 @@ build() {
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_SKIP_RPATH=ON \
-    -DENABLE_GTKDOC=ON \
+    -DENABLE_GTKDOC=OFF \
     -DENABLE_PLUGIN_PROCESS_GTK2=OFF \
     -DLIBEXEC_INSTALL_DIR=/usr/lib \
     -DLIB_INSTALL_DIR=/usr/lib
