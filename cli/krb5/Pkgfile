@@ -11,13 +11,13 @@ url="http://web.mit.edu/kerberos/"
 
 
 name=krb5
-version=1.16.1
+version=1.16.2
 _pkgvermajor=1.16
 yaolinux_version=1.0-RC1
-release=2
+release=1
 
 
-source=(http://download.yaolinux.org/yaolinux/files/yaolinux-${yaolinux_version}.tar.xz
+source=(http://download.pausex.fr/files/yaolinux-1.0-RC1.tar.xz
         https://web.mit.edu/kerberos/dist/krb5/${_pkgvermajor}/${name}-${version}.tar.gz)
 
 
@@ -54,5 +54,4 @@ package()  {
 # Service
     cd $SRC/yaolinux-${yaolinux_version}
     make DESTDIR=$PKG install-krb5
-
 }
