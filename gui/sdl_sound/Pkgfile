@@ -1,0 +1,36 @@
+# Depends on: sdl libmikmod libvorbis flac speex smpeg 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A library to decode several popular sound file formats, such as .WAV and .MP3"
+url="https://icculus.org/SDL_sound/"
+
+
+name=sdl_sound
+version=1.0.3
+release=1
+
+
+source=(https://icculus.org/SDL_sound/downloads/SDL_sound-$version.tar.gz 
+		flac.patch)
+
+
+build(){
+  cd SDL_sound-$version
+
+  CFLAGS+=" -I/usr/include/smpeg"
+  CXXFLAGS+=" -I/usr/include/smpeg"
+
+  ./configure --prefix=/usr --disable-static
+  make
+}
+
+package() {
+  cd SDL_sound-$version
+  make DESTDIR="$PKG" install
+}
+
