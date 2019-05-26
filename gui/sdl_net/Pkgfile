@@ -1,0 +1,31 @@
+# Depends on: sdl 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A small sample cross-platform networking library"
+url="https://www.libsdl.org/projects/SDL_net/"
+
+
+name=sdl_net
+version=1.2.8
+release=1
+
+
+source=(https://www.libsdl.org/projects/SDL_net/release/SDL_net-$version.tar.gz)
+
+
+build(){
+  cd SDL_net-$version
+  ./configure --prefix=/usr --disable-static
+  make
+}
+
+package() {
+  cd SDL_net-$version
+  make DESTDIR="$PKG" install
+  install -Dm644 COPYING "$PKG/usr/share/licenses/$name/LICENSE"
+}
