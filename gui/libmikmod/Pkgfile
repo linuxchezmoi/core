@@ -1,0 +1,38 @@
+# Depends on: pulseaudio alsa-lib
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A portable sound library"
+url="http://mikmod.sourceforge.net"
+
+
+name=libmikmod
+version=3.3.11.1
+release=1
+
+
+source=(https://downloads.sourceforge.net/mikmod/libmikmod-$version.tar.gz)
+
+
+prepare(){
+  mkdir build
+}
+
+build() {
+  cd build
+  ../$name-$version/configure \
+    --prefix=/usr \
+    --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="$PKG" install
+}
+
