@@ -1,0 +1,36 @@
+# Depends on: sdl mesa glu subversion
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="SDL MPEG Player Library"
+url="https://icculus.org/smpeg/"
+
+
+name=smpeg
+version=0.4.5
+release=1
+
+
+source=(http://sources.pausex.fr/smpeg-$version.tar.gz)
+
+
+prepare(){
+  cd $name-$version
+  ./autogen.sh
+}
+
+build() {
+  cd $name-$version
+  CFLAGS+=" -Wno-error=narrowing"
+  ./configure --prefix=/usr --mandir=/usr/share/man --disable-static
+  make
+}
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+}
