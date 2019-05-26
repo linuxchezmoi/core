@@ -1,4 +1,4 @@
-# Depends on: alsa-lib gstreamer libtheora libvorbis libogg gobject-introspection
+# Depends on: alsa-lib gstreamer libtheora libvorbis libogg gobject-introspection libxv iso-codes libgudev mesa cdparanoia libtheora pango opus graphene libpng libjpeg meson ninja libvisual
 
 
 packager="sipo"
@@ -19,18 +19,26 @@ source=(http://gstreamer.freedesktop.org/src/$name/$name-$version.tar.xz)
 
 
 build() {
-cd $name-$version
-./configure --prefix=/usr \
-		    --with-package-name="GStreamer Base Plugins $version (Yaolinux)" \
-		    --disable-nls \
-		    --disable-examples
-	make
+  meson $name-$version build --prefix=/usr \
+	-Dbuildtype=release \
+    -Dtremor=disabled \
+	-Dgtk_doc=disabled  \
+    -Dgobject-cast-checks=disabled \
+    -Dglib-asserts=disabled \
+    -Dglib-checks=disabled \
+    -Dpackage-name="GStreamer Base Plugins (Yao Linux)" \
+    -Dpackage-origin="https://www.yaolinux.org/"
+  ninja -C build
 }
 
 
 package() {
-cd $name-$version
-make DESTDIR=$PKG install
-rm -r $PKG/usr/share/gtk-doc
+  DESTDIR="$PKG" meson install -C build
+  mkdir -p ext/lib/gstreamer-1.0
+  for _x in alsa cdparanoia libvisual ogg opengl opus pango theora vorbis; do
+    _x="lib/gstreamer-1.0/libgst${_x}.so"
+    mv "$PKG/usr/$_x" "ext/$_x"
+  done
+  mv ext "$PKG/usr"
 }
 
