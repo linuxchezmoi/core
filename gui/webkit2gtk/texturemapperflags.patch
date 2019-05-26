@@ -1,0 +1,16 @@
+Index: /trunk/Source/WebCore/platform/graphics/gstreamer/MediaPlayerPrivateGStreamerBase.cpp
+===================================================================
+--- /trunk/Source/WebCore/platform/graphics/gstreamer/MediaPlayerPrivateGStreamerBase.cpp
++++ /trunk/Source/WebCore/platform/graphics/gstreamer/MediaPlayerPrivateGStreamerBase.cpp
+@@ -1001,4 +1001,5 @@
+     }
+ 
++#if USE(GSTREAMER_GL)
+     // When the imxvpudecoder is used, the texture sampling of the
+     // directviv-uploaded texture returns an RGB value, so there's no need to
+@@ -1006,4 +1007,5 @@
+     if (m_videoDecoderPlatform != WebKitGstVideoDecoderPlatform::ImxVPU)
+         m_textureMapperFlags |= TEXTURE_MAPPER_COLOR_CONVERT_FLAG;
++#endif
+ }
+ #endif
