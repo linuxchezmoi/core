@@ -1,4 +1,4 @@
-# Depends on: glib2 gobject-introspection
+# Depends on: libxml2 libunwind libcap libelf gtk-doc gobject-introspection valgrind bash-completion meson ninja glib2
 
 
 packager="sipo"
@@ -12,24 +12,26 @@ url="https://gstreamer.freedesktop.org/"
 
 name=gstreamer
 version=1.16.0
-release=1
+release=2
 
 
-source=(http://gstreamer.freedesktop.org/src/$name/$name-$version.tar.xz)
+source=(https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-$version.tar.xz)
 
 
 build() {
-cd $name-$version
-./configure --prefix=/usr \
-		    --disable-nls \
-        	--with-package-name="GStreamer $version (Yaolinux)"
-
-  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
-  make
+  meson $name-$version build --prefix=/usr \
+    -Dbuildtype=release \
+    -Ddbghelp=disabled \
+    -Dgtk_doc=disabled  \
+    -Dgobject-cast-checks=disabled \
+    -Dglib-asserts=disabled \
+    -Dglib-checks=disabled \
+    -Dpackage-name="GStreamer (Yao Linux)" \
+    -Dpackage-origin="https://www.yaolinux.org/"
+  ninja -C build
 }
 
 
 package() {
-cd $name-$version
-make DESTDIR="$PKG" install
+  DESTDIR="$PKG" meson install -C build
 }
