@@ -11,7 +11,7 @@ url="http://www.threadingbuildingblocks.org/"
 
 
 name=intel-tbb
-version=2019.6
+version=2019.7
 _tagname=${version/./_U}
 release=1
 
