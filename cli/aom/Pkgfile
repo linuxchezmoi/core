@@ -1,0 +1,48 @@
+# Depends on: git cmake ninja doxygen graphviz yasm
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Alliance for Open Media video codec"
+url="https://aomedia.org/"
+
+
+name=aom
+version=1.0.0
+release=1
+
+
+source=()
+
+
+prepare(){
+  git clone https://aomedia.googlesource.com/aom
+  mkdir build
+  cd $name
+  printf '%s\n' >>libs.doxy_template \
+    HAVE_DOT=yes DOT_IMAGE_FORMAT=svg INTERACTIVE_SVG=yes
+}
+
+
+build() {
+  cd build
+  cmake -G Ninja ../$name \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_SHARED_LIBS=1 \
+    -DENABLE_TESTS=0
+  cmake --build .
+}
+
+
+package() {
+  DESTDIR="$PKG" cmake --build build --target install
+
+  mkdir -p "$PKG/usr/share/doc"
+  cp -r build/docs/html "$PKG/usr/share/doc/$name"
+
+  install -Dt "$PKG/usr/share/licenses/$name" -m644 $name/{LICENSE,PATENTS}
+}
+
