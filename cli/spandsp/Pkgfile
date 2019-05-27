@@ -1,0 +1,31 @@
+# Depends on: libtiff 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A DSP library for telephony"
+url="https://www.soft-switch.org/"
+
+
+name=spandsp
+version=0.0.6
+release=1
+
+
+source=(https://www.soft-switch.org/downloads/spandsp/spandsp-$version.tar.gz)
+
+
+build(){
+  cd $name-$version
+  ./configure --prefix=/usr
+  make
+}
+ 
+
+package() {
+  cd $name-$version
+  make DESTDIR="$PKG" install
+}
