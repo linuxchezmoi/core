@@ -1,0 +1,33 @@
+# Depends on: libpng libx11 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="VBI capture and decoding library"
+url="http://zapping.sourceforge.net/cgi-bin/view/ZVBI/WebHome"
+
+
+name=zvbi
+version=0.2.35
+release=1
+
+
+source=(https://downloads.sourceforge.net/sourceforge/zapping/zvbi-$version.tar.bz2)
+
+
+build(){
+  cd zvbi-${version}
+  ./configure \
+    --prefix='/usr' \
+    --sbindir='/usr/bin'
+  make
+}
+
+package() {
+  cd zvbi-${version}
+  make DESTDIR="${PKG}" install
+}
+
