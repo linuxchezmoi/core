@@ -1,0 +1,42 @@
+# Depends on: openssl git cmake ninja
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Secure Reliable Transport library"
+url="https://www.srtalliance.org/"
+
+
+name=srt
+version=1.3.2
+release=1
+
+
+source=(no-rpath.diff)
+
+
+prepare(){
+  git clone https://github.com/Haivision/srt
+  cd $name
+  patch -Np1 -i ../no-rpath.diff
+}
+
+build() {
+  cmake -Hsrt -Bbuild -GNinja \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_BINDIR=bin \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_INCLUDEDIR=include \
+    -DENABLE_TESTING=True
+  cmake --build build
+}
+
+
+package() {
+  DESTDIR="$PKG" cmake --build build --target install
+  rm "$PKG"/usr/bin/*-test
+}
+
