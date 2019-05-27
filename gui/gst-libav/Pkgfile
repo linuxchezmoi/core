@@ -1,4 +1,4 @@
-# Depends on: gst-plugins-base ffmpeg yasm
+# Depends on: gst-plugins-base bzip2 ffmpeg python gtk-doc yasm meson ninja
 
 
 packager="sipo"
@@ -6,29 +6,30 @@ contributors=""
 maintainer="sipo"
 
 
-description="GStreamer Multimedia Framework ffmpeg Plugin"
+description="GStreamer open-source multimedia framework FFmpeg plugin"
 url="https://gstreamer.freedesktop.org/"
 
 
 name=gst-libav
 version=1.16.0
-release=1
+release=2
 
 
 source=(https://gstreamer.freedesktop.org/src/gst-libav/$name-$version.tar.xz)
 
 
+prepare(){
+  cd $name-$version
+}
+
 build() {
-cd $name-$version
-./configure --prefix=/usr \
-		    --with-package-name="GStreamer Good Plugins $version (YaoLinux)"
-make
-sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
-make
+  meson $name-$version build --prefix=/usr \
+    -D package-name="GStreamer FFmpeg Plugin (Yao Linux)" \
+    -D package-origin="https://www.yaolinux.org/"
+  ninja -C build
 }
 
 
 package() {
-cd $name-$version
-make DESTDIR="$PKG" install
+  DESTDIR="$PKG" meson install -C build
 }
