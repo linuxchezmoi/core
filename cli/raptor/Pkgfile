@@ -1,0 +1,35 @@
+# Depends on: curl libxslt icu 
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="A C library that parses RDF/XML/N-Triples into RDF triples"
+url="http://librdf.org/raptor"
+
+
+name=raptor
+version=2.0.15
+release=1
+
+
+source=(http://librdf.org/dist/source/raptor2-$version.tar.gz)
+
+
+build(){
+  cd raptor2-${version}
+
+  ./configure --prefix=/usr \
+    --disable-static \
+    --with-yajl=no \
+    --with-icu-config=/usr/bin/icu-config
+  make
+}
+
+
+package() {
+  cd raptor2-${version}
+  make prefix="${PKG}"/usr install
+}
