@@ -1,0 +1,50 @@
+# Depends on: yasm
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Command-line file archiver with high compression ratio"
+url="http://p7zip.sourceforge.net/"
+
+
+name=p7zip
+version=16.02
+release=1
+
+
+source=(https://downloads.sourceforge.net/project/$name/$name/$version/${name}_${version}_src_all.tar.bz2 
+        CVE-2016-9296.patch 
+		CVE-2017-17969.patch 
+        CVE-2018-5996.patch 
+		CVE-2018-10115.patch)
+
+
+prepare(){
+  cd "$SRC/${name}_$version"
+  patch -Np1 -i ../CVE-2016-9296.patch
+  patch -Np1 -i ../CVE-2017-17969.patch
+  #patch -Np1 -i ../CVE-2018-5996.patch
+  patch -Np1 -i ../CVE-2018-10115.patch
+  cp makefile.linux_amd64_asm makefile.machine
+}
+
+build() {
+  cd "$SRC/${name}_$version"
+  make all3 OPTFLAGS="$CFLAGS"
+}
+
+package() {
+  cd "$SRC/${name}_$version"
+  make install \
+    DEST_DIR="$PKG" \
+    DEST_HOME=/usr \
+    DEST_MAN=/usr/share/man
+  rm -r "$PKG/usr/share/doc/p7zip/DOC/MANUAL/fm"
+  install -d "${PKG}"/usr/share/licenses/p7zip
+  ln -s -t "$PKG/usr/share/licenses/p7zip/" \
+    /usr/share/doc/p7zip/DOC/License.txt \
+    /usr/share/doc/p7zip/DOC/unRarLicense.txt
+}
