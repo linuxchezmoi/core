@@ -1,4 +1,4 @@
-# Depends on: systemd xorgproto libxkbfile xorg-font-util xcb-util-keysyms libepoxy xcb-util-image xcb-util-renderutil xcb-util-wm glu pixman libdmx libxres libxfont2 xkeyboard-config wayland xorg-xkbcomp libtirpc xdbus
+# Depends on: systemd xorgproto libxkbfile xorg-font-util xcb-util-keysyms libepoxy xcb-util-image xcb-util-renderutil xcb-util-wm glu pixman libdmx libxres libxfont2 xkeyboard-config wayland xorg-xkbcomp libtirpc dbus
 
 
 packager="sipo"
@@ -11,8 +11,8 @@ url="http://xorg.freedesktop.org"
 
 
 name=xorg-server
-version=1.20.4
-release=3
+version=1.20.5
+release=1
 
 
 source=(http://ftp.x.org/pub/individual/xserver/$name-$version.tar.bz2
