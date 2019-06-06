@@ -1,4 +1,4 @@
-# Depends on: gtk-update-icon-cache hicolor-icon-theme librsvg intltool icon-naming-utils
+# Depends on: hicolor-icon-theme librsvg intltool icon-naming-utils
 
 
 packager="sipo"
