@@ -11,9 +11,9 @@ url="https://legacy.imagemagick.org/"
 
 
 name=libmagick6
-version=6.9.10.46
-_name=ImageMagick-6.9.10-46
-release=2
+version=6.9.10.48
+_name=ImageMagick-6.9.10-48
+release=1
 
 
 source=(https://www.imagemagick.org/download/$_name.tar.gz
