@@ -1,4 +1,4 @@
-# Depends on: perl-xml-parser 
+# Depends on: perl-xml-parser perl
 
 
 packager="sipo"
