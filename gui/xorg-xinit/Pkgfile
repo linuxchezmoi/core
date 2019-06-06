@@ -1,4 +1,4 @@
-# Depends on: font-bh-ttf xorg-server xorg-xkbcomp xkeyboard-config xorg-xauth xorg-xrdb xorg-xmodmap xf86-input-evdev xdbus
+# Depends on: font-bh-ttf xorg-server xorg-xkbcomp xkeyboard-config xorg-xauth xorg-xrdb xorg-xmodmap xf86-input-evdev dbus glib-dbus
 
 
 packager="sipo"
@@ -6,7 +6,7 @@ contributors=""
 maintainer="sipo"
 
 
-run=(font-bh-ttf xorg-server xorg-xkbcomp xkeyboard-config xorg-xauth xorg-xrdb xorg-xmodmap xf86-input-evdev xdbus)
+run=(font-bh-ttf xorg-server xorg-xkbcomp xkeyboard-config xorg-xauth xorg-xrdb xorg-xmodmap xf86-input-evdev dbus)
 
 
 description="X.Org initialisation program "
@@ -15,7 +15,7 @@ url="https://xorg.freedesktop.org/"
 
 name=xorg-xinit
 version=1.4.1
-release=1
+release=2
 
 
 source=(https://xorg.freedesktop.org//releases/individual/app/xinit-$version.tar.bz2
