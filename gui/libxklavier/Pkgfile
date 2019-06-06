@@ -15,18 +15,17 @@ version=5.4
 release=1
 
 
-source=()
+source=(https://people.freedesktop.org/~svu/libxklavier-$version.tar.bz2)
 
 
 build(){
-  git clone https://anongit.freedesktop.org/git/libxklavier
-  cd "$name"
+  cd "$name-$version"
   ./autogen.sh --prefix=/usr --with-xkb-bin-base=/usr/bin \
       --with-xkb-base=/usr/share/X11/xkb --disable-static --enable-gtk-doc
   make
 }
 
 package() {
-  cd "$name"
+  cd "$name-$version"
   make DESTDIR="$PKG" install
 }
