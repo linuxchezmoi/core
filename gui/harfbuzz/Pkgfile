@@ -11,8 +11,8 @@ url="https://www.freedesktop.org/wiki/Software/HarfBuzz"
 
 
 name=harfbuzz
-version=2.5.0
-release=2
+version=2.5.1
+release=1
 
 
 source=()
