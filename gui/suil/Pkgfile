@@ -1,4 +1,4 @@
-# Depends on: gtk2 gtk3 lv2 python qt5
+# Depends on: gtk3 lv2 python qt5
 
 
 packager="sipo"
