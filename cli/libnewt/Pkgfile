@@ -11,7 +11,7 @@ url="https://pagure.io/newt"
 
 
 name=libnewt
-version=0.52.20
+version=0.52.21
 release=1
 
 
