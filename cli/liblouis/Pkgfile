@@ -1,4 +1,4 @@
-# Depends on: help2man python2 python
+# Depends on: help2man python
 
 
 packager="sipo"
@@ -11,7 +11,7 @@ url="http://liblouis.org/"
 
 
 name=liblouis
-version=3.9.0
+version=3.10.0
 release=1
 
 
@@ -30,6 +30,5 @@ package() {
 
   cd python
   LD_PRELOAD+=":$SRC/$name-$version/liblouis/.libs/liblouis.so"
-  python2 setup.py install --root="$PKG" --prefix="/usr" --optimize=1
   python3 setup.py install --root="$PKG" --prefix="/usr" --optimize=1
 }
