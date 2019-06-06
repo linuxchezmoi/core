@@ -1,4 +1,4 @@
-# Depends on: libxfce4util gtk2 gtk3 xfconf libsm startup-notification hicolor-icon-theme intltool gobject-introspection vala
+# Depends on: libxfce4util gtk3 xfconf libsm startup-notification hicolor-icon-theme intltool gobject-introspection vala
 
 
 packager="sipo"
