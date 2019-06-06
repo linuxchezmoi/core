@@ -1,4 +1,4 @@
-# Depends on: systemd libusb avahi python gnutls xdg-utils gtk-update-icon-cache
+# Depends on: systemd libusb avahi python gnutls xdg-utils
 
 
 packager="sipo"
@@ -6,7 +6,7 @@ contributors="Pierre B, Tnut"
 maintainer="sipo"
 
 
-run=(xdg-utils gtk-update-icon-cache)
+run=(xdg-utils)
 PKGMK_GROUPS=(devel man)
 
 
