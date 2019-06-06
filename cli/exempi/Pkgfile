@@ -1,4 +1,4 @@
-# Depends on: expat zlib boost git autoconf-archive
+# Depends on: expat zlib boost autoconf-archive
 
 
 packager="sipo"
@@ -15,23 +15,18 @@ version=2.5.0
 release=1
 
 
-source=()
+source=(https://libopenraw.freedesktop.org/download/exempi-$version.tar.bz2)
 
 
-prepare(){
-  git clone https://anongit.freedesktop.org/git/exempi
-  cd $name
-  NOCONFIGURE=1 ./autogen.sh
-}
 
 build() {
-  cd $name
+  cd $name-$version
   ./configure --prefix=/usr # --disable-static
   make
 }
 
 
 package() {
-  cd $name
+  cd $name-$version
   make DESTDIR="$PKG" install
 }
