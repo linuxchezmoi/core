@@ -15,23 +15,17 @@ version=0.3.1
 release=1
 
 
-source=()
+source=(http://freedesktop.org/software/pulseaudio/webrtc-audio-processing/webrtc-audio-processing-$version.tar.xz)
 
-
-prepare(){
-  git clone https://anongit.freedesktop.org/git/pulseaudio/webrtc-audio-processing
-  cd $name
-  NOCONFIGURE=1 ./autogen.sh
-}
 
 build() {
-  cd $name
+  cd $name-$version
   ./configure --prefix=/usr --disable-static
   make
 }
 
 package() {
-  cd $name
+  cd $name-$version
   make DESTDIR="$PKG" install
 
   install -Dm644 COPYING "$PKG/usr/share/licenses/$name/COPYING"
