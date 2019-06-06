@@ -16,8 +16,7 @@ release=1
 
 
 source=(https://github.com/mesonbuild/meson/releases/download/$version/meson-$version.tar.gz 
-        0001-Fix-failing-85-gtest-dependency-with-version-test-to.patch 
-        yao-meson)
+        0001-Fix-failing-85-gtest-dependency-with-version-test-to.patch)
 
 
 
@@ -42,6 +41,5 @@ package() {
   cp -rt "${PKG}/usr/share/vim/vimfiles" data/syntax-highlighting/vim/*/
   install -Dt "${PKG}/usr/share/emacs/site-lisp" -m644 data/syntax-highlighting/emacs/*
   install -Dt "${PKG}/usr/share/zsh/site-functions" -m644 data/shell-completions/zsh/*
-  install -D ../yao-meson -t "${PKG}/usr/bin"
 }
 
