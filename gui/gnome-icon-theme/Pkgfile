@@ -1,4 +1,4 @@
-# Depends on: hicolor-icon-theme gtk-update-icon-cache gnome-icon-theme-symbolic intltool icon-naming-utils
+# Depends on: hicolor-icon-theme gnome-icon-theme-symbolic intltool icon-naming-utils gtk-update-icon-cache
 
 
 packager="sipo"
