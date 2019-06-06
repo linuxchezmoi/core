@@ -1,4 +1,4 @@
-# Depends on: libx11 libjpeg-turbo gsfonts freetype expat gtk2 libxt
+# Depends on: libx11 libjpeg-turbo gsfonts freetype expat libxt
 
 
 packager="sipo"
