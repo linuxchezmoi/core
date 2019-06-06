@@ -1,4 +1,4 @@
-# Depends on: adwaita-icon-theme at-spi2-atk gdk-pixbuf2 libepoxy pango libxkbcommon gobject-introspection 
+# Depends on: adwaita-icon-theme at-spi2-atk gdk-pixbuf2 libepoxy pango libxkbcommon gobject-introspection cairo
 
 
 packager="sipo"
