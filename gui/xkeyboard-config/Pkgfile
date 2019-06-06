@@ -11,7 +11,7 @@ url="https://www.freedesktop.org/wiki/Software/XKeyboardConfig"
 
 
 name=xkeyboard-config
-version=2.26
+version=2.27
 release=1
 
 
@@ -22,7 +22,7 @@ source=(https://xorg.freedesktop.org/archive/individual/data/xkeyboard-config/xk
 prepare(){
   cd ${name}-${version}
   # fix broken pt layout - FS#61634
-  patch -Np1 -i ../pt-layout.patch
+  #patch -Np1 -i ../pt-layout.patch
 }
 
 build() {
