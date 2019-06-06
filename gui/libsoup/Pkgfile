@@ -18,22 +18,21 @@ version=2.66.2
 release=1
 
 
-source=()
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
 
 prepare(){
-  git clone https://gitlab.gnome.org/GNOME/libsoup.git
-  cd $name
+  cd $name-$version
   mkdir build
 }
 
 build() {
-  cd $name/build
+  cd $name-$version/build
   meson --prefix=/usr -Dvapi=true
   ninja
 }
 
 package() {
-  cd $name
+  cd $name-$version
   DESTDIR="$PKG" meson install -C build
 }
