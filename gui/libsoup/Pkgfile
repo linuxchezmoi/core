@@ -1,7 +1,4 @@
-# Depends on: glib2 libxml2 glib-networking sqlite krb5 libpsl gobject-introspection python vala git gtk-doc meson ninja
-
-
-run=(glib-networking)
+# Depends on: glib2 libxml2 glib-networking sqlite krb5 libpsl gobject-introspection python vala git gtk-doc meson brotli
 
 
 packager="sipo"
@@ -14,25 +11,24 @@ url="https://wiki.gnome.org/Projects/libsoup"
 
 
 name=libsoup
-version=2.66.2
+version=2.66.2+4+g716acf96
 release=1
 
 
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+source=()
 
 
 prepare(){
-  cd $name-$version
-  mkdir build
+  git clone https://gitlab.gnome.org/GNOME/libsoup.git
+  cd $name
 }
 
 build() {
-  cd $name-$version/build
-  meson --prefix=/usr -Dvapi=true
-  ninja
+  meson $name build --prefix=/usr -D gtk_doc=true
+  ninja -C build
 }
 
+
 package() {
-  cd $name-$version
   DESTDIR="$PKG" meson install -C build
 }
