@@ -1,4 +1,4 @@
-# Depends on: gdk-pixbuf2 pango libcroco gobject-introspection vala git rust
+# Depends on: gdk-pixbuf2 pango libcroco gobject-introspection vala gtk-doc git rust
 
 
 packager="sipo"
@@ -11,24 +11,30 @@ url="https://wiki.gnome.org/Projects/LibRsvg"
 
 
 name=librsvg
-version=2.44.14
+version=2.44.14+1+g17bb3cd6
 release=1
 
 
-source=(https://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+source=()
 
 
+prepare(){
+  git clone https://gitlab.gnome.org/GNOME/librsvg.git
+  cd $name
+  sed -i '/tree_index/d' doc/rsvg-docs.xml
+  NOCONFIGURE=1 ./autogen.sh
+}
 
 build() {
-  cd $name-$version
-  ./configure --prefix=/usr --disable-static --enable-vala 
+  cd $name
+  ./configure --prefix=/usr --disable-static --enable-vala --enable-gtk-doc
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0 /g' libtool
   make
 }
 
 
 package() {
-  cd $name-$version
+  cd $name
   make DESTDIR="$PKG" install
 }
 
