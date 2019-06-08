@@ -1,4 +1,4 @@
-# Depends on: fontconfig freetype libxml2 ant
+# Depends on: fontconfig freetype libxml2 ant git openjdk
 
 
 packager="sipo"
@@ -11,27 +11,35 @@ url="https://www.videolan.org/developers/libbluray.html"
 
 
 name=libbluray
-version=1.1.1
+version=1.1.2
 release=1
 
 
-source=(ftp://ftp.videolan.org/pub/videolan/libbluray/$version/libbluray-$version.tar.bz2)
+source=()
 
 
+prepare(){
+  git clone https://code.videolan.org/videolan/libbluray.git
+  git clone https://code.videolan.org/videolan/libudfread.git
+  cd libbluray
 
+  for submodule in contrib/libudfread; do
+    git submodule init ${submodule}
+    git config submodule.${submodule}.url ../${submodule#*/}
+    git submodule update ${submodule}
+  done
+
+  autoreconf -fiv
+}
 
 build() {
-cd $name-$version
-./configure \
---prefix=/usr \
---mandir=/usr/man \
---disable-bdjava-jar
-make
+  cd libbluray
+
+  ./configure \
+    --prefix='/usr' --disable-bdjava-jar
+  make
 }
 
 package() {
-cd $name-$version
-make DESTDIR="${PKG}" install
-rm $PKG/usr/lib/libbluray.la
+  make DESTDIR="${PKG}" -C libbluray install
 }
-
