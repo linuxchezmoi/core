@@ -1,4 +1,4 @@
-# Depends on: python2 libxslt docbook-xsl 
+# Depends on: ruby 
 
 
 packager="sipo"
@@ -6,37 +6,29 @@ contributors=""
 maintainer="sipo"
 
 
-description="Text document format for short documents, articles, books and UNIX man pages."
-url="http://www.methods.co.nz/asciidoc/"
+description="An implementation of AsciiDoc in Ruby"
+url="https://asciidoctor.org"
 
 
-name=asciidoc
-version=8.6.10
+name=asciidoctor
+version=2.0.10
 release=1
 
 
-source=(https://github.com/asciidoc/asciidoc/archive/$version.tar.gz)
+source=(https://rubygems.org/downloads/asciidoctor-$version.gem)
 
 
-prepare(){
-  cd ${name}-${version}
-  sed -i -e 's#python a2x.py#python2 a2x.py#' Makefile.in
-}
+build(){
+local _gemdir="$(ruby -e 'puts Gem.default_dir')"
+gem install --ignore-dependencies --no-user-install --verbose \
+-i "$PKG/$_gemdir" -n "$PKG/usr/bin" \
+"$name-$version.gem"
 
+install -Dm644 "$PKG/$_gemdir/gems/$name-$version/LICENSE" \
+"$PKG/usr/share/licenses/$name/LICENSE"
+install -Dm644 "$PKG/$_gemdir/gems/$name-$version/man/asciidoctor.1" \
+"$PKG/usr/share/man/man1/asciidoctor.1"
 
-build() {
-  cd ${name}-${version}
-
-  autoconf
-  ./configure \
-    --prefix=/usr \
-    --sysconfdir=/etc
-}
-
-
-package() {
-  cd ${name}-${version}
-  make install DESTDIR=${PKG}
-  install -Dm644 asciidocapi.py \
-  ${PKG}/usr/lib/python2.7/site-packages/asciidocapi.py
+rm "$PKG/$_gemdir/cache/$name-$version.gem"
+rm -rf "$PKG/$_gemdir/gems/$name-$version/man"
 }
