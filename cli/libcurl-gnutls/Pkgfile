@@ -9,7 +9,7 @@ url="http://curl.haxx.se"
 
 
 name=libcurl-gnutls
-version=7.65.0
+version=7.65.1
 release=1
 
 source=(http://curl.haxx.se/download/curl-$version.tar.xz)
