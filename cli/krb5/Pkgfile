@@ -11,8 +11,8 @@ url="http://web.mit.edu/kerberos/"
 
 
 name=krb5
-version=1.16.2
-_pkgvermajor=1.16
+version=1.17
+_pkgvermajor=1.17
 yaolinux_version=1.0-RC1
 release=1
 
