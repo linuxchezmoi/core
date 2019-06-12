@@ -11,7 +11,7 @@ url="https://www.mercurial-scm.org/"
 
 
 name=mercurial
-version=5.0
+version=5.0.1
 release=1
 
 
