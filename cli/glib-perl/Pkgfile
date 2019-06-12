@@ -11,7 +11,7 @@ url="http://gtk2-perl.sourceforge.net/"
 
 
 name=glib-perl
-version=1.328
+version=1.329
 release=1
 
 
