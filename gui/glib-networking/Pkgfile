@@ -14,7 +14,7 @@ url="https://gitlab.gnome.org/GNOME/glib-networking"
 
 
 name=glib-networking
-version=2.60.2
+version=2.60.3
 release=1
 
 
