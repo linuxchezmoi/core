@@ -11,7 +11,7 @@ url="http://pyyaml.org/wiki/PyYAML"
 
  
 name=python-yaml
-version=3.13
+version=5.1
 
 
 source=(http://pyyaml.org/download/pyyaml/PyYAML-${version}.tar.gz)
