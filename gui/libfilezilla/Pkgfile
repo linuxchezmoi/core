@@ -1,4 +1,4 @@
-# Depends on: nettle
+# Depends on: nettle gnutls
 
 
 packager="sipo"
@@ -11,7 +11,7 @@ url="https://lib.filezilla-project.org/"
 
 
 name=libfilezilla
-version=0.16.0
+version=0.17.1
 release=1
 
 

@@ -12,7 +12,7 @@ url="https://github.com/strukturag/libheif"
 
 name=libheif
 version=1.4.0
-release=1
+release=2
 
 
 source=(https://github.com/strukturag/libheif/releases/download/v$version/libheif-$version.tar.gz)

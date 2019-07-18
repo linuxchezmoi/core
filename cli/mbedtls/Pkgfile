@@ -1,0 +1,41 @@
+# Depends on:  
+
+
+packager="sipo"
+contributors=""
+maintainer="sipo"
+
+
+description="Portable cryptographic and SSL/TLS library, aka polarssl"
+url="https://tls.mbed.org"
+
+
+name=mbedtls
+version=2.16.0
+release=1
+
+
+source=(https://tls.mbed.org/download/mbedtls-$version-gpl.tgz)
+
+
+prepare(){
+  cd "$name-$version"
+  sed -i 's|//\(#define MBEDTLS_THREADING_C\)|\1|' include/mbedtls/config.h
+  sed -i 's|//\(#define MBEDTLS_THREADING_PTHREAD\)|\1|' include/mbedtls/config.h
+  sed -i 's|<time.h>|"platform.h"|' include/mbedtls/ssl.h
+}
+
+build() {
+  cd "$name-$version"
+  LDFLAGS+=" -I../include " make SHARED=1 no_test
+}
+
+check() {
+  cd "$name-$version"
+  make SHARED=1 check
+}
+
+package() {
+  cd "$name-$version"
+  make DESTDIR="$PKG/usr" install
+}

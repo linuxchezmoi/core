@@ -11,7 +11,7 @@ url="https://wiki.gnome.org/Projects/libgdata"
 
 
 name=libgdata
-version=0.17.9
+version=0.17.10
 release=1
 
 
@@ -21,18 +21,14 @@ source=()
 prepare(){
   git clone https://gitlab.gnome.org/GNOME/libgdata.git
   cd $name
-  NOCONFIGURE=1 ./autogen.sh
 }
 
 build() {
-  cd $name
-  ./configure --prefix=/usr --disable-static --enable-gtk-doc
-  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
-  make
+  meson $name build --prefix=/usr -D installed_tests=false -D man=true
+  ninja -C build
 }
 
 
 package() {
-  cd $name
-  make DESTDIR="$PKG" install
+  DESTDIR="$PKG" meson install -C build
 }

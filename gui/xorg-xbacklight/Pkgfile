@@ -14,7 +14,7 @@ url="https://xorg.freedesktop.org/"
 
 
 name=xorg-xbacklight
-version=1.2.2
+version=1.2.3
 release=1
 
 

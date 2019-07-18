@@ -1,4 +1,4 @@
-# Depends on: lcms2 harfbuzz libjpeg-turbo openjpeg2 freeglut libx11 libxcursor libxext libxrandr libxinerama freetype
+# Depends on: lcms2 harfbuzz libjpeg-turbo openjpeg2 freeglut libx11 libxcursor libxext libxrandr git libxinerama freetype
 
 
 packager="sipo"
@@ -27,17 +27,15 @@ patch -Np1 -i ../$name-$version-shared_libs-1.patch
 export USE_SYSTEM_LIBS=yes
 }
 
+
 build() {
 cd $name-$version-source
-
 USE_SYSTEM_LIBS=yes                     \
 make prefix=/usr                        \
      build=release                      \
      docdir=/usr/share/doc/mupdf-$version \
      install                            
-
 mkdir -p $PKG/usr/bin/mupdf
-
 ln -sfv mupdf-x11 $PKG/usr/bin/mupdf        
 ldconfig
 }

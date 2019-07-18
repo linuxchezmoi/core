@@ -14,7 +14,7 @@ PKGMK_KEEP_SOURCES="no"
 
 
 name=cython
-version=0.29.10
+version=0.29.12
 release=1
 
 

@@ -11,7 +11,7 @@ url="http://www.mozilla.org"
 
 
 name=nss
-version=3.44
+version=3.45
 
 
 source=(http://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_${version//./_}_RTM/src/nss-$version.tar.gz \

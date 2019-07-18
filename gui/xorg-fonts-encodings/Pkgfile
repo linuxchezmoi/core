@@ -11,8 +11,8 @@ url="https://xorg.freedesktop.org/"
 
 
 name=xorg-fonts-encodings
-version=1.0.4
-release=2
+version=1.0.5
+release=1
 
 
 source=(https://xorg.freedesktop.org//releases/individual/font/encodings-$version.tar.bz2)

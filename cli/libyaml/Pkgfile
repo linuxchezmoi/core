@@ -12,7 +12,7 @@ url="http://pyyaml.org/wiki/LibYAML"
 
 name=libyaml
 _name=yaml
-version=0.2.1
+version=0.2.2
 release=1
 
 

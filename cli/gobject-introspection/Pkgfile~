@@ -11,8 +11,7 @@ url="http://live.gnome.org/GObjectIntrospection"
 
 
 name=gobject-introspection
-version=1.60.2
-release=1
+version=1.60.0
 
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
@@ -31,6 +30,8 @@ package() {
 
 	cd $name-$version
 	make DESTDIR=$PKG install
+
+# Obsolets libs
 	rm $PKG/usr/lib/gobject-introspection/giscanner/_giscanner.la
 	rm $PKG/usr/lib/libgirepository-1.0.la
 

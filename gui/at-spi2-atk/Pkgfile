@@ -1,4 +1,4 @@
-# Depends on: intltool at-spi2-core atk meson ninja
+# Depends on: intltool at-spi2-core atk meson ninja libx11 libxml2 git
 
 
 packager="sipo"
@@ -15,23 +15,22 @@ version=2.32.0
 release=1
 
 
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+source=()
 
 
 prepare(){
-  cd $name-$version
-  mkdir build
+  git clone https://gitlab.gnome.org/GNOME/at-spi2-atk.git
+  cd $name
 }
 
+
 build() {
-  cd $name-$version/build
-  meson --prefix=/usr .. &&
-  ninja
+  meson $name build --prefix=/usr 
+  ninja -C build
 }
 
 
 package() {
-  cd $name-$version
   DESTDIR="$PKG" meson install -C build
 }
 

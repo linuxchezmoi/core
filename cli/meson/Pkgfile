@@ -11,18 +11,16 @@ url="https://mesonbuild.com/"
 
 
 name=meson
-version=0.50.1
+version=0.51.1
 release=1
 
 
-source=(https://github.com/mesonbuild/meson/releases/download/$version/meson-$version.tar.gz 
-        0001-Fix-failing-85-gtest-dependency-with-version-test-to.patch)
+source=(https://github.com/mesonbuild/meson/archive/$version.tar.gz)
 
 
 
 prepare(){
   cd ${name}-${version}
-  patch -Np1 -i ../0001-Fix-failing-85-gtest-dependency-with-version-test-to.patch
 }
 
 

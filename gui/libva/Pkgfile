@@ -11,8 +11,8 @@ url="https://01.org/linuxmedia/vaapi"
 
 
 name=libva
-version=2.4.1
-release=2
+version=2.5.0
+release=1
 
 
 source=()

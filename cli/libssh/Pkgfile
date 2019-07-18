@@ -11,7 +11,7 @@ url="https://www.libssh.org/"
 
 
 name=libssh
-version=0.8.7
+version=0.9.0
 
 
 source=(https://www.libssh.org/files/${version%.*}/$name-$version.tar.xz)

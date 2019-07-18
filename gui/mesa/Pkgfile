@@ -1,4 +1,4 @@
-# Depends on: xorgproto pkg-config libtool wayland wayland-protocols libx11 libdrm libxdamage expat llvm elfutils libxshmfence python-mako libxxf86vm xorg-xrandr python
+# Depends on: xorgproto pkg-config libtool wayland wayland-protocols libx11 libdrm libxdamage expat llvm elfutils libxshmfence python-mako libxxf86vm xorg-xrandr python libglvnd
 
 
 packager="sipo"
@@ -14,7 +14,7 @@ url="http://www.xorg-mesa3d.org"
 
 
 name=mesa
-version=19.0.6
+version=19.1.2
 release=1
 
 
@@ -22,25 +22,34 @@ source=(https://mesa.freedesktop.org/archive/mesa-$version.tar.xz)
 
 
 build() {
-cd mesa-$version
-./configure CFLAGS='-O2' CXXFLAGS='-O2' LDFLAGS=-lLLVM \
---enable-autotools             \
---prefix=/usr                  \
---sysconfdir=/etc              \
---enable-osmesa                \
---enable-xa                    \
---enable-glx-tls               \
---enable-gles2                 \
---with-platforms="drm,x11,wayland" \
---with-dri-drivers="i915,i965,nouveau,r200" \
---with-gallium-drivers="nouveau,virgl,r300,r600,radeonsi,svga,swrast"
-make
+	cd $name-$version
+
+	PLATFORMS="drm,x11,wayland"
+	GALLIUM_DRV="r300,r600,svga,swrast,radeonsi,nouveau"
+	DRI_DRIVERS="i915,i965,r100,r200,nouveau"
+
+	mkdir build
+	cd    build
+	
+	meson --prefix=/usr \
+	      --sysconfdir=/etc \
+	      -Dvalgrind=false \
+	      -Dglx=dri \
+	      -Degl=true \
+	      -Dosmesa=gallium \
+	      -Dgallium-nine=true \
+	      -Ddri-drivers=$DRI_DRIVERS \
+	      -Dgallium-drivers=$GALLIUM_DRV \
+	      -Dplatforms=$PLATFORMS \
+	      -Dglvnd=true \
+	      -Dllvm=true \
+	      ..
+	ninja
+	DESTDIR=$PKG ninja install
+	ln -s libGLX_mesa.so.0 $PKG/usr/lib/libGLX_indirect.so.0
 }
 
 
-package() {
-cd mesa-$version
-make DESTDIR=$PKG install
-rm $PKG/usr/lib/{libEGL,libGL,libGLESv1_CM,libGLESv2,libOSMesa,libgbm,libglapi,libxatracker}.la
-}
+
+
 

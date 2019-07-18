@@ -1,4 +1,4 @@
-# Depends on: gtk3 libxml2 intltool gtk-doc gobject-introspection python-gobject itstool docbook-xsl git gnome-common
+# Depends on: gtk3 libxml2 intltool gobject-introspection python-gobject itstool docbook-xsl git gnome-common webkit2gtk
 
 
 packager="sipo"
@@ -15,26 +15,24 @@ version=3.22.1
 release=1
 
 
-source=()
+source=(https://ftp.gnome.org/pub/GNOME/sources/$name/3.22/$name-$version.tar.xz)
 
 
 prepare(){
-git clone https://gitlab.gnome.org/GNOME/glade.git
-cd $name
+cd $name-$version
 NOCONFIGURE=1 ./autogen.sh
 }
 
 
 build() {
-cd $name
+cd $name-$version
 ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
---disable-static --enable-gtk-doc
+--disable-static
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 make
 }
 
-
 package() {
-cd $name
+cd $name-$version
 make DESTDIR="$PKG" install
 }
